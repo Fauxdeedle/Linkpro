@@ -26,9 +26,9 @@ async function startCheckout(productId, button) {
 }
 
 document.addEventListener('click', function (event) {
-  const button = event.target.closest('[data-stripe-product]');
+  const button = event.target.closest('[data-flute-product]');
   if (!button) return;
 
   event.preventDefault();
-  startCheckout(button.dataset.stripeProduct, button);
+  startCheckout(button.dataset.fluteProduct, button);
 });

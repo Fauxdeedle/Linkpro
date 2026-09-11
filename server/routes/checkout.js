@@ -1,15 +1,14 @@
 const express = require('express');
-const { getStripeConfig, createCheckoutSession, getCheckoutSession } = require('../../lib/checkout');
-const { processStripeWebhook } = require('../../lib/webhooks');
+const { getFluteConfig, createCheckoutSession, getCheckoutSession } = require('../../lib/checkout');
 
 const router = express.Router();
 
-router.get('/stripe-config', (_req, res) => {
-  const result = getStripeConfig();
+router.get('/flute-config', (_req, res) => {
+  const result = getFluteConfig();
   if (result.error) {
     return res.status(result.status).json({ error: result.error });
   }
-  res.json({ publishableKey: result.publishableKey });
+  res.json({ configured: result.configured });
 });
 
 router.post('/create-checkout-session', async (req, res) => {
