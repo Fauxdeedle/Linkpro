@@ -43,7 +43,7 @@ The site is static HTML. Nav markup is maintained in one template and **copied i
 
 ### URLs
 
-Nav links use **root-relative** paths (`/about`, `/courses`, `/#contact`) so they work from any folder (e.g. blog posts under `/blog/…`). On Vercel, `cleanUrls` serves these without `.html` in the browser.
+Nav links use **root-relative** paths (`/about`, `/courses`, `/#contact`) so they work from any folder (e.g. blog posts under `/blog/…`). URLs omit `.html` in the browser (Vercel `cleanUrls`; local dev via `npm start` uses the same rules in `server/index.js`).
 
 ### Diagrams and detail
 
