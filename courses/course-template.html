@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site-nav.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--charcoal:#1a1a1a;--charcoal-light:#222;--cream:#f5f0eb;--cream-dark:#ede7e0;--gold:#c4a265;--gold-light:#d4b87a;--gold-dark:#a8894f;--white:#fff;--muted:#8a8a8a;--serif:'Playfair Display',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;--transition:cubic-bezier(.25,.46,.45,.94);--side-pad:clamp(24px,5vw,80px)}
@@ -17,18 +18,6 @@ body.lesson-open{overflow:hidden}
 a{color:inherit;text-decoration:none}
 button{border:0;font:inherit;cursor:pointer}
 .container{width:100%;max-width:1280px;margin:0 auto;padding:0 var(--side-pad)}
-.nav{position:absolute;inset:0 0 auto;z-index:20;padding:24px 0}
-.nav__inner{display:flex;align-items:center;justify-content:space-between;max-width:1440px;margin:0 auto;padding:0 var(--side-pad)}
-.nav__logo{font-size:1.1rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--white)}
-.nav__logo span{color:var(--gold)}
-.nav__links{display:flex;align-items:center;gap:36px;list-style:none}
-.nav__links a{position:relative;font-size:.75rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);transition:color .3s}
-.nav__links a::after{position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);content:"";transition:width .3s var(--transition)}
-.nav__links a:hover,.nav__links a[aria-current="page"]{color:var(--white)}
-.nav__links a:hover::after,.nav__links a[aria-current="page"]::after{width:100%}
-.nav__cta{padding:12px 28px!important;border:1px solid var(--gold);background:var(--gold);color:var(--charcoal)!important}
-.nav__cta::after{display:none}
-.nav__cta:hover{background:transparent;color:var(--gold)!important}
 .hero{position:relative;overflow:hidden;padding:190px 0 110px;background:#0a0a0a;color:var(--white)}
 .hero::before{position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 80% 35%,rgba(196,162,101,.15),transparent 60%),linear-gradient(155deg,#0a0a0a,#181818 48%,#0d0d0d);content:""}
 .hero::after{position:absolute;inset:0;opacity:.025;background-image:linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.4) 1px,transparent 1px);background-size:80px 80px;content:""}
@@ -97,7 +86,7 @@ h1 em{color:var(--gold);font-weight:400}
 .footer__logo span{color:var(--gold)}
 .footer p{font-size:.75rem}
 @media(max-width:760px){
-  .nav__links{display:none}.nav{padding:20px 0}.hero{padding:150px 0 84px}.hero__actions{align-items:flex-start;flex-direction:column;gap:18px}
+  .hero{padding:150px 0 84px}.hero__actions{align-items:flex-start;flex-direction:column;gap:18px}
   .progress-section{padding:55px 0}.section-heading{grid-template-columns:1fr;gap:20px}.course-content{padding:75px 0 90px}
   .lesson{grid-template-columns:48px minmax(0,1fr);gap:16px;padding:24px 8px}.lesson:hover{padding-left:8px}.lesson__action{grid-column:2;justify-self:start;padding:0}
   .lesson-view__header,.lesson-view__body{padding:28px 24px}.lesson-view__visual{min-height:190px}.lesson-view__footer{align-items:stretch;flex-direction:column}.lesson-nav{text-align:left}
@@ -106,19 +95,46 @@ h1 em{color:var(--gold);font-weight:400}
 </style>
 </head>
 <body>
-<nav class="nav" aria-label="Main navigation">
+<!-- LINKPRO_NAV_START -->
+<!-- LINK Pro site nav — edit this file, then run: npm run build:nav -->
+<nav class="nav" id="nav">
   <div class="nav__inner">
-    <a href="index.html" class="nav__logo">LINK <span>PRO</span></a>
-    <ul class="nav__links">
-      <li><a href="about.html">About</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="classes.html">Classes</a></li>
-      <li><a href="courses.html" aria-current="page">Courses</a></li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="index.html#contact" class="nav__cta">Book Now</a></li>
-    </ul>
+    <a href="/" class="nav__logo">
+      <div class="nav__logo-icon">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M20 2L38 35H2L20 2Z" stroke="#C4A265" stroke-width="1.5" fill="none"/>
+          <path d="M20 10L31 31H9L20 10Z" stroke="#C4A265" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <line x1="20" y1="2" x2="20" y2="35" stroke="#C4A265" stroke-width="0.5" opacity="0.3"/>
+        </svg>
+      </div>
+      LINK Pro
+    </a>
+    <div class="nav__links">
+      <a href="/about" data-nav-id="about">About</a>
+      <a href="/services" data-nav-id="services">Services</a>
+      <a href="/classes" data-nav-id="classes">Classes</a>
+      <a href="/courses" data-nav-id="courses" aria-current="page">Courses</a>
+      <a href="/blog" data-nav-id="blog">Blog</a>
+      <a href="/reviews" data-nav-id="reviews">Reviews</a>
+      <a href="/#contact" class="nav__cta">Book Now</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" type="button">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <a href="/about" class="mobile-nav__link" data-nav-id="about">About</a>
+  <a href="/services" class="mobile-nav__link" data-nav-id="services">Services</a>
+  <a href="/classes" class="mobile-nav__link" data-nav-id="classes">Classes</a>
+  <a href="/courses" class="mobile-nav__link" data-nav-id="courses" aria-current="page">Courses</a>
+  <a href="/blog" class="mobile-nav__link" data-nav-id="blog">Blog</a>
+  <a href="/reviews" class="mobile-nav__link" data-nav-id="reviews">Reviews</a>
+  <a href="/#contact" class="mobile-nav__link">Contact</a>
+  <a href="/#contact" class="mobile-nav__cta">Book a Consultation</a>
+</div>
+<!-- LINKPRO_NAV_END -->
 
 <header class="hero">
   <div class="container">
@@ -304,5 +320,6 @@ h1 em{color:var(--gold);font-weight:400}
   updateProgress();
 })();
 </script>
+<script src="/js/site-nav.js" defer></script>
 </body>
 </html>

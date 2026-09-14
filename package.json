@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "vercel:dev": "vercel dev"
+    "vercel:dev": "vercel dev",
+    "build:nav": "node scripts/build-nav.js"
   },
   "engines": {
     "node": ">=20.19.0"

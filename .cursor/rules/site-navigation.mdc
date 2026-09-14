@@ -1,0 +1,35 @@
+---
+description: LINK Pro shared site navigation component and build workflow
+globs:
+  - components/site-nav.html
+  - css/site-nav.css
+  - js/site-nav.js
+  - scripts/build-nav.js
+  - "**/*.html"
+alwaysApply: false
+---
+
+# Site navigation
+
+The global nav is defined in **one place** and copied into every page by a build script.
+
+## Source files
+
+| File | Role |
+|------|------|
+| `components/site-nav.html` | Nav + mobile menu markup (root-relative URLs: `/about`, `/#contact`, etc.) |
+| `css/site-nav.css` | Nav styles (transparent until scroll, mobile overlay) |
+| `js/site-nav.js` | Scroll `.scrolled`, hamburger, smooth in-page anchors |
+
+## After editing the nav
+
+1. Change `components/site-nav.html`, `css/site-nav.css`, and/or `js/site-nav.js` as needed.
+2. Run **`npm run build:nav`** to inline nav HTML into all pages between `<!-- LINKPRO_NAV_START -->` and `<!-- LINKPRO_NAV_END -->`.
+3. Commit the component **and** the updated HTML files.
+
+To register a new page, add it to `activeByFile` in `scripts/build-nav.js`, add the markers + `/css/site-nav.css` + `/js/site-nav.js` to the page, then run `npm run build:nav`.
+
+## New pages
+
+- Use the homepage nav pattern only (flat links, no dropdowns).
+- Checkout-style light pages: `body class="nav-surface-light"` for a solid nav bar at the top.

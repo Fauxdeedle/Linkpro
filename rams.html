@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site-nav.css">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -39,58 +40,6 @@ body {
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
-
-/* ── NAV ── */
-.nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  padding: 20px 0;
-  background: rgba(0, 31, 91, 0.92);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(255, 209, 0, 0.18);
-}
-.nav-inner {
-  max-width: var(--max); margin: 0 auto; padding: 0 var(--side);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.nav-logo {
-  font-family: var(--serif);
-  font-size: 1.6rem; letter-spacing: 0.08em;
-  color: var(--white);
-}
-.nav-logo span { color: var(--rams-gold); }
-.nav-links { display: flex; align-items: center; gap: 2rem; }
-.nav-links a {
-  font-size: 0.72rem; font-weight: 500;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.65);
-  transition: color 0.3s;
-}
-.nav-links a:hover,
-.nav-links a.active { color: var(--white); }
-.nav-cta {
-  color: var(--ink) !important;
-  background: var(--rams-gold);
-  padding: 0.55rem 1.25rem;
-  font-weight: 600 !important;
-  transition: background 0.3s, transform 0.3s !important;
-}
-.nav-cta:hover {
-  background: var(--rams-gold-dim);
-  transform: translateY(-1px);
-}
-.nav-dropdown { position: relative; }
-.nav-dropdown-menu {
-  display: none; position: absolute; top: 100%; left: 0;
-  background: rgba(0, 31, 91, 0.98);
-  border: 1px solid rgba(255, 209, 0, 0.15);
-  padding: 12px 0; min-width: 200px; margin-top: 8px;
-}
-.nav-dropdown:hover .nav-dropdown-menu { display: block; }
-.nav-dropdown-menu a {
-  display: block; padding: 8px 20px;
-  font-size: 0.68rem; white-space: nowrap;
-}
 
 /* ── HERO ── */
 .hero {
@@ -474,34 +423,46 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </style>
 </head>
 <body>
-
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">LINK <span>PRO</span></a>
-    <ul class="nav-links">
-      <li class="nav-dropdown">
-        <a href="#">What We Do</a>
-        <div class="nav-dropdown-menu">
-          <a href="about.html">About</a>
-          <a href="services.html">Services</a>
-          <a href="somatherapy.html">SomaTherapy</a>
-        </div>
-      </li>
-      <li><a href="classes.html">Classes</a></li>
-      <li class="nav-dropdown">
-        <a href="courses.html">Courses</a>
-        <div class="nav-dropdown-menu">
-          <a href="courses.html#online">Online Courses</a>
-          <a href="courses.html#seminars">In-Person Seminars</a>
-        </div>
-      </li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="reviews.html">Reviews</a></li>
-      <li><a href="rams.html" class="active">Rams</a></li>
-      <li><a href="#coach" class="nav-cta">Coach the Rams</a></li>
-    </ul>
+<!-- LINKPRO_NAV_START -->
+<!-- LINK Pro site nav — edit this file, then run: npm run build:nav -->
+<nav class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="/" class="nav__logo">
+      <div class="nav__logo-icon">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M20 2L38 35H2L20 2Z" stroke="#C4A265" stroke-width="1.5" fill="none"/>
+          <path d="M20 10L31 31H9L20 10Z" stroke="#C4A265" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <line x1="20" y1="2" x2="20" y2="35" stroke="#C4A265" stroke-width="0.5" opacity="0.3"/>
+        </svg>
+      </div>
+      LINK Pro
+    </a>
+    <div class="nav__links">
+      <a href="/about" data-nav-id="about">About</a>
+      <a href="/services" data-nav-id="services">Services</a>
+      <a href="/classes" data-nav-id="classes">Classes</a>
+      <a href="/courses" data-nav-id="courses">Courses</a>
+      <a href="/blog" data-nav-id="blog">Blog</a>
+      <a href="/reviews" data-nav-id="reviews">Reviews</a>
+      <a href="/#contact" class="nav__cta">Book Now</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" type="button">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <a href="/about" class="mobile-nav__link" data-nav-id="about">About</a>
+  <a href="/services" class="mobile-nav__link" data-nav-id="services">Services</a>
+  <a href="/classes" class="mobile-nav__link" data-nav-id="classes">Classes</a>
+  <a href="/courses" class="mobile-nav__link" data-nav-id="courses">Courses</a>
+  <a href="/blog" class="mobile-nav__link" data-nav-id="blog">Blog</a>
+  <a href="/reviews" class="mobile-nav__link" data-nav-id="reviews">Reviews</a>
+  <a href="/#contact" class="mobile-nav__link">Contact</a>
+  <a href="/#contact" class="mobile-nav__cta">Book a Consultation</a>
+</div>
+<!-- LINKPRO_NAV_END -->
 
 <section class="hero">
   <div class="hero__bg" aria-hidden="true"></div>
@@ -612,5 +573,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   });
 })();
 </script>
+<script src="/js/site-nav.js" defer></script>
 </body>
 </html>
