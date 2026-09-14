@@ -20,7 +20,9 @@ Use this skill when the user wants to:
 |------|---------|
 | `courses/course-template.html` | Copy this to start a new course |
 | `pelvis-1-course.html` | Working reference implementation |
-| `index.html` | Homepage design tokens and nav patterns |
+| `index.html` | Homepage design tokens |
+| `components/site-nav.html` | Shared nav markup (run `npm run build:nav` after changes) |
+| `pelvis-1-course.html` | Course page with built-in nav markers |
 | `courses.html` | Course catalog cards to link from |
 
 ## Workflow
@@ -105,6 +107,15 @@ Open `http://localhost:8080/{slug}-course.html` and confirm:
 
 Use the `walkthrough-artifacts` skill if demo evidence is needed.
 
+## Navigation
+
+New course pages must use the shared site nav:
+
+1. Include `<link rel="stylesheet" href="/css/site-nav.css">` in `<head>`.
+2. After `<body>`, add `<!-- LINKPRO_NAV_START -->` and `<!-- LINKPRO_NAV_END -->` (run `npm run build:nav` to fill between them).
+3. Add `<script src="/js/site-nav.js" defer></script>` before `</body>`.
+4. Register the file in `scripts/build-nav.js` (`activeByFile`, usually `courses`).
+
 ## Page Structure (do not remove)
 
 Every course page includes these sections in order:
@@ -137,7 +148,7 @@ Match the homepage (`index.html`) design system:
 - Do not add a build step, framework, or backend for v1
 - Do not share one `localStorage` key across courses
 - Do not embed real video URLs unless the user provides them (placeholder is fine)
-- Do not duplicate CSS into a shared file unless the user asks to refactor
+- Do not duplicate nav markup; edit `components/site-nav.html` and run `npm run build:nav`
 - Do not change unrelated pages
 
 ## Example Request → Output
