@@ -2,18 +2,18 @@
   "name": "linkpro",
   "version": "1.0.0",
   "private": true,
-  "description": "LINK Pro static site with Stripe payment handling",
+  "description": "LINK Pro static site with Flute payment handling",
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
     "vercel:dev": "vercel dev"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20.19.0"
   },
   "dependencies": {
+    "@getflute/sdk": "^0.3.1",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "stripe": "^17.7.0"
+    "express": "^4.21.2"
   }
 }

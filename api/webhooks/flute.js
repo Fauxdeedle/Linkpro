@@ -1,4 +1,4 @@
-const { processStripeWebhook } = require('../../lib/webhooks');
+const { processFluteWebhook } = require('../../lib/webhooks');
 const { readRawBody } = require('../../lib/body');
 
 module.exports = async function handler(req, res) {
@@ -8,7 +8,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const rawBody = await readRawBody(req);
-    const result = await processStripeWebhook(rawBody, req.headers['stripe-signature']);
+    const result = await processFluteWebhook(rawBody, req.headers);
 
     if (result.error) {
       return res.status(result.status).send(result.error);

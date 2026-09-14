@@ -2,77 +2,81 @@
 
 Personal task tracker for LINK Pro. Check items off as you go (`- [ ]` → `- [x]`).
 
-See also: [`stripe-checkout.md`](stripe-checkout.md) for full setup docs and troubleshooting.
+See also: [`flute-checkout.md`](flute-checkout.md) for full setup docs and troubleshooting.
 
 ---
 
-## Stripe setup (required to test checkout)
+## Flute setup (required to test checkout)
 
 Everything below must be done before **Enroll Now** on `courses.html` will work.
 
 ### Account & local environment
 
-- [ ] Create a [Stripe account](https://dashboard.stripe.com/register) (test mode is fine for now)
-- [ ] Install Node.js 18+ on your machine
+- [ ] Create a [Flute merchant account](https://flute.com/) (sandbox is fine for now)
+- [ ] Install Node.js 20.19+ on your machine
 - [ ] Run `npm install` in the project root
 - [ ] Copy `.env.example` to `.env` (`cp .env.example .env`)
 
-### Stripe Dashboard — API keys
+### Flute Dashboard — API keys
 
-- [ ] Open [Stripe test API keys](https://dashboard.stripe.com/test/apikeys)
-- [ ] Set `STRIPE_SECRET_KEY` in `.env` (`sk_test_...`)
-- [ ] Set `STRIPE_PUBLISHABLE_KEY` in `.env` (`pk_test_...`)
+- [ ] Open your Flute merchant dashboard and create a **Public Auth Client** (sandbox)
+- [ ] Set `FLUTE_CLIENT_ID` in `.env`
+- [ ] Set `FLUTE_CLIENT_SECRET` in `.env`
+- [ ] Set `FLUTE_ENVIRONMENT=sandbox` in `.env`
 
-### Stripe Dashboard — products & prices
+See [Flute API keys](https://developer.flute.com/docs/getting-started/api-keys) and [Creating an API token](https://developer.flute.com/docs/getting-started/creating-an-api-token) for details.
 
-Create one Product + one-time Price per offering, then copy each **Price ID** (`price_...`) into `.env`.
+### Products & amounts
 
-- [ ] **Pelvis 1.0** ($100) → `STRIPE_PRICE_PELVIS_1`
-- [ ] **Lower Limb Injury Prevention** ($199) → `STRIPE_PRICE_LLIP`
-- [ ] **Fascia & 2TLS — Upper Limb seminar** ($1,500) → `STRIPE_PRICE_SEMINAR`
+Product amounts are defined in `server/config/products.js`. Defaults match the prices on `courses.html`:
+
+- [ ] **Pelvis 1.0** ($100) — `pelvis-1`
+- [ ] **Lower Limb Injury Prevention** ($199) — `llip`
+- [ ] **Fascia & 2TLS — Upper Limb seminar** ($1,500) — `seminar-upper-limb`
+
+Optional: override amounts via env vars (`FLUTE_AMOUNT_PELVIS_1`, `FLUTE_AMOUNT_LLIP`, `FLUTE_AMOUNT_SEMINAR`).
 
 ### Server config
 
 - [ ] Set `PORT=8080` (or your preferred port) in `.env`
 - [ ] Set `BASE_URL=http://localhost:8080` in `.env` (must match where you run the server)
-- [ ] Run `npm start` and confirm the console shows **Stripe: configured**
+- [ ] Run `npm start` and confirm the console shows **Flute: configured**
 - [ ] Open http://localhost:8080/courses.html
 
 ### Verify checkout works
 
-- [ ] Click **Enroll Now** on a course — Stripe Checkout page opens
-- [ ] Pay with test card **4242 4242 4242 4242** (any future expiry, any CVC)
+- [ ] Click **Enroll Now** on a course — Flute Checkout page opens
+- [ ] Pay with sandbox test card **4111 1111 1111 1111** (any future expiry, any CVC)
 - [ ] Land on `checkout-success.html` with payment verified and a course link
 
 ### Webhooks (recommended before relying on post-payment logic)
 
 Local testing:
 
-- [ ] Install [Stripe CLI](https://stripe.com/docs/stripe-cli)
-- [ ] Run `stripe listen --forward-to localhost:8080/api/webhooks/stripe`
-- [ ] Copy the CLI `whsec_...` secret into `STRIPE_WEBHOOK_SECRET` in `.env`
+- [ ] Use the [Flute Webhooks CLI](https://developer.flute.com/docs/sdk/webhooks-cli) to forward events to `localhost:8080/api/webhooks/flute`
+- [ ] Copy the webhook signing secret into `FLUTE_WEBHOOK_SECRET` in `.env`
 - [ ] Restart the server and complete a test checkout
-- [ ] Confirm server logs `Payment complete:` for `checkout.session.completed`
+- [ ] Confirm server logs `Payment complete:` for `payment_session.completed`
 
 Production (when deployed on Vercel):
 
 - [ ] Complete the **Vercel deployment** checklist below
-- [ ] Add webhook endpoint `https://your-domain.com/api/webhooks/stripe` in Stripe Dashboard
-- [ ] Subscribe to `checkout.session.completed`
-- [ ] Copy the webhook signing secret into Vercel as `STRIPE_WEBHOOK_SECRET` and redeploy
+- [ ] Add webhook endpoint `https://your-domain.com/api/webhooks/flute` in the Flute dashboard
+- [ ] Subscribe to `payment_session.completed`
+- [ ] Copy the HMAC signing secret into Vercel as `FLUTE_WEBHOOK_SECRET` and redeploy
 
 ---
 
 ## Vercel deployment
 
-Ensure `api/` routes and `vercel.json` are on your deploy branch (included on `cursor/vercel-setup-a9bc`) before deploying.
+Ensure `api/` routes and `vercel.json` are on your deploy branch before deploying.
 
 ### Connect the project
 
 - [ ] Go to [vercel.com/new](https://vercel.com/new) and import `dramstutz-LP/Linkpro`
 - [ ] Framework preset: **Other** (no build command needed)
 - [ ] Leave **Build Command** and **Output Directory** empty
-- [ ] Set production branch to `stripe-test` (or `main` after merge)
+- [ ] Set production branch to `cursor/flute-test-706b` (or `main` after merge)
 - [ ] Deploy once to get a preview URL (e.g. `https://linkpro-xxx.vercel.app`)
 
 ### Environment variables
@@ -80,21 +84,20 @@ Ensure `api/` routes and `vercel.json` are on your deploy branch (included on `c
 In Vercel → Project → **Settings → Environment Variables**, add:
 
 - [ ] `BASE_URL` → your production URL (e.g. `https://linkpro.com` or your `.vercel.app` URL for testing)
-- [ ] `STRIPE_SECRET_KEY` → `sk_test_...` for preview, `sk_live_...` for production
-- [ ] `STRIPE_PUBLISHABLE_KEY` → `pk_test_...` or `pk_live_...`
-- [ ] `STRIPE_WEBHOOK_SECRET` → add after creating the webhook endpoint (see below)
-- [ ] `STRIPE_PRICE_PELVIS_1` → Stripe Price ID
-- [ ] `STRIPE_PRICE_LLIP` → Stripe Price ID
-- [ ] `STRIPE_PRICE_SEMINAR` → Stripe Price ID
+- [ ] `FLUTE_CLIENT_ID` → sandbox client ID for preview, production client ID for live
+- [ ] `FLUTE_CLIENT_SECRET` → matching client secret
+- [ ] `FLUTE_ENVIRONMENT` → `sandbox` for preview, `production` for live
+- [ ] `FLUTE_WEBHOOK_SECRET` → add after creating the webhook endpoint (see below)
+- [ ] `FLUTE_AMOUNT_PELVIS_1`, `FLUTE_AMOUNT_LLIP`, `FLUTE_AMOUNT_SEMINAR` → optional overrides
 
 Apply to **Production** (and **Preview** if you want checkout on preview deploys).
 
-### Stripe webhook (production)
+### Flute webhook (production)
 
-- [ ] Stripe Dashboard → **Developers → Webhooks → Add endpoint**
-- [ ] URL: `https://your-domain.com/api/webhooks/stripe`
-- [ ] Event: `checkout.session.completed`
-- [ ] Copy the signing secret (`whsec_...`) into Vercel as `STRIPE_WEBHOOK_SECRET`
+- [ ] Flute dashboard → create webhook endpoint
+- [ ] URL: `https://your-domain.com/api/webhooks/flute`
+- [ ] Event: `payment_session.completed`
+- [ ] Copy the HMAC signing secret into Vercel as `FLUTE_WEBHOOK_SECRET`
 - [ ] Redeploy so the new env var is picked up
 - [ ] Complete a test checkout and confirm Vercel function logs show `Payment complete:`
 
@@ -103,31 +106,32 @@ Apply to **Production** (and **Preview** if you want checkout on preview deploys
 - [ ] Vercel → Project → **Domains** → add your domain
 - [ ] Update DNS with the records Vercel provides
 - [ ] Update `BASE_URL` in Vercel to match the custom domain
-- [ ] Update the Stripe webhook URL to use the custom domain
+- [ ] Update the Flute webhook URL to use the custom domain
 - [ ] Redeploy
 
 ### Verify production checkout
 
 - [ ] Open `https://your-domain.com/courses.html`
-- [ ] Click **Enroll Now** — Stripe Checkout opens
-- [ ] Complete payment (test card in test mode, real card only with live keys)
+- [ ] Click **Enroll Now** — Flute Checkout opens
+- [ ] Complete payment (sandbox card in test mode, real card only with production credentials)
 - [ ] Land on `checkout-success.html` with payment verified
 
 ### Go live
 
-- [ ] Switch Stripe env vars in Vercel from test keys to live keys
-- [ ] Create a separate Stripe webhook endpoint for live mode (or update existing)
-- [ ] Confirm Stripe account activation is complete before accepting real payments
+- [ ] Switch Flute env vars in Vercel from sandbox to production credentials
+- [ ] Set `FLUTE_ENVIRONMENT=production`
+- [ ] Create a separate Flute webhook endpoint for production (or update existing)
+- [ ] Confirm Flute merchant activation is complete before accepting real payments
 
 
-## Stripe follow-ups (after basic checkout works)
+## Flute follow-ups (after basic checkout works)
 
 - [ ] Implement fulfillment in `server/routes/webhooks.js` (grant course access by email, token, or database)
 - [ ] Gate `pelvis-1-course.html` so only purchasers can access lessons
-- [ ] Add remaining products (Pelvis 3.0, other seminars, 3-seminar bundle) to `server/config/products.js` and `.env`
+- [ ] Add remaining products (Pelvis 3.0, other seminars, 3-seminar bundle) to `server/config/products.js`
 - [ ] Wire enroll buttons on `index.html` (still links to linkprosport.com today)
-- [ ] Enable customer email collection on Checkout Sessions for reliable fulfillment
-- [ ] Switch to live Stripe keys and complete Stripe account activation before accepting real payments
+- [ ] Collect customer email on checkout for reliable fulfillment
+- [ ] Switch to production Flute credentials and complete merchant activation before accepting real payments
 - [ ] Set up receipts / purchase confirmation emails
 
 ---
@@ -145,4 +149,3 @@ Add your own items below.
 ## Notes
 
 <!-- Free-form notes, links, blockers, etc. -->
-
