@@ -1,0 +1,66 @@
+{
+  "_comment": "Copy to content/{slug}.json. Set pageType to proposal (client pitch) or program (sub-brand landing). See sharks-proposal.json and peak-athleticism.json.",
+  "pageType": "proposal",
+  "meta": {
+    "title": "{{PAGE_TITLE}} | LINK Pro",
+    "description": "{{META_DESCRIPTION}}",
+    "robots": "noindex, nofollow"
+  },
+  "hero": {
+    "client": "{{CLIENT_NAME}}",
+    "title": "{{PROPOSAL_TITLE}}",
+    "dates": "{{OPTIONAL_DATES}}",
+    "ledBy": "Dr. Amstutz",
+    "logos": ["/images/sales/{{SLUG}}/logo.png"]
+  },
+  "letter": {
+    "salutation": "Hi {{RECIPIENT_NAME}},",
+    "paragraphs": ["{{OPENING_PARAGRAPH}}"],
+    "signoff": "Best,\nDr. Jason Amstutz"
+  },
+  "sections": [
+    {
+      "title": "{{SECTION_TITLE}}",
+      "body": "{{SECTION_BODY}}",
+      "subsections": [
+        {
+          "title": "{{SUBSECTION_TITLE}}",
+          "bullets": ["{{BULLET}}"]
+        }
+      ]
+    }
+  ],
+  "prepWork": {
+    "label": "Prep work (online)",
+    "courseName": "{{COURSE_NAME}}",
+    "videos": "{{VIDEO_LIST}}",
+    "cost": "{{COST_LINE}}",
+    "bullets": ["{{PREP_BULLET}}"],
+    "notes": ["{{OPTIONAL_NOTE}}"]
+  },
+  "processNote": "{{TRANSITION_PARAGRAPH}}",
+  "days": [
+    {
+      "label": "Day 1",
+      "title": "{{DAY_1_TITLE}}",
+      "bullets": ["{{DAY_1_BULLET}}"]
+    }
+  ],
+  "includedTitle": "Included materials",
+  "includedIntro": "{{INCLUDED_INTRO}}",
+  "includedMaterials": ["{{MATERIAL}}"],
+  "pricingTitle": "Estimated investment",
+  "pricing": [
+    {
+      "item": "{{LINE_ITEM}}",
+      "details": "{{DETAILS}}",
+      "cost": "{{COST}}"
+    }
+  ],
+  "cta": {
+    "title": "{{CTA_TITLE}}",
+    "body": "{{CTA_BODY}}",
+    "buttonText": "Book a consultation",
+    "buttonHref": "/#contact"
+  }
+}

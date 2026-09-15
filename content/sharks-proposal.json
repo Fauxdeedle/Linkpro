@@ -1,0 +1,120 @@
+{
+  "_comment": "San Jose Sharks client pitch — edit copy here; page shell is sharks-proposal.html",
+  "pageType": "proposal",
+  "meta": {
+    "title": "San Jose Sharks — Complexity Course Proposal | LINK Pro",
+    "description": "Custom two-day lumbo-pelvic-femoral training for San Jose Sharks staff: online prep, hands-on evaluation, and corrective exercise with Dr. Jason Amstutz.",
+    "robots": "noindex, nofollow"
+  },
+  "hero": {
+    "client": "San Jose Sharks",
+    "title": "Complexity Course Proposal",
+    "dates": "October 2026",
+    "ledBy": "Dr. Amstutz",
+    "logos": [
+      "/images/sales/sharks/image1.png"
+    ]
+  },
+  "letter": {
+    "salutation": "Hi Mike,",
+    "paragraphs": [
+      "Thanks again for the opportunity to work with you all. I'm really looking forward to getting hands-on with your staff for a custom two-day course focused on the lower limb and lumbo-pelvic-femoral regions.",
+      "Here's a breakdown of what I'm proposing, including the structure, topics, and estimated costs."
+    ],
+    "signoff": "Best,\nDr. Jason Amstutz"
+  },
+  "sections": [
+    {
+      "title": "LumboPelvoFemoral focus",
+      "body": "We'll dive into anatomy, biomechanics, treatment strategies, and corrective exercises for the LPFemoral complex — but before we meet in person, your team will complete a few online courses to lay the foundation.",
+      "subsections": [
+        {
+          "title": "Pelvis / lumbar spine / femur relationship",
+          "body": "We'll take a deep dive into the structural and functional relationships between these regions, with a focus on evaluation strategies and corrective work.",
+          "bullets": [
+            "These three are inseparable: in performance and dynamic movement they move together through innumerable links — ligaments and fascia.",
+            "The pelvis is the key to lumbar disc pathology, hip labrum and impingement, adductor tears and sports hernias, and many downstream joint issues at the knee, ankle, and foot.",
+            "The sacroiliac joints are highly moveable on a micro scale compared with the iliofemoral joint, and are often overlooked. The layers of information from the SI joint capsule, interosseous and other SI ligaments, and the gluteal layers signify the importance of the pelvis."
+          ]
+        }
+      ]
+    }
+  ],
+  "prepWork": {
+    "label": "Prep work (online)",
+    "courseName": "Lumbopelvofemoral Complex: The Mobility Command Center of the Body",
+    "videos": "Pelvis 1.0 and Pelvis 1.5",
+    "cost": "Cost: $1,000 total for the full staff",
+    "bullets": [
+      "Pelvic biomechanics, including oblique axes and inflare/outflare patterns",
+      "Key anatomical structures influencing tensegrity and function",
+      "Introduction to lesion assessment and correction strategy"
+    ],
+    "notes": [
+      "Optional: Zoom Q&A or live review session with Dr. Amstutz ($500/hr).",
+      "Anatomy manuals for each participant (complementary and available ASAP).",
+      "Custom technique manual based on the final draft of content."
+    ]
+  },
+  "processNote": "Over both days, we'll move from foundational review into practical application — giving your team a complete toolkit for assessment and correction.",
+  "days": [
+    {
+      "label": "Day 1",
+      "title": "Review of key anatomy & biomechanics + hands-on evaluation",
+      "bullets": [
+        "Reinforce key anatomical and biomechanical concepts",
+        "Guided evaluation techniques for identifying dysfunction",
+        "Begin applying hands-on strategies from prep work: pumping, fascia, 2TLS treatment"
+      ]
+    },
+    {
+      "label": "Day 2",
+      "title": "Corrective exercise for common dysfunction patterns",
+      "bullets": [
+        "ELDOA, proprioception drills, and myofascial stretching",
+        "Apply strategic corrections for real-world NHL performance issues",
+        "Tailored programming based on athlete needs"
+      ]
+    }
+  ],
+  "includedTitle": "Other online prep materials (included with course access)",
+  "includedIntro": "To ensure your team arrives ready for hands-on work, the following online study materials are provided and should be reviewed in advance. They add context on complexity in athlete performance and fill in incomplete concepts of fascia and biotensegrity.",
+  "includedMaterials": [
+    "\"The Fluid That's Missing\" — addressing what's often overlooked in orthopedic care",
+    "Patellofemoral joint review — through the lens of complexity and fascial links"
+  ],
+  "pricingTitle": "Estimated investment",
+  "pricing": [
+    {
+      "item": "Online courses — lower limb",
+      "details": "For all staff",
+      "cost": "No charge"
+    },
+    {
+      "item": "Online courses — pelvis",
+      "details": "For all staff",
+      "cost": "$1,000"
+    },
+    {
+      "item": "Optional Zoom sessions",
+      "details": "Pre-course review or Q&A",
+      "cost": "$500/hour"
+    },
+    {
+      "item": "Onsite training (2 days)",
+      "details": "Full-day, in-person",
+      "cost": "$4,500/day"
+    }
+  ],
+  "figure": {
+    "src": "/images/sales/sharks/image3.png",
+    "alt": "Anatomical reference diagram",
+    "caption": "Structural relationships covered in evaluation and correction."
+  },
+  "cta": {
+    "title": "Ready to schedule?",
+    "body": "Let me know what you think, and if you'd like to move forward with scheduling Zoom review session(s) ahead of the in-person dates. I look forward to digging in with your crew and building something valuable for the season ahead — and beyond.",
+    "buttonText": "Book a consultation",
+    "buttonHref": "/#contact"
+  }
+}

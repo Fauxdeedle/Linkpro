@@ -72,7 +72,7 @@ All public text lives in one file:
 |-------------------------|----------------|
 | Headlines, paragraphs, pillars, topics, quotes, CTA, SEO title/description | `content/peak-athleticism.json` |
 | Page layout, colors, typography, hero structure | `peak-athleticism.html` (inline `<style>`) |
-| How sections are built from JSON (new block types, field names) | `js/peak-athleticism-page.js` |
+| How sections are built from JSON (new block types, field names) | `js/sales-page.js` (`pageType`: `program`) |
 | Logo image | `images/peak-athleticism-logo.png` |
 
 **After JSON-only changes:** Save and deploy—no `npm run build:nav` unless you also changed nav.
@@ -95,13 +95,43 @@ The `_comment` key at the top of the JSON is for editors only; the renderer igno
 
 ### Technical notes
 
-- On load, `js/peak-athleticism-page.js` fetches `/content/peak-athleticism.json` and injects HTML into `#peak-content`. Hero fields `#peak-hero-eyebrow`, `#peak-hero-headline`, `#peak-hero-sub` are updated from the same JSON.
+- On load, `js/sales-page.js` fetches `/content/peak-athleticism.json` and injects HTML into `#peak-content`. Hero fields `#peak-hero-eyebrow`, `#peak-hero-headline`, `#peak-hero-sub` are updated from the same JSON.
 - If the fetch fails, visitors see a short error message in the content area.
 - Scroll-in animations use the same `.reveal` / `.visible` pattern as other pages (observer attached after render).
 
 ### Adding a new page like this
 
 Pattern: static HTML shell + data file + small render script. Register the HTML file in `scripts/build-nav.js`, add nav markers + `/css/site-nav.css` + `/js/site-nav.js`, run `npm run build:nav`, and document the content file here.
+
+---
+
+## Client sales / pitch pages
+
+Shareable one-off pages for prospective clients (proposals, custom training packages). Usually **not** in the main nav; send the direct URL. Use the **create-sales-page** skill (`.cursor/skills/create-sales-page/SKILL.md`) to scaffold another page.
+
+### Test page (footer-linked)
+
+- **URL:** `/sharks-proposal` (`sharks-proposal.html`)
+- **Content:** `content/sharks-proposal.json` (`pageType`: `proposal`)
+- **Source archive:** `content/sharks-proposal-source.md` (from client doc; not public)
+- **Assets:** `images/sales/sharks/`
+- **Discovery:** Footer link **Client pitch (sample)** on main site pages (for internal preview only)
+- **SEO:** `noindex, nofollow` on client pitches by default
+
+### How it works
+
+| Piece | Role |
+|-------|------|
+| `{slug}.html` | Static shell: hero placeholders, inline theme CSS, nav markers, `#sales-content` mount |
+| `content/{slug}.json` | All copy; set `pageType` to `proposal` or `program` |
+| `js/sales-page.js` | Shared renderer; URL from `body[data-sales-content]` |
+| `scripts/build-nav.js` | Register page with `activeByFile` → `null` unless it belongs in nav |
+
+**Program pages** (e.g. Peak): `pageType: program`, mount `#peak-content`, `data-sales-css-prefix="peak"`, copy `peak-athleticism.html` pattern.
+
+**Proposal pages:** copy `sharks-proposal.html` or `sales/sales-page-template.html`, tune CSS variables for client branding.
+
+**After changes:** JSON-only → deploy. New HTML page → `npm run build:nav` and commit updated HTML.
 
 ---
 
