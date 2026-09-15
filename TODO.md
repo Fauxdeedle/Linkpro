@@ -136,6 +136,18 @@ Apply to **Production** (and **Preview** if you want checkout on preview deploys
 
 ---
 
+## Media kit follow-ups
+
+From the initial `/media-kit` launch — improve when you have assets or routing decisions.
+
+- [ ] Add a dedicated **press email** (today media inquiries use `concierge@linkmedicalcenter.com`)
+- [ ] Add **high-resolution photography / headshots** for press download (currently “available on request” only)
+- [ ] Decide whether **Media Kit** belongs in the **main nav** (currently footer-only, same pattern as Rams)
+
+When updating site facts or brand (logo, colors, stats, contact, team bios), keep `media-kit.html` and `assets/brand/` in sync — see `.cursor/rules/media-kit-sync.mdc`.
+
+---
+
 ## My tasks
 
 Add your own items below.
