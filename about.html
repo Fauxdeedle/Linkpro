@@ -37,10 +37,10 @@ a{text-decoration:none;color:inherit}
 .about-text h2{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:var(--charcoal);margin-bottom:24px;line-height:1.25}
 .about-text h2 em{font-style:italic;color:var(--gold-dark)}
 .about-text p{font-size:.95rem;line-height:1.8;color:rgba(26,26,26,0.65);margin-bottom:16px}
-.about-sidebar{background:var(--charcoal);padding:0;overflow:hidden;display:flex;flex-direction:column}
-.about-sidebar__photo{line-height:0;overflow:hidden}
-.about-sidebar__photo img{width:100%;height:auto;display:block;object-fit:cover;aspect-ratio:606/540;object-position:center top;filter:grayscale(100%)}
-.about-sidebar__quote{padding:40px 36px 48px;text-align:center}
+.about-sidebar{background:var(--charcoal);padding:0;overflow:hidden;display:flex;flex-direction:column;width:100%;min-width:0;justify-self:stretch}
+.about-sidebar__photo{width:100%;aspect-ratio:974/1032;overflow:hidden;background:var(--charcoal)}
+.about-sidebar__photo img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 22%}
+.about-sidebar__quote{width:100%;box-sizing:border-box;padding:40px 36px 48px;text-align:center}
 .about-sidebar blockquote{font-family:var(--serif);font-size:clamp(1.05rem,2vw,1.2rem);font-style:italic;line-height:1.65;color:rgba(255,255,255,0.88);margin-bottom:28px}
 .about-sidebar cite{font-family:var(--sans);font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-style:normal;display:flex;flex-direction:column;align-items:center;gap:14px}
 .about-sidebar cite::before{content:'';width:36px;height:1px;background:var(--gold)}
@@ -148,7 +148,7 @@ a{text-decoration:none;color:inherit}
       </div>
       <div class="about-sidebar reveal">
         <div class="about-sidebar__photo">
-          <img src="/assets/about/dr-jason-amstutz-portrait.png" alt="Dr. Jason Amstutz" width="566" height="500" loading="lazy" decoding="async">
+          <img src="/assets/about/dr-jason-amstutz-portrait.png" alt="Dr. Jason Amstutz" width="974" height="1032" loading="lazy" decoding="async">
         </div>
         <div class="about-sidebar__quote">
           <blockquote>"We believe education is key — empowering our patients to become their own best therapists."</blockquote>
