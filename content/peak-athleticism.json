@@ -1,0 +1,113 @@
+{
+  "_comment": "Edit this file to update Peak Athleticism page copy. Run the site locally or deploy after changes — no build step required.",
+  "meta": {
+    "title": "Peak Athleticism — Young Athlete Reconditioning | LINK Pro",
+    "description": "Peak Athleticism by LINK Pro reconditions young athletes with breath, brain, and movement mastery — restoring timing, mobility, and structural balance beyond strength-only training."
+  },
+  "hero": {
+    "eyebrow": "Peak Athleticism by LINK Pro",
+    "headline": "Reconditioning the Young Athlete",
+    "subheadline": "We address gaps in training and rehab, recondition how athletes move and sense their body, and peak their athleticism — not lift them into slowness.",
+    "logoAlt": "Peak Athleticism logo"
+  },
+  "intro": {
+    "lead": "ReConditioning the body with the breath and the brain.",
+    "paragraphs": [
+      "We believe that staying in a strength-building phase without reintroducing timing and mobility will ultimately limit flexibility and performance. We see it across every sport — some athletes are forced to retire sooner than others. That is why we use the LINK Pro method: micro cycles of correction and proprioception under the focused lens of ReConditioning.",
+      "We address each athlete's weak points and gaps in training or rehab. The depth of our process is immediately apparent to the professional athletes, young athletes, and patients we serve."
+    ]
+  },
+  "pillars": [
+    {
+      "title": "Structure dictates function",
+      "body": "If you do not have critical structural balance across the entire human body, it will break down faster. Period. The lumbopelvofemoral complex — lumbar, pelvis, hip — is the cornerstone of athletic endeavor. It influences the head, neck, and shoulder girdle as easily as it affects the arches of the feet and how we interact with the ground, field, or court."
+    },
+    {
+      "title": "Movement mastery",
+      "body": "\"Making and changing shapes\" is part of every sport and every position. We revisit these fundamental skills in a fun, creative way — building physical literacy, not just sport-specific repetition."
+    },
+    {
+      "title": "Timing is of the essence",
+      "body": "Does your current program elicit the proper timing needed for sprinting, cutting, and deceleration? This is not gimmicky ladder work. It is a proper progression from the tumble track to the springboard floor to the ground to the field, pitch, or court."
+    }
+  ],
+  "method": {
+    "title": "Burdenko Method plus structural precision",
+    "paragraphs": [
+      "Our young-athlete classes combine aquatic and land-based principles with LINK Pro's structural lens. We train barefoot, emphasize foot proprioception, and strengthen the intrinsic muscles of the foot so athletes do not rely on footwear for support.",
+      "Return to resilient — not just play. Are you respecting the complexity of the body? Coordination depends on fascial quality and integration, not merely firing muscles harder."
+    ]
+  },
+  "classes": {
+    "title": "Young athlete classes",
+    "scheduleNote": "Afternoon sessions (4–7 PM) during the school year; summer mid-morning options (around 10–11 AM). Schedule subject to update — contact us for current availability.",
+    "details": [
+      "Small groups — typically four athletes per class for focused coaching",
+      "Individual gaps and imbalances addressed within the group context",
+      "Play and games woven into training to keep young athletes engaged"
+    ]
+  },
+  "topics": [
+    {
+      "title": "Footwear and the young foot",
+      "points": [
+        "Stiff, narrow toe boxes restrict movement and weaken muscles that support the natural arch.",
+        "Thick soles reduce sensory feedback the brain needs to process the ground — contributing to imbalance, poor posture, and stability issues.",
+        "We train barefoot and build a strong, healthy foot that does not depend on shoes for support."
+      ]
+    },
+    {
+      "title": "Movement literacy over early specialization",
+      "points": [
+        "Too much sport-specific training at a young age increases imbalance, postural deviation, overuse injury, and burnout risk.",
+        "Young athletes need exposure to many kinds of movement — the ability to move competently and confidently through varied activities (physical literacy).",
+        "Programs must address weak points individually; one-size-fits-all training does not serve every athlete equally."
+      ]
+    },
+    {
+      "title": "Avoiding overtraining",
+      "points": [
+        "Many youth athletes stay in a high-intensity strength phase too long, year-round.",
+        "Heavy loading taxes the nervous system; without recovery, force output drops, performance suffers, and injury risk rises.",
+        "Micro cycles of correction and proprioception belong in the plan — not endless max-effort lifting."
+      ]
+    },
+    {
+      "title": "Anatomy that matches the athlete",
+      "points": [
+        "Training should respect real anatomy — for example, three hamstrings, each with distinct demands and attachment-focused options.",
+        "The weak link pays the price: poor pelvic mechanics or weak lower abdominals can overload the hamstrings chronically.",
+        "Prescription must match the individual, especially with a history of injury."
+      ]
+    },
+    {
+      "title": "Foundations, not trends",
+      "points": [
+        "Jumping, running, pushing, pulling, lunging, squatting, twisting — mastered with intent.",
+        "We skip flash trends from social media in favor of progressions that transfer to the field.",
+        "It's how we face our weaknesses that matters most: we can ignore them, or work hard."
+      ]
+    }
+  ],
+  "throwing": {
+    "title": "Shoulder health in youth sports",
+    "subtitle": "Missing pieces in throwing and pitching",
+    "intro": "Segmental proficiency — especially thoracic spine and rib cage — is non-negotiable for serious performance and prevention. Gaming, rounded upper back, and forward head posture silently erode throwing and hitting.",
+    "points": [
+      "Separation between upper cervical and thoracic regions supports fixing on a target (catcher's mitt or a moving ball) while the head and trunk move.",
+      "Throwing is a full-body symphony — from the back-foot big toe to the fingers. Precision and power each have their role; energy leaks in the \"whip\" matter.",
+      "Common gaps: deceleration of the scapular girdle and trunk after release; transfer of energy from lower body through pelvis to trunk (finesse, not more force); weak feet and ankles limiting push-off and deceleration."
+    ],
+    "closing": "In our experience, most young athletes are missing the same puzzle pieces. If you are serious about performance and prevention, this work belongs in their training."
+  },
+  "quotes": [
+    "The ability to reduce, stabilize, and produce force required in basic movements. — Bill Knowles (on physical literacy)",
+    "We are creating and reconditioning athletes … not lifting them into slowness."
+  ],
+  "cta": {
+    "title": "Ready to peak their athleticism?",
+    "body": "Ask about young-athlete ReConditioning classes at LINK Pro Costa Mesa.",
+    "buttonText": "Book a consultation",
+    "buttonHref": "/#contact"
+  }
+}

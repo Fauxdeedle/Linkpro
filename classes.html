@@ -49,6 +49,7 @@
       <a href="/about" data-nav-id="about">About</a>
       <a href="/services" data-nav-id="services">Services</a>
       <a href="/classes" data-nav-id="classes" aria-current="page">Classes</a>
+      <a href="/peak-athleticism" data-nav-id="peak">Peak</a>
       <a href="/courses" data-nav-id="courses">Courses</a>
       <a href="/blog" data-nav-id="blog">Blog</a>
       <a href="/reviews" data-nav-id="reviews">Reviews</a>
@@ -64,6 +65,7 @@
   <a href="/about" class="mobile-nav__link" data-nav-id="about">About</a>
   <a href="/services" class="mobile-nav__link" data-nav-id="services">Services</a>
   <a href="/classes" class="mobile-nav__link" data-nav-id="classes" aria-current="page">Classes</a>
+  <a href="/peak-athleticism" class="mobile-nav__link" data-nav-id="peak">Peak</a>
   <a href="/courses" class="mobile-nav__link" data-nav-id="courses">Courses</a>
   <a href="/blog" class="mobile-nav__link" data-nav-id="blog">Blog</a>
   <a href="/reviews" class="mobile-nav__link" data-nav-id="reviews">Reviews</a>
@@ -109,7 +111,18 @@
   </div>
 </section>
 
-<footer class="footer"><div class="container"><div class="footer-inner"><a href="index.html" class="footer-logo">LINK <span>PRO</span></a><p>&copy; 2026 LINK Pro. All rights reserved.</p><div class="footer-links"><a href="blog.html">Blog</a><a href="rams.html">Rams</a><a href="/media-kit">Media Kit</a><a href="index.html#contact">Contact</a><a href="https://www.instagram.com/linkprosport/" target="_blank">Instagram</a></div></div></div></footer>
+<section class="section" style="padding-top:0">
+  <div class="container reveal">
+    <div class="instructor-card" style="text-align:center;max-width:720px;margin:0 auto">
+      <p class="label" style="color:var(--gold);justify-content:center">Sub-brand</p>
+      <h3 style="font-family:var(--serif);font-size:clamp(1.6rem,3vw,2rem);color:#fff;margin-bottom:12px">Peak Athleticism</h3>
+      <p>Young-athlete ReConditioning — timing, mobility, and structural balance beyond strength-only training.</p>
+      <a href="/peak-athleticism" class="btn btn-gold">Learn about Peak Athleticism</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><div class="container"><div class="footer-inner"><a href="index.html" class="footer-logo">LINK <span>PRO</span></a><p>&copy; 2026 LINK Pro. All rights reserved.</p><div class="footer-links"><a href="blog.html">Blog</a><a href="rams.html">Rams</a><a href="index.html#contact">Contact</a><a href="https://www.instagram.com/linkprosport/" target="_blank">Instagram</a></div></div></div></footer>
 <script>document.querySelectorAll('.reveal').forEach(function(el){new IntersectionObserver(function(e){e.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('visible')}})},{threshold:.1}).observe(el)});</script>
 <script src="/js/site-nav.js" defer></script>
 </body>

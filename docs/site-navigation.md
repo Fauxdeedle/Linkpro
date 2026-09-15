@@ -1,6 +1,6 @@
 # LINK Pro site navigation map
 
-All public pages use the **same global nav** (from `components/site-nav.html`): About, Services, Classes, Courses, Blog, Reviews, and Book Now → `/#contact`. Rams is linked from footers, not the main nav.
+All public pages use the **same global nav** (from `components/site-nav.html`): About, Services, Classes, Peak, Courses, Blog, Reviews, and Book Now → `/#contact`. Rams is linked from footers, not the main nav.
 
 ```mermaid
 flowchart TB
@@ -9,6 +9,7 @@ flowchart TB
     NAV --> ABOUT["/about"]
     NAV --> SERVICES["/services"]
     NAV --> CLASSES["/classes"]
+    NAV --> PEAK["/peak-athleticism"]
     NAV --> COURSES["/courses"]
     NAV --> BLOG["/blog"]
     NAV --> REVIEWS["/reviews"]
@@ -25,6 +26,7 @@ flowchart TB
     BLOG_P["blog.html"]
     REVIEWS_P["reviews.html"]
     RAMS["rams.html"]
+    PEAK["peak-athleticism.html"]
     PELVIS["pelvis-1-course.html"]
     CHECKOK["checkout-success.html"]
     CHECKNO["checkout-cancel.html"]
@@ -94,6 +96,7 @@ flowchart TB
 | Most footers | `/blog`, `/rams`, `/#contact`, Instagram |
 | Course cards (home / courses) | External linkprosport.com enroll URLs |
 | SomaTherapy | `/somatherapy` (content links; not in global nav) |
+| Classes page | `/peak-athleticism` (Peak Athleticism sub-brand) |
 
 ## Maintaining this map
 

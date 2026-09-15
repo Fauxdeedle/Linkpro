@@ -11,7 +11,7 @@ Every public page uses the **same** top navigation—the same layout and behavio
 ### What visitors see
 
 - **Logo (left):** Triangle icon + “LINK Pro” → home (`/`).
-- **Links (center-right):** About, Services, Classes, Courses, Blog, Reviews.
+- **Links (center-right):** About, Services, Classes, Peak, Courses, Blog, Reviews.
 - **Book Now (right):** Gold button → contact / booking section on the home page (`/#contact`).
 - **Phone / small screens:** Hamburger opens a full-screen menu with the same links plus “Book a Consultation.”
 
@@ -49,6 +49,59 @@ Nav links use **root-relative** paths (`/about`, `/courses`, `/#contact`) so the
 
 - **Page link map (flowchart):** `docs/site-navigation.md`
 - **Agent / dev checklist:** `.cursor/rules/site-navigation.mdc`
+
+---
+
+## Peak Athleticism (sub-brand page)
+
+Young-athlete **ReConditioning** sub-brand landing page. Dark theme and bronze accents match the Peak Athleticism logo.
+
+### What visitors see
+
+- **URL:** `/peak-athleticism` (`peak-athleticism.html`)
+- **Hero:** Sub-brand eyebrow, headline, short subhead, logo image on the right (stacked on mobile)
+- **Body (loaded from JSON):** Intro, three “How we ReCondition” pillars, method + class info callout, expandable “What parents & coaches should know” topics, optional shoulder/throwing section, quotes, and a **Book a consultation** CTA → `/#contact`
+- **Nav:** Global site nav; link label **Peak** → `/peak-athleticism` (`data-nav-id="peak"`; active on this page via `scripts/build-nav.js`)
+- **Discovery:** Also linked from the Classes page card at the bottom of `/classes`
+
+### How to update copy (no HTML edits)
+
+All public text lives in one file:
+
+| What you want to change | Edit this file |
+|-------------------------|----------------|
+| Headlines, paragraphs, pillars, topics, quotes, CTA, SEO title/description | `content/peak-athleticism.json` |
+| Page layout, colors, typography, hero structure | `peak-athleticism.html` (inline `<style>`) |
+| How sections are built from JSON (new block types, field names) | `js/peak-athleticism-page.js` |
+| Logo image | `images/peak-athleticism-logo.png` |
+
+**After JSON-only changes:** Save and deploy—no `npm run build:nav` unless you also changed nav.
+
+**Reference:** Original info sheet archive: `content/peak-info-source.md` (not shown on the site).
+
+### JSON structure (quick map)
+
+- `meta` — browser title and meta description
+- `hero` — eyebrow, headline, subheadline, logo alt text (headline/subhead also appear in the static hero in HTML until JS runs; keep JSON in sync with hero IDs or rely on JS to overwrite on load)
+- `intro` — lead line + paragraph array
+- `pillars` — array of `{ title, body }` (three cards)
+- `method` — title + paragraphs; paired on the page with `classes` (title, scheduleNote, details list)
+- `topics` — accordion sections: `{ title, points[] }`
+- `throwing` — optional youth throwing/shoulder block (omit or empty to hide)
+- `quotes` — blockquote strings
+- `cta` — title, body, buttonText, buttonHref
+
+The `_comment` key at the top of the JSON is for editors only; the renderer ignores unknown keys.
+
+### Technical notes
+
+- On load, `js/peak-athleticism-page.js` fetches `/content/peak-athleticism.json` and injects HTML into `#peak-content`. Hero fields `#peak-hero-eyebrow`, `#peak-hero-headline`, `#peak-hero-sub` are updated from the same JSON.
+- If the fetch fails, visitors see a short error message in the content area.
+- Scroll-in animations use the same `.reveal` / `.visible` pattern as other pages (observer attached after render).
+
+### Adding a new page like this
+
+Pattern: static HTML shell + data file + small render script. Register the HTML file in `scripts/build-nav.js`, add nav markers + `/css/site-nav.css` + `/js/site-nav.js`, run `npm run build:nav`, and document the content file here.
 
 ---
 
