@@ -1,0 +1,47 @@
+---
+description: Keep media-kit.html and brand assets in sync when site identity or press facts change
+globs:
+  - media-kit.html
+  - assets/brand/**
+  - components/site-nav.html
+  - index.html
+  - about.html
+  - reviews.html
+  - services.html
+  - classes.html
+alwaysApply: false
+---
+
+# Media kit sync
+
+Public press page: **`/media-kit`** (`media-kit.html`). Downloadable logos: **`assets/brand/`**.
+
+When you change any **canonical fact or brand element** on the main site, update the matching section on the media kit in the **same change** (or immediately after). Do not leave the media kit stale.
+
+## Canonical sources → media kit
+
+| If you change… | Primary source on site | Update on media kit |
+|----------------|------------------------|---------------------|
+| Triangle logo SVG (paths, stroke, gold) | `components/site-nav.html` (`.nav__logo-icon svg`) and homepage footer SVG | Regenerate or edit `assets/brand/link-pro-mark.svg`, `link-pro-lockup-dark.svg`, `link-pro-lockup-light.svg`; confirm previews on `media-kit.html` still look correct |
+| Wordmark / “LINK Pro” styling | Nav logo text, footer branding | Lockup SVGs in `assets/brand/` and any wordmark copy on `media-kit.html` |
+| Brand colors (`--gold`, `--charcoal`, cream, etc.) | `:root` on `index.html` and interior pages (e.g. `about.html`) | Color swatches + hex values in the “Brand assets” section of `media-kit.html` |
+| Typography (Playfair / Inter) | Google Fonts links and CSS on main pages | Typography samples on `media-kit.html` |
+| Hero / positioning one-liner | `index.html` hero subtitle | Media kit hero subcopy and boilerplate paragraph if messaging shifted |
+| Stats (years, pro athletes, modalities, etc.) | `index.html` stats bar (`data-target` values and labels) | `.facts-grid` on `media-kit.html` |
+| Address, phone, email, hours | `index.html` `#contact` info cards | “At a glance” list and press CTA mailto on `media-kit.html` |
+| Instagram / social URL | Footers (e.g. `about.html`, `index.html`) | “At a glance” Instagram link on `media-kit.html` |
+| Team names, roles, credentials, long bios | `about.html` team section | “Leadership” cards and `data-copy-text` short bios on `media-kit.html` |
+| Services / modalities list | `services.html`, homepage service cards | “Story angles” bullets and boilerplate service mentions on `media-kit.html` |
+| Newsworthy themes | New blog posts, courses, major homepage sections | Add or refresh “Story angles” on `media-kit.html` when you add a major public-facing theme |
+
+## Agent checklist
+
+1. After editing a row in the table above, open `media-kit.html` and apply the same facts/copy.
+2. If the nav logo SVG changed, copy the updated `<svg>` geometry/strokes into all three files under `assets/brand/`.
+3. Smoke-check: `/media-kit` loads, download links for `/assets/brand/*.svg` work, copy buttons still match visible text.
+4. Media kit is **footer-linked**, not in `components/site-nav.html`; only add it to the main nav if product asks (see `TODO.md`).
+
+## Related docs
+
+- Nav/footer patterns: `.cursor/rules/site-navigation.mdc`, `site-notes.md`
+- Open product follow-ups: `TODO.md` → **Media kit follow-ups**
