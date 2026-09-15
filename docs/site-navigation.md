@@ -25,6 +25,7 @@ flowchart TB
     BLOG_P["blog.html"]
     REVIEWS_P["reviews.html"]
     RAMS["rams.html"]
+    PEAK["peak-athleticism.html"]
     PELVIS["pelvis-1-course.html"]
     CHECKOK["checkout-success.html"]
     CHECKNO["checkout-cancel.html"]
@@ -94,6 +95,7 @@ flowchart TB
 | Most footers | `/blog`, `/rams`, `/#contact`, Instagram |
 | Course cards (home / courses) | External linkprosport.com enroll URLs |
 | SomaTherapy | `/somatherapy` (content links; not in global nav) |
+| Classes page | `/peak-athleticism` (Peak Athleticism sub-brand) |
 
 ## Maintaining this map
 
