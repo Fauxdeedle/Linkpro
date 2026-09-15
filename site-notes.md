@@ -72,7 +72,7 @@ All public text lives in one file:
 |-------------------------|----------------|
 | Headlines, paragraphs, pillars, topics, quotes, CTA, SEO title/description | `content/peak-athleticism.json` |
 | Page layout, colors, typography, hero structure | `peak-athleticism.html` (inline `<style>`) |
-| How sections are built from JSON (new block types, field names) | `js/peak-athleticism-page.js` |
+| How sections are built from JSON (new block types, field names) | `js/sales-page.js` (`pageType`: `program`) |
 | Logo image | `images/peak-athleticism-logo.png` |
 
 **After JSON-only changes:** Save and deploy—no `npm run build:nav` unless you also changed nav.
@@ -95,13 +95,139 @@ The `_comment` key at the top of the JSON is for editors only; the renderer igno
 
 ### Technical notes
 
-- On load, `js/peak-athleticism-page.js` fetches `/content/peak-athleticism.json` and injects HTML into `#peak-content`. Hero fields `#peak-hero-eyebrow`, `#peak-hero-headline`, `#peak-hero-sub` are updated from the same JSON.
+- On load, `js/sales-page.js` fetches `/content/peak-athleticism.json` and injects HTML into `#peak-content`. Hero fields `#peak-hero-eyebrow`, `#peak-hero-headline`, `#peak-hero-sub` are updated from the same JSON.
 - If the fetch fails, visitors see a short error message in the content area.
 - Scroll-in animations use the same `.reveal` / `.visible` pattern as other pages (observer attached after render).
 
 ### Adding a new page like this
 
 Pattern: static HTML shell + data file + small render script. Register the HTML file in `scripts/build-nav.js`, add nav markers + `/css/site-nav.css` + `/js/site-nav.js`, run `npm run build:nav`, and document the content file here.
+
+---
+
+## Client sales / pitch pages
+
+Shareable one-off pages for prospective clients (custom course proposals, onsite training packages, etc.). You typically **email the direct URL**—most pitch pages are **not** in the main nav or footer. Cursor can scaffold these with the **create-sales-page** skill (`.cursor/skills/create-sales-page/SKILL.md`); the steps below are the same workflow by hand.
+
+### Example (footer-linked test page)
+
+- **URL:** `/sharks-proposal` (`sharks-proposal.html`)
+- **Content:** `content/sharks-proposal.json` (`pageType`: `proposal`)
+- **Source archive:** `content/sharks-proposal-source.md` (from client doc; not public)
+- **Assets:** `images/sales/sharks/`
+- **Discovery:** Footer link **Client pitch (sample)** on main site pages (internal preview only—not the pattern for real client pitches)
+- **SEO:** `noindex, nofollow` on client pitches by default (set in JSON `meta.robots` and/or the HTML shell)
+
+### Building a new sales page (checklist)
+
+**1. Choose a slug and page type**
+
+| `pageType` | Use for | Reference |
+|------------|---------|-----------|
+| `proposal` | Client-specific pitch (letter, outline, pricing table) | `sharks-proposal.html`, `content/sharks-proposal.json` |
+| `program` | Sub-brand or program landing (pillars, topics, quotes) | `peak-athleticism.html`, `content/peak-athleticism.json` |
+
+- **Slug:** lowercase, hyphenated (e.g. `acme-fc-proposal`).
+- **Public URL:** `https://your-domain.com/{slug}` (file `{slug}.html` at repo root; Vercel `cleanUrls` drops `.html`).
+
+**2. Archive the source brief (optional but recommended)**
+
+Save the Word doc / email / notes as `content/{slug}-source.md`. This file is for editors only—not linked on the site.
+
+**3. Create the JSON**
+
+```bash
+cp content/sales-page-template.json content/{slug}.json
+```
+
+- Set `"pageType": "proposal"` or `"program"`.
+- For **program** pages, start from `content/peak-athleticism.json` instead of the template.
+- Fill `meta`, `hero`, body sections, `pricing` (proposals), and `cta`.
+- Client pitches: include `"robots": "noindex, nofollow"` under `meta` unless you want search indexing.
+
+**4. Add images**
+
+Put logos and diagrams in `images/sales/{slug}/` and reference paths in JSON (e.g. `hero.logos`, `figure.src`).
+
+**5. Create the HTML shell**
+
+**Proposal:**
+
+```bash
+cp sales/sales-page-template.html {slug}.html
+```
+
+Replace template placeholders (`{{SLUG}}`, `{{PAGE_TITLE}}`, etc.). Tune `:root` CSS variables in the `<style>` block for client colors (see Sharks teal vs Peak bronze). Required on `<body>`:
+
+- `data-sales-content="/content/{slug}.json"`
+- `data-sales-mount="sales-content"`
+- `data-sales-css-prefix="sales"`
+
+Include nav placeholders, `/css/site-nav.css`, `/js/site-nav.js`, and `<script src="/js/sales-page.js" defer></script>`.
+
+**Program:** copy `peak-athleticism.html`, point `data-sales-content` at your JSON, use `data-sales-mount="peak-content"` and `data-sales-css-prefix="peak"`.
+
+**6. Register the page and build nav**
+
+In `scripts/build-nav.js`, add to `activeByFile`:
+
+```javascript
+'{slug}.html': null,
+```
+
+Use `null` unless the page should highlight a nav item (most pitches stay `null`). Then:
+
+```bash
+npm run build:nav
+```
+
+Commit `{slug}.html` and any other HTML files the script updated.
+
+**7. Footer and main nav (defaults)**
+
+| Discovery | Default for client pitches |
+|-----------|----------------------------|
+| Main nav (`components/site-nav.html`) | **Do not add** |
+| Site footer | **Do not add** (send URL only) |
+| Exception | Demo/test pages (like Sharks sample) may add a footer link on the same pages that link Media Kit |
+
+**8. Deploy and share**
+
+- **JSON-only edits:** save and deploy—no `build:nav` needed.
+- **New HTML page:** deploy after step 6.
+
+Share with the client:
+
+```text
+https://your-domain.com/{slug}
+```
+
+Local preview: `npm start` → `http://localhost:8080/{slug}`.
+
+### How the pieces fit together
+
+| Piece | Role |
+|-------|------|
+| `{slug}.html` | Shell: hero placeholders, theme CSS, nav, mount div (`#sales-content` or `#peak-content`) |
+| `content/{slug}.json` | All public copy; must include `pageType` |
+| `js/sales-page.js` | Fetches JSON from `body[data-sales-content]` and renders sections |
+| `scripts/build-nav.js` | Registers the HTML file for nav injection |
+
+Proposal JSON highlights: `letter`, `sections`, `prepWork`, `days`, `includedMaterials`, `pricing`, `cta`. Program JSON highlights: `intro`, `pillars`, `method`, `classes`, `topics`, optional `throwing`, `quotes`, `cta` (see Peak section above).
+
+### Updating an existing pitch
+
+| Change | Action |
+|--------|--------|
+| Wording, prices, dates | Edit `content/{slug}.json` only → deploy |
+| Colors, layout, hero structure | Edit `{slug}.html` → deploy |
+| New section type for all pitches | Extend `js/sales-page.js` + document field names here |
+
+### Templates and skill
+
+- HTML starter: `sales/sales-page-template.html`
+- JSON starter: `content/sales-page-template.json`
+- Agent workflow: `.cursor/skills/create-sales-page/SKILL.md` (includes required copy-paste URL output)
 
 ---
 
