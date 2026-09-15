@@ -22,7 +22,7 @@ const activeByFile = {
   'blog.html': 'blog',
   'reviews.html': 'reviews',
   'rams.html': null,
-  'peak-athleticism.html': 'classes',
+  'peak-athleticism.html': 'peak',
   'media-kit.html': null,
   'pelvis-1-course.html': 'courses',
   'checkout-success.html': null,

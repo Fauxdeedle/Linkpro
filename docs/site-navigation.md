@@ -1,6 +1,6 @@
 # LINK Pro site navigation map
 
-All public pages use the **same global nav** (from `components/site-nav.html`): About, Services, Classes, Courses, Blog, Reviews, and Book Now → `/#contact`. Rams is linked from footers, not the main nav.
+All public pages use the **same global nav** (from `components/site-nav.html`): About, Services, Classes, Peak, Courses, Blog, Reviews, and Book Now → `/#contact`. Rams is linked from footers, not the main nav.
 
 ```mermaid
 flowchart TB
@@ -9,6 +9,7 @@ flowchart TB
     NAV --> ABOUT["/about"]
     NAV --> SERVICES["/services"]
     NAV --> CLASSES["/classes"]
+    NAV --> PEAK["/peak-athleticism"]
     NAV --> COURSES["/courses"]
     NAV --> BLOG["/blog"]
     NAV --> REVIEWS["/reviews"]

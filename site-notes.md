@@ -11,11 +11,11 @@ Every public page uses the **same** top navigation—the same layout and behavio
 ### What visitors see
 
 - **Logo (left):** Triangle icon + “LINK Pro” → home (`/`).
-- **Links (center-right):** About, Services, Classes, Courses, Blog, Reviews.
+- **Links (center-right):** About, Services, Classes, Peak, Courses, Blog, Reviews.
 - **Book Now (right):** Gold button → contact / booking section on the home page (`/#contact`).
 - **Phone / small screens:** Hamburger opens a full-screen menu with the same links plus “Book a Consultation.”
 
-**Not in the main nav (by design):** SomaTherapy, Rams, Peak Athleticism, course sub-sections (Online vs Seminars), and individual blog posts. Those are reached from page content or the footer (e.g. Rams).
+**Not in the main nav (by design):** SomaTherapy, Rams, course sub-sections (Online vs Seminars), and individual blog posts. Those are reached from page content or the footer (e.g. Rams).
 
 ### Scroll behavior (most pages)
 
@@ -61,10 +61,8 @@ Young-athlete **ReConditioning** sub-brand landing page. Dark theme and bronze a
 - **URL:** `/peak-athleticism` (`peak-athleticism.html`)
 - **Hero:** Sub-brand eyebrow, headline, short subhead, logo image on the right (stacked on mobile)
 - **Body (loaded from JSON):** Intro, three “How we ReCondition” pillars, method + class info callout, expandable “What parents & coaches should know” topics, optional shoulder/throwing section, quotes, and a **Book a consultation** CTA → `/#contact`
-- **Nav:** Global site nav; **Classes** is highlighted as the active section (`scripts/build-nav.js`)
-- **Discovery:** Classes page (`/classes`) includes a card linking to Peak Athleticism
-
-**Not in the main nav (by design):** Same as Rams/SomaTherapy—linked from content (Classes) and footer links on the page itself.
+- **Nav:** Global site nav; link label **Peak** → `/peak-athleticism` (`data-nav-id="peak"`; active on this page via `scripts/build-nav.js`)
+- **Discovery:** Also linked from the Classes page card at the bottom of `/classes`
 
 ### How to update copy (no HTML edits)
 
