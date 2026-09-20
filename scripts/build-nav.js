@@ -26,6 +26,8 @@ const activeByFile = {
   'sharks-proposal.html': null,
   'media-kit.html': null,
   'pelvis-1-course.html': 'courses',
+  'nicolette-david-retreat.html': 'courses',
+  'events/event-template.html': 'courses',
   'checkout-success.html': null,
   'checkout-cancel.html': null,
   'blog/your-pain-has-an-address.html': 'blog',
