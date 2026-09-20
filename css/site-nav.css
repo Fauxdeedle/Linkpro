@@ -46,26 +46,15 @@ body.nav-surface-light .nav {
 .nav__logo {
   display: flex;
   align-items: center;
-  gap: 14px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 1.1rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--nav-white);
   z-index: 1001;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
-.nav__logo-icon {
-  width: 36px;
-  height: 36px;
-  position: relative;
-}
-
-.nav__logo-icon svg {
-  width: 100%;
-  height: 100%;
+.nav__logo-lockup {
+  display: block;
+  width: auto;
+  height: clamp(26px, 4.5vw, 34px);
 }
 
 .nav__links {
