@@ -1,0 +1,172 @@
+/**
+ * LINK Pro — global typography map
+ *
+ * Single source of truth for font families, weights, fixed sizes, and fluid
+ * (clamp) sizes used across the static site. Variable names use hundredths of
+ * rem for fixed sizes (--font-size-70 = 0.7rem @ 16px root).
+ *
+ * Load before page-specific <style> blocks so inline CSS can override when needed.
+ * Interior pages keep --serif / --sans aliases in local :root for compatibility.
+ */
+
+:root {
+  /* ─── Root ─── */
+  --font-size-root: 16px;
+
+  /* ─── Font stacks (main brand) ─── */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Aliases used in page :root blocks */
+  --serif: var(--font-serif);
+  --sans: var(--font-sans);
+
+  /* Peak Athleticism (/peak-athleticism) */
+  --font-peak-display: 'Bebas Neue', Impact, sans-serif;
+  --font-peak-sans: 'Archivo', system-ui, sans-serif;
+  --peak-display: var(--font-peak-display);
+  --peak-sans: var(--font-peak-sans);
+
+  /* Sales / client pitch pages */
+  --font-sales-serif: var(--font-serif);
+  --font-sales-sans: var(--font-sans);
+  --sales-serif: var(--font-sales-serif);
+  --sales-sans: var(--font-sales-sans);
+
+  /* ─── Font weights in use ─── */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ─── Letter spacing (em) ─── */
+  --tracking-tight: -0.035em;
+  --tracking-ui: 0.05em;
+  --tracking-nav: 0.12em;
+  --tracking-button: 0.14em;
+  --tracking-button-wide: 0.15em;
+  --tracking-button-wider: 0.16em;
+  --tracking-kicker: 0.17em;
+  --tracking-eyebrow: 0.18em;
+  --tracking-badge: 0.2em;
+  --tracking-label: 0.22em;
+  --tracking-label-wide: 0.25em;
+  --tracking-label-wider: 0.28em;
+  --tracking-hero-tag: 0.3em;
+  --tracking-logo: 0.35em;
+
+  /* ─── Fixed font sizes (rem) ─── */
+  --font-size-55: 0.55rem;   /* somatherapy list marker */
+  --font-size-60: 0.6rem;    /* badges, course cards, homepage stat labels */
+  --font-size-62: 0.62rem;   /* blog dates, course kickers, event labels */
+  --font-size-65: 0.65rem;   /* section labels, small CTAs, sales labels */
+  --font-size-66: 0.66rem;   /* course lesson nav */
+  --font-size-67: 0.67rem;   /* course lesson actions, complete button */
+  --font-size-68: 0.68rem;   /* meta links, secondary CTAs, peak/rams UI */
+  --font-size-70: 0.7rem;    /* nav CTA, footer links, primary small buttons */
+  --font-size-72: 0.72rem;   /* buttons, course meta, media kit captions */
+  --font-size-75: 0.75rem;   /* nav links, footer copy, durations */
+  --font-size-78: 0.78rem;   /* blog post meta */
+  --font-size-80: 0.8rem;    /* checkout secondary, sales captions */
+  --font-size-82: 0.82rem;    /* review roles, event meta */
+  --font-size-85: 0.85rem;    /* body small, seminar text, form inputs */
+  --font-size-88: 0.88rem;    /* card body, sales tables */
+  --font-size-90: 0.9rem;    /* footer logo, team bios, service cards */
+  --font-size-92: 0.92rem;    /* long-form body (classes, somatherapy, sales) */
+  --font-size-95: 0.95rem;    /* lead paragraphs, lesson body */
+  --font-size-100: 1rem;      /* page hero subheads, base body */
+  --font-size-105: 1.05rem;   /* rams lead, media kit sample */
+  --font-size-110: 1.1rem;    /* blockquotes, seminar titles, course visual */
+  --font-size-115: 1.15rem;   /* blog h3, media brand cards, peak cards */
+  --font-size-120: 1.2rem;    /* somatherapy highlight h3 */
+  --font-size-125: 1.25rem;   /* sales h3, rams section titles */
+  --font-size-130: 1.3rem;    /* course card titles, bundle headings */
+  --font-size-135: 1.35rem;   /* homepage service titles, sales callout cost */
+  --font-size-140: 1.4rem;    /* seminar days, person cards, blog pull quotes */
+  --font-size-150: 1.5rem;    /* checkout icon, seminar price, homepage quotes */
+  --font-size-160: 1.6rem;    /* section titles, press cards, close buttons */
+  --font-size-180: 1.8rem;    /* course prices, lesson numbers */
+  --font-size-200: 2rem;      /* checkout h1, media kit fact stats */
+  --font-size-220: 2.2rem;    /* bundle price, homepage stat display */
+  --font-size-300: 3rem;      /* review quote mark, decorative */
+  --font-size-350: 3.5rem;    /* rams stat display */
+  --font-size-400: 4rem;      /* homepage decorative quote */
+  --font-size-500: 5rem;      /* homepage large decorative numeral */
+
+  /* ─── Fluid font sizes (clamp) ─── */
+  /* Homepage hero display */
+  --font-size-fluid-hero-home: clamp(3.5rem, 9vw, 8.5rem);
+
+  /* Standard interior page hero (about, services, courses, blog, etc.) */
+  --font-size-fluid-hero-page: clamp(2.5rem, 5vw, 4rem);
+
+  /* Course page hero */
+  --font-size-fluid-hero-course: clamp(3.25rem, 7vw, 6.5rem);
+
+  /* Rams proposal hero */
+  --font-size-fluid-hero-rams: clamp(4.5rem, 14vw, 9.5rem);
+
+  /* Peak Athleticism hero */
+  --font-size-fluid-hero-peak: clamp(3rem, 8vw, 5.5rem);
+
+  /* Section headings — large */
+  --font-size-fluid-heading-xl: clamp(2rem, 3.5vw, 3.2rem);
+  --font-size-fluid-heading-lg: clamp(2rem, 3.5vw, 3rem);
+  --font-size-fluid-heading-md: clamp(2rem, 4vw, 3.5rem);
+  --font-size-fluid-heading-about: clamp(1.8rem, 3vw, 2.8rem);
+  --font-size-fluid-heading-about-sub: clamp(1.8rem, 3vw, 2.5rem);
+  --font-size-fluid-heading-services: clamp(1.8rem, 3vw, 2.8rem);
+
+  /* Section headings — medium */
+  --font-size-fluid-heading-section: clamp(1.6rem, 3vw, 2.2rem);
+  --font-size-fluid-heading-section-alt: clamp(1.6rem, 3vw, 2rem);
+  --font-size-fluid-heading-content: clamp(1.5rem, 2.5vw, 2rem);
+  --font-size-fluid-heading-content-sm: clamp(1.5rem, 3vw, 2rem);
+
+  /* Course / event / sales sub-heroes */
+  --font-size-fluid-heading-course-section: clamp(2.2rem, 4vw, 3.6rem);
+  --font-size-fluid-heading-event: clamp(2rem, 5vw, 3.4rem);
+  --font-size-fluid-heading-event-title: clamp(1.8rem, 4vw, 2.6rem);
+  --font-size-fluid-heading-sales: clamp(2rem, 5vw, 3rem);
+  --font-size-fluid-heading-sales-sub: clamp(1.6rem, 3vw, 2.2rem);
+  --font-size-fluid-heading-sales-cta: clamp(1.5rem, 3vw, 2rem);
+
+  /* Rams / peak section stats */
+  --font-size-fluid-heading-rams-section: clamp(2.8rem, 6vw, 4.5rem);
+  --font-size-fluid-heading-rams-block: clamp(1.8rem, 3vw, 2.4rem);
+  --font-size-fluid-heading-peak-section: clamp(2rem, 5vw, 3.2rem);
+  --font-size-fluid-heading-peak-card: clamp(1.4rem, 3vw, 2rem);
+
+  /* Body / card / quote — fluid */
+  --font-size-fluid-body-hero: clamp(1rem, 1.5vw, 1.2rem);
+  --font-size-fluid-body-hero-tight: clamp(1rem, 1.5vw, 1.15rem);
+  --font-size-fluid-body-lead: clamp(1rem, 1.4vw, 1.2rem);
+  --font-size-fluid-body-quote: clamp(1.1rem, 1.8vw, 1.4rem);
+  --font-size-fluid-body-quote-sidebar: clamp(1.05rem, 2vw, 1.2rem);
+  --font-size-fluid-body-review: clamp(1.1rem, 2vw, 1.5rem);
+  --font-size-fluid-body-peak: clamp(0.95rem, 1.8vw, 1.08rem);
+  --font-size-fluid-body-peak-card: clamp(1.15rem, 2.2vw, 1.45rem);
+  --font-size-fluid-body-rams-lead: clamp(1.05rem, 2vw, 1.35rem);
+  --font-size-fluid-body-blog: clamp(2rem, 4.5vw, 3rem);
+  --font-size-fluid-body-event-lead: clamp(1rem, 2vw, 1.2rem);
+
+  /* Lesson / card titles */
+  --font-size-fluid-lesson-title: clamp(1.15rem, 2vw, 1.45rem);
+  --font-size-fluid-lesson-view: clamp(1.5rem, 3vw, 2.2rem);
+
+  /* Progress / stats */
+  --font-size-fluid-progress-number: clamp(2.5rem, 5vw, 4rem);
+  --font-size-fluid-stat-marquee: clamp(2.6rem, 12vw, 4rem);
+
+  /* Mobile nav menu title */
+  --font-size-fluid-nav-menu: clamp(1.8rem, 4vw, 2.4rem);
+
+  /* Media kit page hero */
+  --font-size-fluid-hero-media-kit: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+html {
+  font-size: var(--font-size-root);
+}
