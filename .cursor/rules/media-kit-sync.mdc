@@ -22,8 +22,9 @@ When you change any **canonical fact or brand element** on the main site, update
 
 | If you change… | Primary source on site | Update on media kit |
 |----------------|------------------------|---------------------|
-| Triangle logo SVG (paths, stroke, gold) | `components/site-nav.html` (`.nav__logo-icon svg`) and homepage footer SVG | Regenerate or edit `assets/brand/link-pro-mark.svg`, `link-pro-lockup-dark.svg`, `link-pro-lockup-light.svg`; confirm previews on `media-kit.html` still look correct |
-| Wordmark / “LINK Pro” styling | Nav logo text, footer branding | Lockup SVGs in `assets/brand/` and any wordmark copy on `media-kit.html` |
+| Site logo (nav + footer) | `components/site-nav.html` → `/assets/brand/link-site-logo-light.svg` | Update `link-site-logo-light.svg`; keep `media-kit.html` light lockup preview/download in sync |
+| Press lockups / mark | `assets/brand/` | Regenerate or edit `link-pro-mark.svg`, `link-pro-lockup-dark.svg`, and legacy `link-pro-lockup-light.svg` as needed; confirm previews on `media-kit.html` |
+| Wordmark / “LINK Pro” styling | Nav lockup image, footer branding | Brand SVGs in `assets/brand/` and any wordmark copy on `media-kit.html` |
 | Brand colors (`--gold`, `--charcoal`, cream, etc.) | `:root` on `index.html` and interior pages (e.g. `about.html`) | Color swatches + hex values in the “Brand assets” section of `media-kit.html` |
 | Typography (Playfair / Inter) | Google Fonts links and CSS on main pages | Typography samples on `media-kit.html` |
 | Hero / positioning one-liner | `index.html` hero subtitle | Media kit hero subcopy and boilerplate paragraph if messaging shifted |

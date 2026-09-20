@@ -33,6 +33,7 @@ const activeByFile = {
   'blog/your-pain-has-an-address.html': 'blog',
   'blog/what-pro-teams-know-about-the-pelvis.html': 'blog',
   'courses/course-template.html': 'courses',
+  'sales/sales-page-template.html': null,
 };
 
 function renderNav(activeId) {

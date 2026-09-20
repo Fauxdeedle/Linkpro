@@ -164,6 +164,46 @@ a{text-decoration:none;color:inherit}
 <body data-sales-content="/content/{{SLUG}}.json" data-sales-mount="sales-content" data-sales-css-prefix="sales">
 
 <!-- LINKPRO_NAV_START -->
+<!-- LINK Pro site nav — edit this file, then run: npm run build:nav -->
+<nav class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="/" class="nav__logo" aria-label="LINK Pro home">
+      <img
+        src="/assets/brand/link-site-logo-light.svg"
+        alt=""
+        width="158"
+        height="35"
+        class="nav__logo-lockup"
+        decoding="async"
+      />
+    </a>
+    <div class="nav__links">
+      <a href="/about" data-nav-id="about">About</a>
+      <a href="/services" data-nav-id="services">Services</a>
+      <a href="/classes" data-nav-id="classes">Classes</a>
+      <a href="/peak-athleticism" data-nav-id="peak">Peak</a>
+      <a href="/courses" data-nav-id="courses">Courses</a>
+      <a href="/blog" data-nav-id="blog">Blog</a>
+      <a href="/reviews" data-nav-id="reviews">Reviews</a>
+      <a href="/#contact" class="nav__cta">Book Now</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" type="button">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <a href="/about" class="mobile-nav__link" data-nav-id="about">About</a>
+  <a href="/services" class="mobile-nav__link" data-nav-id="services">Services</a>
+  <a href="/classes" class="mobile-nav__link" data-nav-id="classes">Classes</a>
+  <a href="/peak-athleticism" class="mobile-nav__link" data-nav-id="peak">Peak</a>
+  <a href="/courses" class="mobile-nav__link" data-nav-id="courses">Courses</a>
+  <a href="/blog" class="mobile-nav__link" data-nav-id="blog">Blog</a>
+  <a href="/reviews" class="mobile-nav__link" data-nav-id="reviews">Reviews</a>
+  <a href="/#contact" class="mobile-nav__link">Contact</a>
+  <a href="/#contact" class="mobile-nav__cta">Book a Consultation</a>
+</div>
 <!-- LINKPRO_NAV_END -->
 
 <header class="sales-hero">
