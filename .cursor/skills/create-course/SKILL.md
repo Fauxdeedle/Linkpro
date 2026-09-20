@@ -38,7 +38,7 @@ Collect from the user (or infer from context):
 | `titleHtml` | `Pelvis <em>1.0</em>` | hero `<h1>` inner HTML |
 | `series` | `Pelvis Series` | hero eyebrow |
 | `description` | paragraph text | hero description + meta description |
-| `lessons` | array of `{ title, duration, description }` | lesson list + modal |
+| `lessons` | array of `{ title, duration, description, youtube? }` | lesson list + modal (+ optional YouTube embed) |
 
 **Slug rules:** lowercase, hyphenated, no spaces. Filename must be `{slug}-course.html`.
 
@@ -67,9 +67,16 @@ Replace every `{{PLACEHOLDER}}` in the new file:
 
 ```javascript
 [
-  { title: 'Lesson Title', duration: '18 min', description: 'Lesson summary shown in the modal.' }
+  {
+    title: 'Lesson Title',
+    duration: '18 min',
+    description: 'Lesson summary shown in the modal.',
+    youtube: 'dQw4w9WgXcQ' // optional: 11-char ID or full YouTube URL (unlisted OK)
+  }
 ]
 ```
+
+Omit `youtube` or use an empty string until the video is uploaded; the modal shows the gold play-icon placeholder until a valid ID/URL is set.
 
 Do **not** change CSS, HTML structure, or JavaScript behavior unless the user explicitly asks. Only swap course-specific content and the `lessons` / `storageKey` values.
 
@@ -123,7 +130,7 @@ Every course page includes these sections in order:
 1. **Hero** — title, description, start/continue button, lesson count
 2. **Progress** — percentage, count, animated bar (`role="progressbar"`)
 3. **Curriculum** — dynamically rendered lesson list
-4. **Lesson modal** — video placeholder, description, prev/next, mark complete
+4. **Lesson modal** — YouTube embed (when `lesson.youtube` is set) or placeholder, description, prev/next, mark complete
 5. **Footer** — standard LINK Pro footer
 
 ## Styling Rules
@@ -147,7 +154,7 @@ Match the homepage (`index.html`) design system:
 
 - Do not add a build step, framework, or backend for v1
 - Do not share one `localStorage` key across courses
-- Do not embed real video URLs unless the user provides them (placeholder is fine)
+- Do not add `youtube` values unless the user provides video IDs or URLs (placeholder is fine without them)
 - Do not duplicate nav markup; edit `components/site-nav.html` and run `npm run build:nav`
 - Do not change unrelated pages
 
