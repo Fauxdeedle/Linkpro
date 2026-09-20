@@ -64,9 +64,9 @@ body.nav-surface-light .nav {
 }
 
 .nav__links a {
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-size: var(--font-size-75);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-nav);
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.7);
   transition: color 0.3s ease;
@@ -96,9 +96,9 @@ body.nav-surface-light .nav {
 }
 
 .nav__cta {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
+  font-size: var(--font-size-70);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-button-wide);
   text-transform: uppercase;
   color: var(--nav-charcoal);
   background: var(--nav-gold);
@@ -175,8 +175,8 @@ body.nav-surface-light .nav {
 }
 
 .mobile-nav a {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-fluid-nav-menu);
   font-weight: 400;
   color: var(--nav-white);
   letter-spacing: 0.02em;
@@ -227,10 +227,10 @@ body.nav-surface-light .nav {
 
 .mobile-nav__cta {
   margin-top: 20px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-75);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-badge);
   text-transform: uppercase;
   color: var(--nav-charcoal);
   background: var(--nav-gold);
