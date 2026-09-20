@@ -71,7 +71,12 @@ h1 em{color:var(--gold);font-weight:400}
 .lesson-view h3{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.2rem);font-weight:400}
 .lesson-view__close{align-self:start;background:transparent;color:var(--white);font-size:1.6rem;font-weight:300;line-height:1}
 .lesson-view__body{padding:42px 40px}
-.lesson-view__visual{display:grid;min-height:240px;place-items:center;margin-bottom:32px;background:linear-gradient(135deg,#181818,#2a2a2a);color:var(--gold);text-align:center}
+.lesson-view__media{margin-bottom:32px}
+.lesson-view__video{display:none;aspect-ratio:16/9;width:100%;overflow:hidden;background:#181818}
+.lesson-view__video iframe{width:100%;height:100%;border:0;display:block}
+.lesson-view__media.has-video .lesson-view__video{display:block}
+.lesson-view__visual{display:grid;min-height:240px;place-items:center;background:linear-gradient(135deg,#181818,#2a2a2a);color:var(--gold);text-align:center}
+.lesson-view__media.has-video .lesson-view__visual{display:none}
 .lesson-view__visual svg{width:56px;margin:0 auto 16px}
 .lesson-view__visual span{font-family:var(--serif);font-size:1.1rem}
 .lesson-view__body p{max-width:680px;color:rgba(26,26,26,.65);font-size:.95rem;line-height:1.8}
@@ -197,10 +202,15 @@ h1 em{color:var(--gold);font-weight:400}
       <button class="lesson-view__close" id="closeLesson" type="button" aria-label="Close lesson">&times;</button>
     </header>
     <div class="lesson-view__body">
-      <div class="lesson-view__visual" aria-label="Video placeholder">
-        <div>
-          <svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="32" cy="32" r="30" stroke="currentColor"/><path d="m27 22 16 10-16 10V22Z" fill="currentColor"/></svg>
-          <span>Course video placeholder</span>
+      <div class="lesson-view__media" id="lessonMedia">
+        <div class="lesson-view__video">
+          <iframe id="lessonVideoFrame" title="Lesson video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="lesson-view__visual" aria-label="Video placeholder">
+          <div>
+            <svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="32" cy="32" r="30" stroke="currentColor"/><path d="m27 22 16 10-16 10V22Z" fill="currentColor"/></svg>
+            <span>Course video placeholder</span>
+          </div>
         </div>
       </div>
       <p id="lessonModalDescription"></p>
@@ -222,6 +232,36 @@ h1 em{color:var(--gold);font-weight:400}
   var lastFocusedElement = null;
   var lessonList = document.getElementById('lessonList');
   var lessonView = document.getElementById('lessonView');
+  var lessonMedia = document.getElementById('lessonMedia');
+  var lessonVideoFrame = document.getElementById('lessonVideoFrame');
+
+  function parseYoutubeId(input) {
+    if (!input || typeof input !== 'string') return null;
+    var trimmed = input.trim();
+    if (!trimmed) return null;
+    if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
+    var match = trimmed.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|shorts\/|watch\?v=|watch\?.+&v=))([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : null;
+  }
+
+  function updateLessonVideo(lesson) {
+    var id = parseYoutubeId(lesson.youtube);
+    if (id) {
+      lessonMedia.classList.add('has-video');
+      lessonVideoFrame.title = lesson.title + ' — lesson video';
+      lessonVideoFrame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0&modestbranding=1';
+    } else {
+      lessonMedia.classList.remove('has-video');
+      lessonVideoFrame.removeAttribute('src');
+      lessonVideoFrame.title = 'Lesson video';
+    }
+  }
+
+  function clearLessonVideo() {
+    lessonMedia.classList.remove('has-video');
+    lessonVideoFrame.removeAttribute('src');
+    lessonVideoFrame.title = 'Lesson video';
+  }
 
   try {
     var saved = JSON.parse(localStorage.getItem(storageKey));
@@ -271,6 +311,7 @@ h1 em{color:var(--gold);font-weight:400}
     document.getElementById('lessonModalDescription').textContent = lesson.description;
     document.getElementById('previousLesson').disabled = index === 0;
     document.getElementById('nextLesson').disabled = index === lessons.length - 1;
+    updateLessonVideo(lesson);
     updateCompleteButton();
     lessonView.classList.add('open');
     document.body.classList.add('lesson-open');
@@ -278,6 +319,7 @@ h1 em{color:var(--gold);font-weight:400}
   }
 
   function closeLesson() {
+    clearLessonVideo();
     lessonView.classList.remove('open');
     document.body.classList.remove('lesson-open');
     if (lastFocusedElement) lastFocusedElement.focus();

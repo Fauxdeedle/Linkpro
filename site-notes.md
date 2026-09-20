@@ -231,6 +231,46 @@ Proposal JSON highlights: `letter`, `sections`, `prepWork`, `days`, `includedMat
 
 ---
 
+## Online course lesson videos (YouTube)
+
+Course pages (e.g. `pelvis-1-course.html`) list lessons in a JavaScript `lessons` array at the bottom of the page. Each lesson can include an optional **`youtube`** field.
+
+### Link a video to a lesson
+
+1. Upload the lesson video to the [LINK Pro Sport YouTube channel](https://www.youtube.com/@linkprosport) and set visibility to **Unlisted** (not Private—private videos cannot embed).
+2. In YouTube Studio, open the video and copy the **Share** link or browser URL.
+3. Open the course HTML file (e.g. `pelvis-1-course.html`) and find the `lessons` array in the `<script>` block.
+4. Paste the URL or 11-character video ID into the matching lesson’s `youtube` property. Lesson order in the array matches the curriculum list on the page (first object = Lesson 1).
+
+```javascript
+{
+  title: 'The Pelvis as the Foundation',
+  duration: '18 min',
+  description: '...',
+  youtube: 'https://youtu.be/XXXXXXXXXXX'
+}
+```
+
+Accepted formats: raw video ID, `youtube.com/watch?v=…`, `youtu.be/…`, `/embed/…`, or `/shorts/…`.
+
+5. Save and deploy. Opening that lesson shows a 16:9 embed instead of the placeholder.
+
+### Behavior
+
+- **No `youtube` or empty string:** visitors see the “Course video placeholder” block.
+- **Closing the lesson modal** clears the embed so playback stops.
+- New courses copied from `courses/course-template.html` include the same embed logic automatically.
+
+### Files
+
+| What | File |
+|------|------|
+| Live Pelvis 1.0 lessons + video IDs | `pelvis-1-course.html` |
+| Template for new courses | `courses/course-template.html` |
+| Agent checklist for new courses | `.cursor/skills/create-course/SKILL.md` |
+
+---
+
 ## (Add more sections below)
 
-Examples you might add later: booking form behavior, Flute checkout flow, where course content lives, who to contact for domain/DNS, etc.
+Examples you might add later: booking form behavior, Flute checkout flow, who to contact for domain/DNS, etc.
