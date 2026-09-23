@@ -811,10 +811,12 @@ ul { list-style: none; }
   background: var(--charcoal); color: var(--white);
   font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em;
   text-transform: uppercase; transition: all 0.3s;
+  border: none; cursor: pointer; font-family: inherit;
 }
 .course-card__cta:hover {
   background: var(--gold); color: var(--charcoal);
 }
+.course-card__cta.is-loading { opacity: 0.7; cursor: wait; }
 
 /* Seminar cards */
 .courses__seminars { display: flex; flex-direction: column; gap: 16px; }
@@ -873,10 +875,12 @@ ul { list-style: none; }
   background: var(--gold); color: var(--charcoal);
   font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
   text-transform: uppercase; transition: all 0.3s;
+  border: none; cursor: pointer; font-family: inherit;
 }
 .seminar-card__cta:hover {
   background: var(--charcoal); color: var(--gold);
 }
+.seminar-card__cta.is-loading { opacity: 0.7; cursor: wait; }
 
 /* Bundle banner */
 .courses__bundle { margin-top: 32px; }
@@ -1498,7 +1502,7 @@ ul { list-style: none; }
             <span class="course-card__price">$100</span>
             <span class="course-card__access">✦ Unlimited Lifetime Access</span>
           </div>
-          <a href="https://www.linkprosport.com/pelvis-10" class="course-card__cta" target="_blank">Enroll Now</a>
+          <button type="button" class="course-card__cta" data-flute-product="pelvis-1">Enroll Now</button>
         </div>
         <div class="course-card course-card--online">
           <div class="course-card__badge">Self-Paced</div>
@@ -1517,7 +1521,7 @@ ul { list-style: none; }
             <span class="course-card__price">$199</span>
             <span class="course-card__access">✦ Unlimited Lifetime Access</span>
           </div>
-          <a href="https://www.linkprosport.com/llip" class="course-card__cta" target="_blank">Enroll Now</a>
+          <button type="button" class="course-card__cta" data-flute-product="llip">Enroll Now</button>
         </div>
       </div>
     </div>
@@ -1539,7 +1543,7 @@ ul { list-style: none; }
           </div>
           <div class="seminar-card__price-block">
             <span class="seminar-card__price">$1,500</span>
-            <a href="https://www.linkprosport.com/fascia2tls" class="seminar-card__cta" target="_blank">Register</a>
+            <button type="button" class="seminar-card__cta" data-flute-product="seminar-upper-limb">Register</button>
           </div>
         </div>
         <div class="seminar-card reveal reveal-delay-1">
@@ -1931,6 +1935,7 @@ ul { list-style: none; }
 })();
 </script>
 <script src="/js/site-nav.js" defer></script>
+<script src="/js/flute-checkout.js"></script>
 
 </body>
 </html>
