@@ -8,13 +8,16 @@ module.exports = async function handler(req, res) {
 
   try {
     const { productId } = readJsonBody(req);
-    const result = await createCheckoutSession(productId, req.headers.host);
+    const result = await createCheckoutSession(productId);
 
     if (result.error) {
       return res.status(result.status).json({ error: result.error });
     }
 
-    return res.status(200).json({ url: result.url });
+    return res.status(200).json({
+      sessionId: result.sessionId,
+      productName: result.productName,
+    });
   } catch (err) {
     console.error('Checkout session error:', err.message);
     return res.status(500).json({ error: err.message });
