@@ -7,16 +7,16 @@
 <meta name="description" content="Press resources for LINK Pro: brand assets, company overview, leadership bios, and media contact for Costa Mesa sports medicine and performance care.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site-fonts.css">
 <link rel="stylesheet" href="/css/site-nav.css">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--black:#0D0D0D;--charcoal:#1A1A1A;--cream:#F5F0EB;--white:#FDFCFA;--gold:#C4A265;--gold-dark:#A8894F;--muted:#8A8A8A;--serif:'Playfair Display',Georgia,serif;--sans:'Inter',-apple-system,sans-serif;--transition:cubic-bezier(0.25,0.46,0.45,0.94)}
+:root{--black:#0D0D0D;--charcoal:#1A1A1A;--cream:#F5F0EB;--white:#FDFCFA;--gold:#C4A265;--gold-dark:#A8894F;--muted:#8A8A8A;--serif:var(--font-display);--sans:'Inter',-apple-system,sans-serif;--transition:cubic-bezier(0.25,0.46,0.45,0.94)}
 html{scroll-behavior:smooth}body{font-family:var(--sans);color:var(--charcoal);background:var(--cream);-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
 
 .page-hero{padding:160px 0 80px;background:var(--charcoal);text-align:center}
-.page-hero h1{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:#fff;margin-bottom:16px}
+.page-hero h1{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;margin-bottom:16px}
 .page-hero h1 em{font-style:italic;color:var(--gold)}
 .page-hero p{font-size:1rem;color:rgba(255,255,255,0.5);max-width:560px;margin:0 auto;line-height:1.7}
 
@@ -31,7 +31,7 @@ a{text-decoration:none;color:inherit}
 .label.center{justify-content:center}
 .label.center::before{display:none}
 
-.section-title{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.4rem);font-weight:400;line-height:1.25;margin-bottom:16px}
+.section-title{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;line-height:1.25;margin-bottom:16px}
 .section-title em{font-style:italic;color:var(--gold-dark)}
 .section-dark .section-title em{color:var(--gold)}
 .section-lead{font-size:.95rem;line-height:1.75;color:rgba(26,26,26,0.65);max-width:720px}
@@ -39,7 +39,7 @@ a{text-decoration:none;color:inherit}
 
 .facts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px}
 .fact-card{background:var(--white);border:1px solid rgba(26,26,26,0.06);padding:28px 24px;text-align:center}
-.fact-card strong{display:block;font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--charcoal);margin-bottom:8px}
+.fact-card strong{display:block;font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--charcoal);margin-bottom:8px}
 .fact-card span{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 
 .boilerplate{background:var(--white);border:1px solid rgba(26,26,26,0.08);padding:32px;margin-top:32px;position:relative}
@@ -64,7 +64,7 @@ a{text-decoration:none;color:inherit}
 .brand-card__preview--light{background:var(--cream)}
 .brand-card__preview--dark{background:var(--black)}
 .brand-card__preview img,.brand-card__preview svg{max-height:48px;width:auto}
-.brand-card h3{font-family:var(--serif);font-size:1.15rem;color:#fff;margin-bottom:4px}
+.brand-card h3{font-family:var(--serif);font-weight:500;font-size:1.15rem;color:#fff;margin-bottom:4px}
 .brand-card p{font-size:.85rem;line-height:1.65;color:rgba(255,255,255,0.5);flex:1}
 .brand-card a{align-self:flex-start;font-size:.65rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(196,162,101,0.4);padding-bottom:2px}
 .brand-card a:hover{color:#fff;border-color:#fff}
@@ -78,12 +78,12 @@ a{text-decoration:none;color:inherit}
 .type-sample{margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:32px}
 .type-block{padding:28px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)}
 .type-block .tag{font-size:.65rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-.type-block .sample-serif{font-family:var(--serif);font-size:2rem;line-height:1.2;color:#fff;margin-bottom:8px}
+.type-block .sample-serif{font-family:var(--serif);font-weight:700;font-size:2rem;line-height:1.2;color:#fff;margin-bottom:8px}
 .type-block .sample-sans{font-family:var(--sans);font-size:1rem;line-height:1.5;color:rgba(255,255,255,0.65)}
 
 .people-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:40px}
 .person-card{background:var(--white);border:1px solid rgba(26,26,26,0.06);padding:36px 32px}
-.person-card h3{font-family:var(--serif);font-size:1.4rem;margin-bottom:6px}
+.person-card h3{font-family:var(--serif);font-weight:500;font-size:1.4rem;margin-bottom:6px}
 .person-card .role{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:12px;display:block}
 .person-card .creds{font-size:.75rem;color:var(--muted);margin-bottom:16px}
 .person-card p{font-size:.9rem;line-height:1.75;color:rgba(26,26,26,0.65);margin-bottom:12px}
@@ -93,7 +93,7 @@ a{text-decoration:none;color:inherit}
 .topics li::before{content:'';position:absolute;left:0;top:.55em;width:6px;height:6px;background:var(--gold);border-radius:50%}
 
 .press-card{background:var(--charcoal);color:#fff;padding:48px 40px;margin-top:48px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px}
-.press-card h3{font-family:var(--serif);font-size:1.6rem;font-weight:400;margin-bottom:8px}
+.press-card h3{font-family:var(--serif);font-size:1.6rem;font-weight:500;margin-bottom:8px}
 .press-card p{font-size:.9rem;color:rgba(255,255,255,0.55);max-width:480px;line-height:1.7}
 .press-card a.btn-gold{display:inline-block;padding:14px 32px;font-size:.65rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;background:var(--gold);color:var(--charcoal);transition:all .35s}
 .press-card a.btn-gold:hover{background:var(--gold-dark)}
@@ -295,7 +295,7 @@ a{text-decoration:none;color:inherit}
 
     <div class="type-sample reveal">
       <div class="type-block">
-        <div class="tag">Headlines — Playfair Display</div>
+        <div class="tag">Headlines — Bebas Neue</div>
         <div class="sample-serif">Unparalleled <em style="font-style:italic;color:var(--gold)">Precision</em></div>
         <p class="sample-sans">Used for hero and section titles. Italic emphasis in gold is part of the brand voice.</p>
       </div>
