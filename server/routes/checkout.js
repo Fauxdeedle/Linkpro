@@ -13,11 +13,14 @@ router.get('/flute-config', (_req, res) => {
 
 router.post('/create-checkout-session', async (req, res) => {
   try {
-    const result = await createCheckoutSession(req.body.productId, req.headers.host);
+    const result = await createCheckoutSession(req.body.productId);
     if (result.error) {
       return res.status(result.status).json({ error: result.error });
     }
-    res.json({ url: result.url });
+    res.json({
+      sessionId: result.sessionId,
+      productName: result.productName,
+    });
   } catch (err) {
     console.error('Checkout session error:', err.message);
     res.status(500).json({ error: err.message });

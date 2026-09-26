@@ -12,6 +12,7 @@
 body{font-family:var(--sans);background:var(--cream);color:var(--charcoal);min-height:100vh;display:grid;place-items:center;padding:6rem 2rem 2rem}
 .card{max-width:520px;width:100%;background:#fff;padding:3rem 2.5rem;border:1px solid rgba(0,0,0,.06);text-align:center}
 .icon{width:56px;height:56px;margin:0 auto 1.5rem;border-radius:50%;background:rgba(196,162,101,.15);display:grid;place-items:center;color:var(--gold);font-size:1.5rem}
+.icon.error{background:rgba(165,38,38,.12);color:#a52626}
 h1{font-family:var(--serif);font-size:2rem;font-weight:500;margin-bottom:.75rem}
 p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:1.5rem}
 .status{font-size:.85rem;color:var(--muted);margin-bottom:2rem}
@@ -65,9 +66,9 @@ p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:1.5rem}
 <!-- LINKPRO_NAV_END -->
 
 <div class="card">
-  <div class="icon">✓</div>
-  <h1>Thank you!</h1>
-  <p id="message">Your payment was successful. You’re all set to start learning.</p>
+  <div class="icon" id="status-icon">…</div>
+  <h1 id="title">Verifying payment</h1>
+  <p id="message">Please wait while we confirm your payment with Flute.</p>
   <p class="status" id="status">Verifying payment…</p>
   <a id="continue-link" href="courses.html" style="display:none">Continue to course</a>
   <a class="secondary" href="courses.html">Back to courses</a>
@@ -77,11 +78,21 @@ p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:1.5rem}
   var params = new URLSearchParams(window.location.search);
   var sessionId = params.get('session_id');
   var statusEl = document.getElementById('status');
+  var iconEl = document.getElementById('status-icon');
+  var titleEl = document.getElementById('title');
   var messageEl = document.getElementById('message');
   var linkEl = document.getElementById('continue-link');
 
+  function showError(status) {
+    iconEl.textContent = '×';
+    iconEl.classList.add('error');
+    titleEl.textContent = 'Payment not confirmed';
+    messageEl.textContent = 'We could not confirm a completed payment.';
+    statusEl.textContent = status;
+  }
+
   if (!sessionId) {
-    statusEl.textContent = 'No session found. If you completed payment, check your email for confirmation.';
+    showError('No session found. If you completed payment, contact support for confirmation.');
     return;
   }
 
@@ -89,17 +100,19 @@ p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:1.5rem}
     .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
     .then(function (result) {
       if (!result.ok || result.data.status !== 'paid') {
-        statusEl.textContent = result.data.error || 'Payment could not be verified.';
+        showError(result.data.error || 'Payment could not be verified. Current status: ' + (result.data.status || 'unknown') + '.');
         return;
       }
 
+      iconEl.textContent = '✓';
+      titleEl.textContent = 'Thank you!';
       statusEl.textContent = result.data.productName ? 'Enrolled in ' + result.data.productName : 'Payment verified';
       messageEl.textContent = 'Your enrollment is confirmed. Access your course whenever you’re ready.';
       linkEl.href = result.data.successUrl || 'courses.html';
       linkEl.style.display = 'inline-block';
     })
     .catch(function () {
-      statusEl.textContent = 'Could not verify payment. Contact support if you were charged.';
+      showError('Could not verify payment. Contact support if you were charged.');
     });
 })();
 </script>

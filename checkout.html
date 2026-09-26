@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — LINK Pro</title>
+  <script id="flute-library" src="https://public.flute.com/lib/v1.0/flute.mjs" type="module"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem 1rem;
+      background: #f5f0eb;
+      color: #1a1a1a;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    main {
+      width: min(100%, 560px);
+      padding: 2rem;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    h1 { margin: 0 0 0.5rem; font: 500 2rem Georgia, serif; }
+    .product { margin: 0 0 1.75rem; color: #666; }
+    #flute-payment-form { min-height: 10rem; }
+    button {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.9rem 1.25rem;
+      border: 0;
+      background: #1a1a1a;
+      color: #fff;
+      font: 600 0.85rem Inter, system-ui, sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    button:disabled { cursor: wait; opacity: 0.55; }
+    .message { margin: 1rem 0 0; line-height: 1.5; }
+    .error { color: #a52626; }
+    .back { display: inline-block; margin-top: 1.25rem; color: #555; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Secure checkout</h1>
+    <p id="product-name" class="product">Preparing your payment…</p>
+    <div id="flute-payment-form" hidden></div>
+    <button id="pay-button" type="button" hidden>Pay</button>
+    <p id="checkout-message" class="message" role="status" aria-live="polite"></p>
+    <a class="back" href="/courses.html">Back to courses</a>
+  </main>
+
+  <script type="module">
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('product');
+    const productName = document.getElementById('product-name');
+    const formWrapper = document.getElementById('flute-payment-form');
+    const payButton = document.getElementById('pay-button');
+    const message = document.getElementById('checkout-message');
+    const libraryScript = document.getElementById('flute-library');
+
+    let flute;
+    let sessionId;
+
+    function showError(text) {
+      message.textContent = text;
+      message.classList.add('error');
+    }
+
+    function clearError() {
+      message.textContent = '';
+      message.classList.remove('error');
+    }
+
+    async function createSession() {
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Could not create a payment session.');
+      }
+
+      sessionId = data.sessionId;
+      productName.textContent = data.productName;
+      return data;
+    }
+
+    function waitForFlute() {
+      if (window.Flute) return Promise.resolve();
+
+      return new Promise((resolve, reject) => {
+        libraryScript.addEventListener('load', resolve, { once: true });
+        libraryScript.addEventListener(
+          'error',
+          () => reject(new Error('The secure payment form could not be loaded.')),
+          { once: true }
+        );
+      });
+    }
+
+    async function refreshSession() {
+      payButton.disabled = true;
+      message.textContent = 'Preparing a new secure payment session…';
+      message.classList.remove('error');
+
+      try {
+        await createSession();
+        flute.updateSessionId(sessionId);
+        message.textContent = 'Please review your details and try again.';
+      } catch (error) {
+        showError(error.message || 'Could not refresh the payment session.');
+      } finally {
+        payButton.disabled = false;
+      }
+    }
+
+    async function verifyPayment() {
+      try {
+        const response = await fetch(
+          '/api/checkout-session/' + encodeURIComponent(sessionId)
+        );
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Could not verify the payment.');
+        }
+        if (data.status !== 'paid') {
+          throw new Error(
+            'Payment was not completed. Current status: ' + data.status + '.'
+          );
+        }
+
+        window.location.href =
+          '/checkout-success.html?session_id=' + encodeURIComponent(sessionId);
+      } catch (error) {
+        showError(error.message || 'Could not verify the payment.');
+        payButton.disabled = false;
+      }
+    }
+
+    function submitPayment() {
+      clearError();
+      payButton.disabled = true;
+
+      try {
+        const submission = flute.submit({
+          confirmParams: {
+            submission_callback: verifyPayment,
+            error_callback: (errorMessage, errorCode) => {
+              const code = Number(errorCode);
+              showError(errorMessage || 'The payment could not be completed.');
+              payButton.disabled = false;
+
+              if (code === 3 || code === 4) {
+                refreshSession();
+              }
+            },
+          },
+        });
+
+        if (submission && typeof submission.catch === 'function') {
+          submission.catch((error) => {
+            showError(error.message || 'The payment could not be submitted.');
+            payButton.disabled = false;
+          });
+        }
+      } catch (error) {
+        showError(error.message || 'The payment could not be submitted.');
+        payButton.disabled = false;
+      }
+    }
+
+    async function initializeCheckout() {
+      if (!productId) {
+        productName.textContent = 'No product selected';
+        showError('Choose a product before starting checkout.');
+        return;
+      }
+
+      try {
+        await Promise.all([createSession(), waitForFlute()]);
+        flute = new window.Flute();
+        const elements = flute.elements({ sessionId });
+        elements.create('customer-name');
+        elements.create('payment');
+        elements.create('address');
+        elements.mount('#flute-payment-form');
+
+        formWrapper.hidden = false;
+        payButton.hidden = false;
+        payButton.addEventListener('click', submitPayment);
+      } catch (error) {
+        productName.textContent = 'Checkout unavailable';
+        showError(error.message || 'Could not initialize checkout.');
+      }
+    }
+
+    initializeCheckout();
+  </script>
+</body>
+</html>
