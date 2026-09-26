@@ -175,9 +175,9 @@ body.nav-surface-light .nav {
 }
 
 .mobile-nav a {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(1.8rem, 4vw, 2.4rem);
-  font-weight: 400;
+  font-weight:700;
   color: var(--nav-white);
   letter-spacing: 0.02em;
   transition: color 0.3s ease;

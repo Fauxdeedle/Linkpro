@@ -137,7 +137,7 @@ Every course page includes these sections in order:
 
 Match the homepage (`index.html`) design system:
 
-- Fonts: `Inter` (UI), `Playfair Display` (headings)
+- Fonts: `Inter` (UI), `Bebas Neue` (headings)
 - Colors: `--charcoal`, `--cream`, `--gold`, `--gold-dark`
 - Do not copy screenshot-specific styling from mockups
 - Keep inline CSS in the page (this repo has no shared CSS bundle)

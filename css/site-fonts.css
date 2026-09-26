@@ -1,0 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --font-display: "Bebas Neue", Impact, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}

@@ -4,38 +4,38 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SomaTherapy — LINK Pro</title>
 <meta name="description" content="SomaTherapy is a hands-on clinician-based training system focused on restoring fluid flow, space, and tissue health. Learn about tensegrity, articular pumping, and fascial normalization.">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site-fonts.css">
 <link rel="stylesheet" href="/css/site-nav.css">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}:root{--black:#0D0D0D;--charcoal:#1A1A1A;--cream:#F5F0EB;--white:#FDFCFA;--gold:#C4A265;--gold-dark:#A8894F;--muted:#8A8A8A;--serif:'Playfair Display',Georgia,serif;--sans:'Inter',-apple-system,sans-serif;--transition:cubic-bezier(0.25,0.46,0.45,0.94)}html{scroll-behavior:smooth}body{font-family:var(--sans);color:var(--charcoal);background:var(--cream);-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}:root{--black:#0D0D0D;--charcoal:#1A1A1A;--cream:#F5F0EB;--white:#FDFCFA;--gold:#C4A265;--gold-dark:#A8894F;--muted:#8A8A8A;--serif:var(--font-display);--sans:'Inter',-apple-system,sans-serif;--transition:cubic-bezier(0.25,0.46,0.45,0.94)}html{scroll-behavior:smooth}body{font-family:var(--sans);color:var(--charcoal);background:var(--cream);-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
 .container{max-width:900px;margin:0 auto;padding:0 2rem}
-.page-hero{padding:160px 0 80px;background:var(--charcoal);text-align:center}.page-hero h1{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:#fff;margin-bottom:16px}.page-hero h1 em{font-style:italic;color:var(--gold)}.page-hero p{font-size:1rem;color:rgba(255,255,255,0.5);max-width:560px;margin:0 auto;line-height:1.7}
+.page-hero{padding:160px 0 80px;background:var(--charcoal);text-align:center}.page-hero h1{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;margin-bottom:16px}.page-hero h1 em{font-style:italic;color:var(--gold)}.page-hero p{font-size:1rem;color:rgba(255,255,255,0.5);max-width:560px;margin:0 auto;line-height:1.7}
 .label{font-size:.65rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:20px;display:flex;align-items:center;gap:12px}.label::before{content:'';width:40px;height:1px;background:var(--gold-dark)}
 
 .content{padding:80px 0}
-.content h2{font-family:var(--serif);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:var(--charcoal);margin:48px 0 16px;line-height:1.3}
+.content h2{font-family:var(--serif);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:var(--charcoal);margin:48px 0 16px;line-height:1.3}
 .content h2:first-of-type{margin-top:0}
 .content h2 em{font-style:italic;color:var(--gold-dark)}
 .content h3{font-family:var(--serif);font-size:1.15rem;font-weight:500;color:var(--charcoal);margin:32px 0 12px}
 .content p{font-size:.92rem;line-height:1.8;color:rgba(26,26,26,0.6);margin-bottom:16px}
-.content blockquote{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--charcoal);border-left:2px solid var(--gold);padding-left:20px;margin:28px 0}
+.content blockquote{font-family:var(--serif);font-weight:500;font-size:1.1rem;font-style:italic;color:var(--charcoal);border-left:2px solid var(--gold);padding-left:20px;margin:28px 0}
 .content ul{list-style:none;margin:16px 0 24px}
 .content li{padding:8px 0 8px 20px;font-size:.9rem;color:rgba(26,26,26,0.6);position:relative;line-height:1.7}
 .content li::before{content:'✦';position:absolute;left:0;color:var(--gold-dark);font-size:.55rem;top:12px}
 .content li strong{color:var(--charcoal)}
 .principles{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:32px 0}
 .principle-card{background:#fff;padding:32px;border:1px solid rgba(0,0,0,0.06)}
-.principle-card h4{font-family:var(--serif);font-size:1.1rem;color:var(--charcoal);margin-bottom:8px}
+.principle-card h4{font-family:var(--serif);font-weight:500;font-size:1.1rem;color:var(--charcoal);margin-bottom:8px}
 .principle-card p{font-size:.85rem;margin-bottom:0}
 .highlight-box{background:var(--charcoal);padding:40px;margin:40px 0;color:#fff}
-.highlight-box h3{font-family:var(--serif);color:var(--gold);font-size:1.2rem;margin-bottom:12px}
+.highlight-box h3{font-family:var(--serif);font-weight:500;color:var(--gold);font-size:1.2rem;margin-bottom:12px}
 .highlight-box p{color:rgba(255,255,255,0.6)}
 .highlight-box ul{margin-top:16px}
 .highlight-box li{color:rgba(255,255,255,0.5)}
 .highlight-box li strong{color:#fff}
 
 .subscribe{background:var(--charcoal);padding:80px 0;text-align:center}
-.subscribe h2{font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.2rem);color:#fff;margin-bottom:8px}
+.subscribe h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.6rem,3vw,2.2rem);color:#fff;margin-bottom:8px}
 .subscribe h2 em{font-style:italic;color:var(--gold)}
 .subscribe p{font-size:.95rem;color:rgba(255,255,255,0.45);margin-bottom:32px}
 .subscribe-form{display:flex;gap:12px;max-width:480px;margin:0 auto}

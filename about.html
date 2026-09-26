@@ -7,17 +7,17 @@
 <meta name="description" content="Meet Dr. Jason Amstutz and the LINK Pro team. Concierge-level sports medicine rooted in osteopathic principles and a deep understanding of the body's interconnected systems.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site-fonts.css">
 <link rel="stylesheet" href="/css/site-nav.css">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--black:#0D0D0D;--charcoal:#1A1A1A;--cream:#F5F0EB;--white:#FDFCFA;--gold:#C4A265;--gold-dark:#A8894F;--muted:#8A8A8A;--serif:'Playfair Display',Georgia,serif;--sans:'Inter',-apple-system,sans-serif;--transition:cubic-bezier(0.25,0.46,0.45,0.94)}
+:root{--black:#0D0D0D;--charcoal:#1A1A1A;--cream:#F5F0EB;--white:#FDFCFA;--gold:#C4A265;--gold-dark:#A8894F;--muted:#8A8A8A;--serif:var(--font-display);--sans:'Inter',-apple-system,sans-serif;--transition:cubic-bezier(0.25,0.46,0.45,0.94)}
 html{scroll-behavior:smooth}body{font-family:var(--sans);color:var(--charcoal);background:var(--cream);-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
 
 /* PAGE HERO */
 .page-hero{padding:160px 0 80px;background:var(--charcoal);text-align:center}
-.page-hero h1{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:#fff;margin-bottom:16px}
+.page-hero h1{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;margin-bottom:16px}
 .page-hero h1 em{font-style:italic;color:var(--gold)}
 .page-hero p{font-size:1rem;color:rgba(255,255,255,0.5);max-width:500px;margin:0 auto}
 
@@ -34,14 +34,14 @@ a{text-decoration:none;color:inherit}
 
 /* ABOUT CONTENT */
 .about-intro{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;padding:80px 0}
-.about-text h2{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:var(--charcoal);margin-bottom:24px;line-height:1.25}
+.about-text h2{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--charcoal);margin-bottom:24px;line-height:1.25}
 .about-text h2 em{font-style:italic;color:var(--gold-dark)}
 .about-text p{font-size:.95rem;line-height:1.8;color:rgba(26,26,26,0.65);margin-bottom:16px}
 .about-sidebar{background:var(--charcoal);padding:0;overflow:hidden;display:flex;flex-direction:column;width:100%;min-width:0;justify-self:stretch}
 .about-sidebar__photo{width:100%;aspect-ratio:974/1032;overflow:hidden;background:var(--charcoal)}
 .about-sidebar__photo img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 22%}
 .about-sidebar__quote{width:100%;box-sizing:border-box;padding:40px 36px 48px;text-align:center}
-.about-sidebar blockquote{font-family:var(--serif);font-size:clamp(1.05rem,2vw,1.2rem);font-style:italic;line-height:1.65;color:rgba(255,255,255,0.88);margin-bottom:28px}
+.about-sidebar blockquote{font-family:var(--serif);font-weight:500;font-size:clamp(1.05rem,2vw,1.2rem);font-style:italic;line-height:1.65;color:rgba(255,255,255,0.88);margin-bottom:28px}
 .about-sidebar cite{font-family:var(--sans);font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-style:normal;display:flex;flex-direction:column;align-items:center;gap:14px}
 .about-sidebar cite::before{content:'';width:36px;height:1px;background:var(--gold)}
 
@@ -50,14 +50,14 @@ a{text-decoration:none;color:inherit}
 .team-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:48px}
 .team-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:48px 40px;transition:all .4s var(--transition)}
 .team-card:hover{border-color:rgba(196,162,101,0.2);transform:translateY(-4px)}
-.team-card h3{font-family:var(--serif);font-size:1.6rem;color:#fff;margin-bottom:8px}
+.team-card h3{font-family:var(--serif);font-weight:500;font-size:1.6rem;color:#fff;margin-bottom:8px}
 .team-card .role{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block}
 .team-card .creds{font-size:.75rem;color:var(--muted);margin-bottom:16px;letter-spacing:.05em}
 .team-card p{font-size:.9rem;line-height:1.75;color:rgba(255,255,255,0.5)}
 
 /* CTA BANNER */
 .cta-banner{padding:80px 0;text-align:center}
-.cta-banner h2{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.8rem);color:var(--charcoal);margin-bottom:16px}
+.cta-banner h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.8rem,3vw,2.8rem);color:var(--charcoal);margin-bottom:16px}
 .cta-banner h2 em{font-style:italic;color:var(--gold-dark)}
 .cta-banner p{font-size:1rem;color:rgba(26,26,26,0.5);margin-bottom:32px}
 .btn{display:inline-block;padding:16px 40px;font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;transition:all .4s}
@@ -162,7 +162,7 @@ a{text-decoration:none;color:inherit}
 <section class="team" id="team">
   <div class="container">
     <div class="label" style="justify-content:center">Meet the Team</div>
-    <h2 style="font-family:var(--serif);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:#fff;text-align:center;margin-top:8px">The Minds Behind <em style="font-style:italic;color:var(--gold)">LINK Pro</em></h2>
+    <h2 style="font-family:var(--serif);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:#fff;text-align:center;margin-top:8px">The Minds Behind <em style="font-style:italic;color:var(--gold)">LINK Pro</em></h2>
     <div class="team-grid">
       <div class="team-card reveal">
         <h3>Dr. Jason Amstutz</h3>

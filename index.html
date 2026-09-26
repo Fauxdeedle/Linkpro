@@ -7,7 +7,7 @@
 <meta name="description" content="Concierge-level body treatment for elite performers. Personalized care rooted in pelvis-centered precision. Costa Mesa, CA.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site-fonts.css">
 <link rel="stylesheet" href="/css/site-nav.css">
 <style>
 /* ═══════════════════════════════════════════════
@@ -201,9 +201,9 @@ ul { list-style: none; }
   content: ''; width: 50px; height: 1px; background: var(--gold);
 }
 .hero__title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(3.5rem, 9vw, 8.5rem);
-  font-weight: 400; line-height: 0.95;
+  font-weight:700; line-height: 0.95;
   color: var(--white); margin-bottom: 36px;
   opacity: 0; transform: translateY(30px);
   animation: heroFadeUp 1s var(--transition) 0.5s forwards;
@@ -213,7 +213,7 @@ ul { list-style: none; }
 }
 .hero__title em {
   font-style: italic; color: var(--gold);
-  font-weight: 400;
+  font-weight: inherit;
 }
 .hero__subtitle {
   font-size: clamp(1rem, 1.5vw, 1.2rem);
@@ -296,9 +296,9 @@ ul { list-style: none; }
 }
 .stat { padding: 0 16px; }
 .stat__number {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 400; color: var(--gold);
+  font-weight:700; color: var(--gold);
   line-height: 1; margin-bottom: 8px;
 }
 .stat__label {
@@ -331,9 +331,9 @@ ul { list-style: none; }
   position: relative;
 }
 .philosophy__heading {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(2rem, 3.5vw, 3.2rem);
-  font-weight: 400; line-height: 1.15;
+  font-weight:700; line-height: 1.15;
   color: var(--charcoal);
   margin-bottom: 32px;
 }
@@ -354,14 +354,14 @@ ul { list-style: none; }
   border-left: 3px solid var(--gold);
 }
 .philosophy__quote-mark {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);font-weight:700;
   font-size: 5rem; color: var(--gold); opacity: 0.3;
   line-height: 0.5; margin-bottom: 16px;
 }
 .philosophy__quote-text {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-  font-weight: 400; font-style: italic;
+  font-weight:500; font-style: italic;
   color: var(--charcoal); line-height: 1.6;
 }
 .philosophy__quote-attr {
@@ -382,9 +382,9 @@ ul { list-style: none; }
   text-align: center; margin-bottom: 72px;
 }
 .services__title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(2rem, 3.5vw, 3.2rem);
-  font-weight: 400; color: var(--white);
+  font-weight:700; color: var(--white);
   margin-bottom: 16px;
 }
 .services__subtitle {
@@ -428,8 +428,8 @@ ul { list-style: none; }
 }
 .service-card__icon svg { width: 32px; height: 32px; }
 .service-card__title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.35rem; font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 1.35rem; font-weight:500;
   color: var(--white); margin-bottom: 16px;
   position: relative; z-index: 1;
 }
@@ -483,9 +483,9 @@ ul { list-style: none; }
 }
 .difference__content {}
 .difference__heading {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 400; color: var(--charcoal);
+  font-weight:700; color: var(--charcoal);
   line-height: 1.15; margin-bottom: 32px;
 }
 .difference__heading em { font-style: italic; color: var(--gold-dark); }
@@ -536,9 +536,9 @@ ul { list-style: none; }
 }
 .eldoa__content {}
 .eldoa__heading {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 400; color: var(--white);
+  font-weight:700; color: var(--white);
   line-height: 1.15; margin-bottom: 28px;
 }
 .eldoa__heading em { font-style: italic; color: var(--gold); }
@@ -578,12 +578,12 @@ ul { list-style: none; }
   width: 80px; height: 80px; border-radius: 50%;
   background: linear-gradient(135deg, var(--charcoal-mid), var(--gold-dark));
   margin-bottom: 24px; display: flex; align-items: center;
-  justify-content: center; font-family: 'Playfair Display', serif;
+  justify-content: center; font-family: var(--font-display);font-weight:500;
   font-size: 1.5rem; color: var(--white); font-style: italic;
 }
 .eldoa__bio-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem; font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 1.4rem; font-weight:500;
   color: var(--white); margin-bottom: 6px;
 }
 .eldoa__bio-role {
@@ -615,9 +615,9 @@ ul { list-style: none; }
   position: relative; z-index: 1;
 }
 .testimonials__title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(2rem, 3.5vw, 3.2rem);
-  font-weight: 400; color: var(--white);
+  font-weight:700; color: var(--white);
 }
 .testimonials__grid {
   display: grid;
@@ -638,9 +638,9 @@ ul { list-style: none; }
 }
 .testimonial__stars svg { width: 16px; height: 16px; }
 .testimonial__text {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(1rem, 1.4vw, 1.2rem);
-  font-weight: 400; font-style: italic;
+  font-weight:500; font-style: italic;
   color: rgba(255,255,255,0.85);
   line-height: 1.7; margin-bottom: 32px;
 }
@@ -691,7 +691,7 @@ ul { list-style: none; }
     linear-gradient(135deg, #1A1A1A 0%, #2A2A2A 100%);
 }
 .drj__image-text {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);font-weight:700;
   font-size: 4rem; font-style: italic;
   color: var(--gold); opacity: 0.15;
 }
@@ -705,9 +705,9 @@ ul { list-style: none; }
 }
 .drj__content {}
 .drj__heading {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 400; color: var(--charcoal);
+  font-weight:700; color: var(--charcoal);
   line-height: 1.15; margin-bottom: 12px;
 }
 .drj__heading em { font-style: italic; color: var(--gold-dark); }
@@ -739,9 +739,9 @@ ul { list-style: none; }
 }
 .courses__header { text-align: center; margin-bottom: 64px; }
 .courses__title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 400; color: var(--charcoal);
+  font-weight:700; color: var(--charcoal);
   margin-bottom: 16px;
 }
 .courses__title em { font-style: italic; color: var(--gold-dark); }
@@ -751,8 +751,8 @@ ul { list-style: none; }
 }
 .courses__section { margin-bottom: 64px; }
 .courses__section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem; font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 1.6rem; font-weight:500;
   color: var(--charcoal); margin-bottom: 12px;
 }
 .courses__section-desc {
@@ -783,8 +783,8 @@ ul { list-style: none; }
   padding: 4px 12px; margin-bottom: 20px; align-self: flex-start;
 }
 .course-card__title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem; font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 1.4rem; font-weight:500;
   color: var(--charcoal); margin-bottom: 12px;
 }
 .course-card__desc {
@@ -796,7 +796,7 @@ ul { list-style: none; }
   display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px;
 }
 .course-card__price {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);font-weight:500;
   font-size: 1.8rem; color: var(--charcoal);
 }
 .course-card__lessons {
@@ -841,13 +841,13 @@ ul { list-style: none; }
   text-transform: uppercase; color: var(--gold-dark);
 }
 .seminar-card__days {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);font-weight:500;
   font-size: 1.4rem; color: var(--charcoal); margin-top: 2px;
 }
 .seminar-card__content { flex: 1; }
 .seminar-card__title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.15rem; font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 1.15rem; font-weight:500;
   color: var(--charcoal); margin-bottom: 4px;
 }
 .seminar-card__location {
@@ -863,7 +863,7 @@ ul { list-style: none; }
   gap: 12px; min-width: 120px;
 }
 .seminar-card__price {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);font-weight:500;
   font-size: 1.5rem; color: var(--charcoal);
 }
 .seminar-card__soon {
@@ -890,7 +890,7 @@ ul { list-style: none; }
   background: var(--charcoal); gap: 32px;
 }
 .courses__bundle-title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);font-weight:500;
   font-size: 1.3rem; color: var(--gold); margin-bottom: 6px;
 }
 .courses__bundle-desc {
@@ -904,7 +904,7 @@ ul { list-style: none; }
   text-decoration: line-through;
 }
 .courses__bundle-now {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);font-weight:700;
   font-size: 2.2rem; color: var(--gold);
 }
 
@@ -926,9 +926,9 @@ ul { list-style: none; }
   position: relative; z-index: 1;
 }
 .booking__title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 400; color: var(--white);
+  font-weight:700; color: var(--white);
   margin-bottom: 16px;
 }
 .booking__title em { font-style: italic; color: var(--gold); }
@@ -1613,7 +1613,7 @@ ul { list-style: none; }
   <div class="container container--wide">
     <div class="testimonials__header reveal">
       <div class="label" style="justify-content: center;">Client Experiences</div>
-      <h2 class="testimonials__title">Words From Those<br>Who <em style="font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold);">Demand</em> the Best</h2>
+      <h2 class="testimonials__title">Words From Those<br>Who <em style="font-family:var(--font-display);font-weight:500;font-style:italic;color:var(--gold)">Demand</em> the Best</h2>
     </div>
     <div class="testimonials__grid">
       <div class="testimonial reveal">
