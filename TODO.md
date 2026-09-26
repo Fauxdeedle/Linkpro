@@ -89,7 +89,7 @@ Ensure `api/` routes and `vercel.json` are on your deploy branch before deployin
 
 In Vercel → Project → **Settings → Environment Variables**, add:
 
-- [ ] `BASE_URL` → your production URL (e.g. `https://linkpro.com` or your `.vercel.app` URL for testing)
+- [ ] Optional `BASE_URL` → canonical custom domain override (Vercel uses its deployment URL automatically when omitted)
 - [ ] `FLUTE_CLIENT_ID` → sandbox client ID for preview, production client ID for live
 - [ ] `FLUTE_CLIENT_SECRET` → matching client secret
 - [ ] `FLUTE_ENVIRONMENT` → `sandbox` for preview, `production` for live

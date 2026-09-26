@@ -88,10 +88,11 @@ in `.env.example`.
 
 ### Configuration and maintenance
 
-- Required server variables: `BASE_URL`, `FLUTE_CLIENT_ID`,
-  `FLUTE_CLIENT_SECRET`, and `FLUTE_ENVIRONMENT`.
-- `BASE_URL` must be the public origin because it is used to build Flute's
-  absolute `returnUrl`.
+- Required server variables: `FLUTE_CLIENT_ID`, `FLUTE_CLIENT_SECRET`, and
+  `FLUTE_ENVIRONMENT`.
+- Vercel's deployment URL is used automatically to build Flute's absolute
+  `returnUrl`. Set `BASE_URL` only to override it with a canonical custom
+  domain or when running outside Vercel.
 - Session creation and verification live in `lib/checkout.js`; Flute HTTP calls
   live in `lib/flute.js`.
 - Express routes under `server/routes/` and Vercel functions under `api/` must

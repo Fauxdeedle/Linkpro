@@ -60,7 +60,7 @@ Copy `.env.example` to `.env`:
 | `FLUTE_CLIENT_SECRET` | Merchant API client secret |
 | `FLUTE_ENVIRONMENT` | `sandbox` or `production` |
 | `FLUTE_WEBHOOK_SECRET` | HMAC secret from webhook endpoint setup |
-| `BASE_URL` | Public site URL (required for return redirects) |
+| `BASE_URL` | Optional public site URL override; Vercel's deployment URL is used automatically when unset |
 
 ### Run locally
 

@@ -5,6 +5,7 @@ const { products, getProduct } = require('../server/config/products');
 const {
   buildPaymentSessionRequest,
   formatCheckoutSession,
+  getBaseUrl,
   isSuccessfulTransaction,
   isValidCheckoutUrl,
 } = require('../lib/checkout');
@@ -49,6 +50,31 @@ test('hosted session payload uses a trusted product and documented fields', () =
       delete process.env.BASE_URL;
     } else {
       process.env.BASE_URL = originalBaseUrl;
+    }
+  }
+});
+
+test('Vercel deployment URL supplies the checkout origin automatically', () => {
+  const originalBaseUrl = process.env.BASE_URL;
+  const originalVercelUrl = process.env.VERCEL_URL;
+  delete process.env.BASE_URL;
+  process.env.VERCEL_URL = 'linkpro-git-checkout-team.vercel.app';
+
+  try {
+    assert.equal(
+      getBaseUrl(),
+      'https://linkpro-git-checkout-team.vercel.app'
+    );
+  } finally {
+    if (originalBaseUrl === undefined) {
+      delete process.env.BASE_URL;
+    } else {
+      process.env.BASE_URL = originalBaseUrl;
+    }
+    if (originalVercelUrl === undefined) {
+      delete process.env.VERCEL_URL;
+    } else {
+      process.env.VERCEL_URL = originalVercelUrl;
     }
   }
 });
