@@ -33,8 +33,14 @@ Product amounts are defined in `server/config/products.js`. Defaults match the p
 - [ ] **Pelvis 1.0** ($100) — `pelvis-1`
 - [ ] **Lower Limb Injury Prevention** ($199) — `llip`
 - [ ] **Fascia & 2TLS — Upper Limb seminar** ($1,500) — `seminar-upper-limb`
+- [ ] **Fascia & 2TLS — Lower Limb seminar** ($1,500) — `seminar-lower-limb`
+- [ ] **Fascia & 2TLS — Trunk & Pelvis seminar** ($1,500) — `seminar-trunk-pelvis`
+- [ ] **Three-seminar bundle** ($3,750) — `seminar-bundle`
+- [ ] **Retreat shared bunk room** ($1,350) — `retreat-shared-bunk`
+- [ ] **Retreat one-person king** ($2,350) — `retreat-king-single`
+- [ ] **Retreat two-person king** ($3,150) — `retreat-king-double`
 
-Optional: override amounts via env vars (`FLUTE_AMOUNT_PELVIS_1`, `FLUTE_AMOUNT_LLIP`, `FLUTE_AMOUNT_SEMINAR`).
+Optional: override amounts with the matching `FLUTE_AMOUNT_*` variables listed in `.env.example`. These are internal catalog entries; Flute does not require a separate dashboard product for each item.
 
 ### Server config
 
@@ -76,7 +82,7 @@ Ensure `api/` routes and `vercel.json` are on your deploy branch before deployin
 - [ ] Go to [vercel.com/new](https://vercel.com/new) and import `dramstutz-LP/Linkpro`
 - [ ] Framework preset: **Other** (no build command needed)
 - [ ] Leave **Build Command** and **Output Directory** empty
-- [ ] Set production branch to `cursor/flute-test-706b` (or `main` after merge)
+- [ ] Set the production branch to `main`
 - [ ] Deploy once to get a preview URL (e.g. `https://linkpro-xxx.vercel.app`)
 
 ### Environment variables
@@ -88,7 +94,7 @@ In Vercel → Project → **Settings → Environment Variables**, add:
 - [ ] `FLUTE_CLIENT_SECRET` → matching client secret
 - [ ] `FLUTE_ENVIRONMENT` → `sandbox` for preview, `production` for live
 - [ ] `FLUTE_WEBHOOK_SECRET` → add after creating the webhook endpoint (see below)
-- [ ] `FLUTE_AMOUNT_PELVIS_1`, `FLUTE_AMOUNT_LLIP`, `FLUTE_AMOUNT_SEMINAR` → optional overrides
+- [ ] Matching `FLUTE_AMOUNT_*` values from `.env.example` → optional price overrides
 
 Apply to **Production** (and **Preview** if you want checkout on preview deploys).
 
@@ -128,8 +134,6 @@ Apply to **Production** (and **Preview** if you want checkout on preview deploys
 
 - [ ] Implement fulfillment in `server/routes/webhooks.js` (grant course access by email, token, or database)
 - [ ] Gate `pelvis-1-course.html` so only purchasers can access lessons
-- [ ] Add remaining products (Pelvis 3.0, other seminars, 3-seminar bundle) to `server/config/products.js`
-- [ ] Wire enroll buttons on `index.html` (still links to linkprosport.com today)
 - [ ] Collect customer email on checkout for reliable fulfillment
 - [ ] Switch to production Flute credentials and complete merchant activation before accepting real payments
 - [ ] Set up receipts / purchase confirmation emails

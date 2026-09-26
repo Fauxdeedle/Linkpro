@@ -49,7 +49,9 @@ img{display:block;max-width:100%;height:auto}
 .schedule-list strong{font-weight:600;color:var(--event-terracotta)}
 
 .rates{margin-top:12px;font-size:.9rem;line-height:1.85}
-.rates li{margin-left:1.1rem}
+.rates li{margin:0 0 12px 1.1rem}
+.rates a{display:inline-block;margin-left:8px;padding:5px 10px;background:var(--event-terracotta);color:#fff;font-size:.6rem;font-weight:700;letter-spacing:.1em;line-height:1.4;text-transform:uppercase}
+.rates a:hover{background:var(--event-bronze)}
 
 .section-sand{background:var(--event-sand-deep);padding:72px 0}
 .instructor-grid{display:grid;grid-template-columns:minmax(200px,280px) 1fr;gap:clamp(28px,5vw,48px);align-items:start;margin-top:36px}
@@ -183,9 +185,9 @@ img{display:block;max-width:100%;height:auto}
         <p>Retreat begins <strong>Nov 11 at 4:00 pm</strong> and ends <strong>Nov 15 at 10:00 am</strong>. Fly into San José del Cabo (SJC) from SNA, LAX, or Tijuana. Airport shuttle pick-up and return are provided when possible, coordinated around guest flight times.</p>
         <p style="margin-top:16px"><strong>Accommodations</strong></p>
         <ul class="rates">
-          <li>Shared bunk room — $1,350</li>
-          <li>One-person king — $2,350</li>
-          <li>Two-person king — $3,150</li>
+          <li>Shared bunk room — $1,350 <a href="/checkout.html?product=retreat-shared-bunk" data-flute-product="retreat-shared-bunk">Reserve</a></li>
+          <li>One-person king — $2,350 <a href="/checkout.html?product=retreat-king-single" data-flute-product="retreat-king-single">Reserve</a></li>
+          <li>Two-person king — $3,150 <a href="/checkout.html?product=retreat-king-double" data-flute-product="retreat-king-double">Reserve</a></li>
         </ul>
       </div>
     </div>
@@ -208,7 +210,7 @@ img{display:block;max-width:100%;height:auto}
 <section class="event-cta" id="register">
   <div class="container">
     <h2>Reserve your suite</h2>
-    <p>Contact LINK Pro concierge to hold your room and receive travel details. Limited to eight guest rooms at Soluna Estate.</p>
+    <p>Choose an accommodation above to reserve through secure checkout, or contact LINK Pro concierge for availability and travel details. Limited to eight guest rooms at Soluna Estate.</p>
     <div class="cta-actions">
       <a class="btn-primary" href="mailto:concierge@linkmedicalcenter.com?subject=Nicolette%20David%20Retreat%20Registration">Email to register</a>
       <a class="btn-secondary" href="tel:+19494650770">949-465-0770</a>
@@ -229,5 +231,6 @@ img{display:block;max-width:100%;height:auto}
   </div>
 </footer>
 <script src="/js/site-nav.js" defer></script>
+<script src="/js/flute-checkout.js"></script>
 </body>
 </html>
