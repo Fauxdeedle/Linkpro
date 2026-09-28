@@ -2,14 +2,17 @@
 
 Payment handling for LINK Pro courses and seminars using [Flute Checkout](https://developer.flute.com/docs/online-payments/flute-checkout). This branch adds a small Node/Express backend on top of the existing static HTML site.
 
-**Branch:** `cursor/flute-test-706b`
-
 ## What it does
 
-- Enroll / Register buttons on `courses.html` start a Flute hosted checkout session
-- Redirect to Flute-hosted checkout
+- Enroll / Register buttons create a payment session on the backend
+- The browser redirects to the session-specific Flute-hosted checkout URL
 - Success page verifies payment via the Flute API
 - Webhook endpoint logs completed payments
+
+Card details stay on Flute's hosted page and never touch this application.
+Checkout currently requests card payments explicitly. Flute uses one merchant
+API configuration for every item; there are no per-item products to create in
+the Flute dashboard.
 
 ## Products
 
@@ -18,6 +21,12 @@ Payment handling for LINK Pro courses and seminars using [Flute Checkout](https:
 | Pelvis 1.0 | $100 | `pelvis-1` | `/pelvis-1-course.html` |
 | Lower Limb Injury Prevention | $199 | `llip` | `/courses.html#online` |
 | Upper Limb seminar | $1,500 | `seminar-upper-limb` | `/courses.html#seminars` |
+| Lower Limb seminar | $1,500 | `seminar-lower-limb` | `/courses.html#seminars` |
+| Trunk & Pelvis seminar | $1,500 | `seminar-trunk-pelvis` | `/courses.html#seminars` |
+| Three-seminar bundle | $3,750 | `seminar-bundle` | `/courses.html#seminars` |
+| Retreat — shared bunk | $1,350 | `retreat-shared-bunk` | `/nicolette-david-retreat.html` |
+| Retreat — one-person king | $2,350 | `retreat-king-single` | `/nicolette-david-retreat.html` |
+| Retreat — two-person king | $3,150 | `retreat-king-double` | `/nicolette-david-retreat.html` |
 
 ## Project layout
 
@@ -51,7 +60,7 @@ Copy `.env.example` to `.env`:
 | `FLUTE_CLIENT_SECRET` | Merchant API client secret |
 | `FLUTE_ENVIRONMENT` | `sandbox` or `production` |
 | `FLUTE_WEBHOOK_SECRET` | HMAC secret from webhook endpoint setup |
-| `BASE_URL` | Public site URL (required for return redirects) |
+| `BASE_URL` | Optional public site URL override; Vercel's deployment URL is used automatically when unset |
 
 ### Run locally
 
@@ -65,7 +74,7 @@ On startup you should see either `Flute: configured` or `Flute: add credentials 
 ### Test checkout
 
 1. Open `http://localhost:8080/courses.html`
-2. Click **Enroll Now** — Flute Checkout opens
+2. Click **Enroll Now** — the local loading page creates a session and redirects to Flute Checkout
 3. Complete payment using sandbox test card **4111 1111 1111 1111**
 4. You are redirected to `checkout-success.html`, which verifies the session
 
@@ -83,7 +92,7 @@ Subscribe to `payment_session.completed`.
 
 | Method | Path | Description |
 | --- | --- | --- |
-| `POST` | `/api/create-checkout-session` | Body: `{ "productId": "pelvis-1" }` → `{ "url": "https://public.flute.com/checkout/..." }` |
+| `POST` | `/api/create-checkout-session` | Body: `{ "productId": "pelvis-1" }` → `{ "sessionId": "...", "checkoutUrl": "https://public.flute.com/checkout/...", "productName": "..." }` |
 | `GET` | `/api/checkout-session/:sessionId` | Verify payment status after redirect |
 | `GET` | `/api/flute-config` | Returns `{ "configured": true }` when credentials are set |
 | `POST` | `/api/webhooks/flute` | Flute webhook receiver (HMAC verified) |
@@ -91,10 +100,11 @@ Subscribe to `payment_session.completed`.
 ## Flow
 
 ```
-courses.html button click
-  → js/flute-checkout.js
+course or retreat checkout link
+  → checkout.html?product=...
   → POST /api/create-checkout-session
-  → redirect to Flute Checkout
+  → backend creates a session with amount, returnUrl, card method, and product metadata
+  → redirect to the returned Flute checkoutUrl
   → customer pays
   → redirect to checkout-success.html?session_id=...
   → GET /api/checkout-session/:sessionId
@@ -106,8 +116,15 @@ Parallel: Flute → POST /api/webhooks/flute → payment_session.completed
 ## Adding a product
 
 1. Add an entry to `server/config/products.js` with `amount` in whole USD dollars.
-2. Add a button with `data-flute-product="your-product-id"`.
-3. Include `<script src="js/flute-checkout.js"></script>` on the page.
+2. Give it a stable ID, display name, and post-purchase `successUrl`.
+3. Optionally add a dedicated amount override to `.env.example`.
+4. Add a link to `/checkout.html?product=your-product-id`; the
+   `data-flute-product` attribute is supported for non-link controls.
+
+Each item needs this trusted server-side catalog entry so a customer cannot
+choose their own price. It does **not** need a separate Flute dashboard setup,
+API credential, or Flute product ID. Every purchase creates a new payment
+session under the same merchant account.
 
 ## Links
 

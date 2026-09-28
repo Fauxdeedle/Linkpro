@@ -19,6 +19,7 @@ router.post('/create-checkout-session', async (req, res) => {
     }
     res.json({
       sessionId: result.sessionId,
+      checkoutUrl: result.checkoutUrl,
       productName: result.productName,
     });
   } catch (err) {

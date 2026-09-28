@@ -71,6 +71,7 @@ p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:1.5rem}
   <p id="message">Please wait while we confirm your payment with Flute.</p>
   <p class="status" id="status">Verifying payment…</p>
   <a id="continue-link" href="courses.html" style="display:none">Continue to course</a>
+  <a id="retry-link" href="courses.html" style="display:none">Try checkout again</a>
   <a class="secondary" href="courses.html">Back to courses</a>
 </div>
 <script>
@@ -82,13 +83,38 @@ p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:1.5rem}
   var titleEl = document.getElementById('title');
   var messageEl = document.getElementById('message');
   var linkEl = document.getElementById('continue-link');
+  var retryEl = document.getElementById('retry-link');
 
-  function showError(status) {
+  function showError(status, data) {
+    var outcome = {
+      cancelled: {
+        title: 'Checkout cancelled',
+        message: 'Your checkout was cancelled and no payment was confirmed.'
+      },
+      expired: {
+        title: 'Checkout expired',
+        message: 'This payment session expired. Start a new checkout to continue.'
+      },
+      failed: {
+        title: 'Payment unsuccessful',
+        message: 'The payment was not approved. Start a new checkout to try again.'
+      }
+    }[status];
+
     iconEl.textContent = '×';
     iconEl.classList.add('error');
-    titleEl.textContent = 'Payment not confirmed';
-    messageEl.textContent = 'We could not confirm a completed payment.';
-    statusEl.textContent = status;
+    titleEl.textContent = outcome ? outcome.title : 'Payment not confirmed';
+    messageEl.textContent = outcome
+      ? outcome.message
+      : 'We could not confirm a completed payment.';
+    statusEl.textContent = data && data.productName
+      ? data.productName + ' — ' + status
+      : status;
+
+    if (data && data.retryUrl) {
+      retryEl.href = data.retryUrl;
+      retryEl.style.display = 'inline-block';
+    }
   }
 
   if (!sessionId) {
@@ -100,7 +126,10 @@ p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:1.5rem}
     .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
     .then(function (result) {
       if (!result.ok || result.data.status !== 'paid') {
-        showError(result.data.error || 'Payment could not be verified. Current status: ' + (result.data.status || 'unknown') + '.');
+        showError(
+          result.data.error || result.data.status || 'unknown',
+          result.data
+        );
         return;
       }
 

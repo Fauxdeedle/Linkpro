@@ -52,6 +52,57 @@ Nav links use **root-relative** paths (`/about`, `/courses`, `/#contact`) so the
 
 ---
 
+## Flute hosted checkout
+
+Paid courses, seminars, bundles, and retreat rooms use
+[Flute Checkout](https://developer.flute.com/docs/online-payments/flute-checkout).
+Payment fields live on Flute's hosted page; LINK Pro only creates and verifies
+payment sessions from server-side routes.
+
+### Checkout flow
+
+1. A site link opens `/checkout.html?product={productId}`.
+2. The page posts only the product ID to `/api/create-checkout-session`.
+3. The backend looks up the trusted price in `server/config/products.js`,
+   creates a Flute session, and returns its `checkoutUrl`.
+4. The browser redirects to Flute. Flute substitutes the session ID into the
+   configured return URL and sends the visitor to `checkout-success.html`.
+5. The return page calls `/api/checkout-session/{sessionId}`. The backend
+   confirms both payment-session status `Completed` and a documented successful
+   transaction status before showing enrollment confirmation.
+
+Never put an amount in the browser request or trust the return URL by itself.
+
+### Product setup
+
+Flute does **not** need a separate dashboard product, API client, or webhook for
+each offering. All offerings share one merchant configuration. Each item does
+need a catalog entry in `server/config/products.js` with an ID, name, amount,
+and success URL, plus a matching checkout link on the site.
+
+Current IDs are `pelvis-1`, `llip`, `seminar-upper-limb`,
+`seminar-lower-limb`, `seminar-trunk-pelvis`, `seminar-bundle`,
+`retreat-shared-bunk`, `retreat-king-single`, and
+`retreat-king-double`. Optional environment-based price overrides are listed
+in `.env.example`.
+
+### Configuration and maintenance
+
+- Required server variables: `FLUTE_CLIENT_ID`, `FLUTE_CLIENT_SECRET`, and
+  `FLUTE_ENVIRONMENT`.
+- Vercel's deployment URL is used automatically to build Flute's absolute
+  `returnUrl`. Set `BASE_URL` only to override it with a canonical custom
+  domain or when running outside Vercel.
+- Session creation and verification live in `lib/checkout.js`; Flute HTTP calls
+  live in `lib/flute.js`.
+- Express routes under `server/routes/` and Vercel functions under `api/` must
+  return the same response shapes.
+- Run `npm test` after changing products, session payloads, or payment-status
+  handling.
+- See `flute-checkout.md` for setup, endpoint, and webhook details.
+
+---
+
 ## Peak Athleticism (sub-brand page)
 
 Young-athlete **ReConditioning** sub-brand landing page. Dark theme and bronze accents match the Peak Athleticism logo.
