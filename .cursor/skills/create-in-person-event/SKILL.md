@@ -154,7 +154,7 @@ Use `BASE_URL` from `.env` when set.
 ## Styling
 
 - Default palette is in `events/event-template.html` (`--event-sand`, `--event-terracotta`, etc.)
-- Typography: Playfair Display + Inter (same as main site)
+- Typography: Bebas Neue + Inter (same as main site)
 - For a different host brand, tune `:root` on that page only — do not extract shared CSS unless multiple events share one theme
 
 ## What not to do

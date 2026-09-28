@@ -26,7 +26,7 @@ When you change any **canonical fact or brand element** on the main site, update
 | Press lockups / mark | `assets/brand/` | Regenerate or edit `link-pro-mark.svg`, `link-pro-lockup-dark.svg`, and legacy `link-pro-lockup-light.svg` as needed; confirm previews on `media-kit.html` |
 | Wordmark / “LINK Pro” styling | Nav lockup image, footer branding | Brand SVGs in `assets/brand/` and any wordmark copy on `media-kit.html` |
 | Brand colors (`--gold`, `--charcoal`, cream, etc.) | `:root` on `index.html` and interior pages (e.g. `about.html`) | Color swatches + hex values in the “Brand assets” section of `media-kit.html` |
-| Typography (Playfair / Inter) | Google Fonts links and CSS on main pages | Typography samples on `media-kit.html` |
+| Typography (Bebas Neue / Inter) | Google Fonts links and CSS on main pages | Typography samples on `media-kit.html` |
 | Hero / positioning one-liner | `index.html` hero subtitle | Media kit hero subcopy and boilerplate paragraph if messaging shifted |
 | Stats (years, pro athletes, modalities, etc.) | `index.html` stats bar (`data-target` values and labels) | `.facts-grid` on `media-kit.html` |
 | Address, phone, email, hours | `index.html` `#contact` info cards | “At a glance” list and press CTA mailto on `media-kit.html` |
