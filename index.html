@@ -164,6 +164,7 @@ ul { list-style: none; }
 .hero__accent .fascia-node {
   fill: rgba(240, 224, 186, 0.9);
 }
+.hero__accent-still { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .hero__accent {
     animation: none;
@@ -1084,7 +1085,17 @@ ul { list-style: none; }
 }
 
 @media (max-width: 768px) {
-  .hero__accent { display: none; }
+  .hero__accent svg { display: none; }
+  .hero__accent-still {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: -6%;
+    width: 100%;
+    height: 112%;
+    object-fit: cover;
+    object-position: center center;
+  }
   .courses__online-grid { grid-template-columns: 1fr; }
   .seminar-card { flex-direction: column; text-align: center; gap: 20px; padding: 28px 24px; }
   .seminar-card__date { flex-direction: row; gap: 8px; }
@@ -1171,6 +1182,7 @@ ul { list-style: none; }
   <div class="hero__grain"></div>
   <div class="hero__grid"></div>
   <div class="hero__accent" aria-hidden="true">
+    <img class="hero__accent-still" src="/images/hero-fascia.webp" alt="">
 <svg viewBox="0 0 1974 1500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
   <g class="fascia-fibers">
       <path class="fiber" data-pts="1376.7,18.0 1377.0,78.0 1379.6,97.8 1380.1,127.8 1383.4,143.4 1384.0,187.0 1385.6,194.8 1394.1,210.6 1404.4,238.6 1407.4,252.3 1407.1,262.2 1413.5,278.9 1412.5,298.6" d="M1376.7 18.0C1376.7 28.0 1376.5 64.7 1377.0 78.0C1377.5 91.3 1379.1 89.5 1379.6 97.8C1380.1 106.1 1379.5 120.2 1380.1 127.8C1380.7 135.4 1382.7 133.6 1383.4 143.4C1384.0 153.3 1383.6 178.5 1384.0 187.0C1384.4 195.6 1383.9 190.9 1385.6 194.8C1387.3 198.7 1390.9 203.3 1394.1 210.6C1397.2 217.9 1402.2 231.7 1404.4 238.6C1406.7 245.6 1406.9 248.3 1407.4 252.3C1407.8 256.2 1406.1 257.8 1407.1 262.2C1408.2 266.7 1412.6 272.9 1413.5 278.9C1414.4 285.0 1412.6 295.4 1412.5 298.6"/>
@@ -2584,7 +2596,9 @@ ul { list-style: none; }
       const offset = scrollY * 0.3;
       if (heroBg) heroBg.style.transform = 'translateY(' + (offset * 0.5) + 'px)';
       const heroFibers = heroAccent && heroAccent.querySelector('svg');
+      const heroStill = heroAccent && heroAccent.querySelector('img');
       if (heroFibers) heroFibers.style.transform = 'translateY(' + (offset * 0.08) + 'px)';
+      if (heroStill) heroStill.style.transform = 'translateY(' + (offset * 0.08) + 'px)';
     }
   }
   window.addEventListener('scroll', parallax, { passive: true });
@@ -2595,7 +2609,8 @@ ul { list-style: none; }
     var hero = document.getElementById('hero');
     if (!svgEl || !hero) return;
     var reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (reduceQuery.matches) return;
+    var narrowQuery = window.matchMedia('(max-width: 768px)');
+    if (reduceQuery.matches || narrowQuery.matches) return;
 
     var paths = svgEl.querySelectorAll('.fascia-fibers path');
     var fibers = [];
