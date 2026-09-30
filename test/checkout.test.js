@@ -6,6 +6,7 @@ const {
   buildPaymentSessionRequest,
   formatCheckoutSession,
   getBaseUrl,
+  getCheckoutErrorStatus,
   isSuccessfulTransaction,
   isValidCheckoutUrl,
 } = require('../lib/checkout');
@@ -79,6 +80,28 @@ test('Vercel deployment URL supplies the checkout origin automatically', () => {
   }
 });
 
+test('Flute API hosts cannot be used as the customer return origin', () => {
+  const originalBaseUrl = process.env.BASE_URL;
+  const originalVercelUrl = process.env.VERCEL_URL;
+  process.env.BASE_URL = 'https://sandbox.api.flute.com';
+  process.env.VERCEL_URL = 'linkpro-mu.vercel.app';
+
+  try {
+    assert.equal(getBaseUrl(), 'https://linkpro-mu.vercel.app');
+  } finally {
+    if (originalBaseUrl === undefined) {
+      delete process.env.BASE_URL;
+    } else {
+      process.env.BASE_URL = originalBaseUrl;
+    }
+    if (originalVercelUrl === undefined) {
+      delete process.env.VERCEL_URL;
+    } else {
+      process.env.VERCEL_URL = originalVercelUrl;
+    }
+  }
+});
+
 test('checkout URL validation requires HTTPS', () => {
   assert.equal(
     isValidCheckoutUrl('https://public.flute.com/checkout/session-id'),
@@ -88,6 +111,10 @@ test('checkout URL validation requires HTTPS', () => {
     isValidCheckoutUrl('http://public.flute.com/checkout/session-id'),
     false
   );
+  assert.equal(
+    isValidCheckoutUrl('https://public.flute.com.evil.test/checkout/session-id'),
+    false
+  );
   assert.equal(isValidCheckoutUrl('not a url'), false);
 });
 
@@ -95,9 +122,10 @@ test('verification accepts only documented successful transaction states', () =>
   for (const status of [
     'Authorized',
     'Captured',
-    'PartiallyAuthorized',
+    'Settled',
     'Scheduled',
     'InProgress',
+    'Cleared',
   ]) {
     assert.equal(
       isSuccessfulTransaction({
@@ -109,10 +137,28 @@ test('verification accepts only documented successful transaction states', () =>
     );
   }
 
+  for (const status of [
+    'Declined',
+    'Failed',
+    'Voided',
+    'Cancelled',
+    'ChargedBack',
+    'Held',
+    'HeldByProcessor',
+  ]) {
+    assert.equal(
+      isSuccessfulTransaction({
+        status: 'Completed',
+        transactionDetails: { status },
+      }),
+      false,
+      status
+    );
+  }
   assert.equal(
     isSuccessfulTransaction({
       status: 'Completed',
-      transactionDetails: { status: 'Declined' },
+      transactionDetails: { status: 'PartiallyAuthorized' },
     }),
     false
   );
@@ -122,6 +168,35 @@ test('verification accepts only documented successful transaction states', () =>
       transactionDetails: { status: 'Captured' },
     }),
     false
+  );
+});
+
+test('verification rejects an approved status when the charged amount is wrong', () => {
+  assert.equal(
+    isSuccessfulTransaction(
+      {
+        status: 'Completed',
+        transactionDetails: {
+          status: 'Captured',
+          transactionReceipt: { amount: 50 },
+        },
+      },
+      100
+    ),
+    false
+  );
+  assert.equal(
+    isSuccessfulTransaction(
+      {
+        status: 'Completed',
+        transactionDetails: {
+          status: 'Captured',
+          transactionReceipt: { amount: '100.00' },
+        },
+      },
+      100
+    ),
+    true
   );
 });
 
@@ -152,4 +227,15 @@ test('verification resolves product metadata and terminal failures', () => {
     'cancelled'
   );
   assert.equal(formatCheckoutSession({ status: 'Expired' }).status, 'expired');
+  assert.equal(formatCheckoutSession({ status: 'Failed' }).status, 'failed');
+  assert.equal(formatCheckoutSession({ status: 'Created' }).status, 'created');
+});
+
+test('upstream failures map to useful public HTTP statuses', () => {
+  assert.equal(getCheckoutErrorStatus({ status: 400 }), 400);
+  assert.equal(getCheckoutErrorStatus({ status: 404 }), 404);
+  assert.equal(getCheckoutErrorStatus({ status: 429 }), 503);
+  assert.equal(getCheckoutErrorStatus({ status: 503 }), 503);
+  assert.equal(getCheckoutErrorStatus({ status: 401 }), 502);
+  assert.equal(getCheckoutErrorStatus(new Error('network')), 502);
 });

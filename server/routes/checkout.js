@@ -1,5 +1,10 @@
 const express = require('express');
-const { getFluteConfig, createCheckoutSession, getCheckoutSession } = require('../../lib/checkout');
+const {
+  getFluteConfig,
+  createCheckoutSession,
+  getCheckoutSession,
+  getCheckoutErrorStatus,
+} = require('../../lib/checkout');
 
 const router = express.Router();
 
@@ -24,7 +29,7 @@ router.post('/create-checkout-session', async (req, res) => {
     });
   } catch (err) {
     console.error('Checkout session error:', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(getCheckoutErrorStatus(err)).json({ error: err.message });
   }
 });
 
@@ -37,7 +42,7 @@ router.get('/checkout-session/:sessionId', async (req, res) => {
     res.json(result);
   } catch (err) {
     console.error('Session lookup error:', err.message);
-    res.status(400).json({ error: err.message });
+    res.status(getCheckoutErrorStatus(err)).json({ error: err.message });
   }
 });
 

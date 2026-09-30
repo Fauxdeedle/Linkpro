@@ -13,6 +13,12 @@ const rootDir = path.join(__dirname, '..');
 
 app.use('/api/webhooks/flute', webhooksRouter);
 app.use(express.json());
+app.use((err, _req, res, next) => {
+  if (err?.type === 'entity.parse.failed') {
+    return res.status(400).json({ error: 'Invalid JSON body' });
+  }
+  return next(err);
+});
 app.use('/api', checkoutRouter);
 
 /** Match Vercel cleanUrls locally (e.g. /about → about.html). */
