@@ -80,6 +80,28 @@ test('Vercel deployment URL supplies the checkout origin automatically', () => {
   }
 });
 
+test('Flute API hosts cannot be used as the customer return origin', () => {
+  const originalBaseUrl = process.env.BASE_URL;
+  const originalVercelUrl = process.env.VERCEL_URL;
+  process.env.BASE_URL = 'https://sandbox.api.flute.com';
+  process.env.VERCEL_URL = 'linkpro-mu.vercel.app';
+
+  try {
+    assert.equal(getBaseUrl(), 'https://linkpro-mu.vercel.app');
+  } finally {
+    if (originalBaseUrl === undefined) {
+      delete process.env.BASE_URL;
+    } else {
+      process.env.BASE_URL = originalBaseUrl;
+    }
+    if (originalVercelUrl === undefined) {
+      delete process.env.VERCEL_URL;
+    } else {
+      process.env.VERCEL_URL = originalVercelUrl;
+    }
+  }
+});
+
 test('checkout URL validation requires HTTPS', () => {
   assert.equal(
     isValidCheckoutUrl('https://public.flute.com/checkout/session-id'),
