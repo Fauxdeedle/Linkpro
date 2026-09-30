@@ -14,7 +14,9 @@
     "node": ">=20.19.0"
   },
   "dependencies": {
+    "@clerk/backend": "^3.21.0",
     "@getflute/sdk": "^0.3.3",
+    "@neondatabase/serverless": "^1.1.0",
     "dotenv": "^18.0.4",
     "express": "^5.2.1"
   }
