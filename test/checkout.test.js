@@ -115,13 +115,24 @@ test('verification accepts only documented successful transaction states', () =>
     );
   }
 
-  assert.equal(
-    isSuccessfulTransaction({
-      status: 'Completed',
-      transactionDetails: { status: 'Declined' },
-    }),
-    false
-  );
+  for (const status of [
+    'Declined',
+    'Failed',
+    'Voided',
+    'Cancelled',
+    'ChargedBack',
+    'Held',
+    'HeldByProcessor',
+  ]) {
+    assert.equal(
+      isSuccessfulTransaction({
+        status: 'Completed',
+        transactionDetails: { status },
+      }),
+      false,
+      status
+    );
+  }
   assert.equal(
     isSuccessfulTransaction({
       status: 'Completed',
@@ -194,6 +205,8 @@ test('verification resolves product metadata and terminal failures', () => {
     'cancelled'
   );
   assert.equal(formatCheckoutSession({ status: 'Expired' }).status, 'expired');
+  assert.equal(formatCheckoutSession({ status: 'Failed' }).status, 'failed');
+  assert.equal(formatCheckoutSession({ status: 'Created' }).status, 'created');
 });
 
 test('upstream failures map to useful public HTTP statuses', () => {
