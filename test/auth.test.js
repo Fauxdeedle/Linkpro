@@ -86,3 +86,36 @@ test('authentication rejects missing and invalid sessions', async () => {
     }
   }
 });
+
+test('public config supports Vercel Marketplace Clerk variables', () => {
+  const originalPublishableKey = process.env.CLERK_PUBLISHABLE_KEY;
+  const originalNextPublishableKey =
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  const originalSecretKey = process.env.CLERK_SECRET_KEY;
+  delete process.env.CLERK_PUBLISHABLE_KEY;
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = 'pk_test_marketplace';
+  process.env.CLERK_SECRET_KEY = 'sk_test_example';
+
+  try {
+    assert.deepEqual(getPublicAuthConfig(), {
+      publishableKey: 'pk_test_marketplace',
+    });
+  } finally {
+    if (originalPublishableKey === undefined) {
+      delete process.env.CLERK_PUBLISHABLE_KEY;
+    } else {
+      process.env.CLERK_PUBLISHABLE_KEY = originalPublishableKey;
+    }
+    if (originalNextPublishableKey === undefined) {
+      delete process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+    } else {
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY =
+        originalNextPublishableKey;
+    }
+    if (originalSecretKey === undefined) {
+      delete process.env.CLERK_SECRET_KEY;
+    } else {
+      process.env.CLERK_SECRET_KEY = originalSecretKey;
+    }
+  }
+});

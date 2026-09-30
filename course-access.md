@@ -26,7 +26,8 @@ database before returning lesson content.
 1. Add Clerk from the Vercel Marketplace and connect it to this project.
 2. Add Neon from the Vercel Marketplace and connect it to this project.
 3. Ensure these variables exist for Preview and Production:
-   - `CLERK_PUBLISHABLE_KEY`
+   - `CLERK_PUBLISHABLE_KEY` or the Marketplace-provisioned
+     `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
    - `CLERK_SECRET_KEY`
    - `DATABASE_URL`
    - the existing Flute variables
