@@ -304,6 +304,90 @@ ul { list-style: none; }
   font-size: 0.68rem; font-weight: 500; letter-spacing: 0.18em;
   text-transform: uppercase; color: var(--muted);
 }
+.teams-marquee {
+  background: #0a0a0a;
+  border-top: 1px solid rgba(196, 162, 101, 0.14);
+  border-bottom: 1px solid rgba(196, 162, 101, 0.14);
+  overflow: hidden;
+  padding: 44px 0 48px;
+}
+.teams-marquee__label {
+  display: block; text-align: center;
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold); margin: 0 0 32px;
+}
+.teams-marquee__viewport {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+}
+.teams-marquee__track {
+  display: flex; align-items: center; width: max-content;
+  animation: teamsScroll 52s linear infinite;
+}
+.teams-marquee:hover .teams-marquee__track { animation-play-state: paused; }
+.teams-marquee__set {
+  display: flex; align-items: center;
+}
+.org-logo {
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 64px; white-space: nowrap;
+  color: rgba(245, 240, 235, 0.88);
+  position: relative;
+}
+.org-logo + .org-logo::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  width: 1px; height: 48px; transform: translateY(-50%);
+  background: rgba(196, 162, 101, 0.28);
+}
+.org-logo__copy {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px; line-height: 1; text-align: center;
+}
+.org-logo__name {
+  font-size: 1.45rem; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: rgba(245, 240, 235, 0.94);
+}
+.org-logo__kicker {
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.26em;
+  text-transform: uppercase; color: var(--gold);
+}
+@keyframes teamsScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.quote-strip {
+  box-sizing: border-box;
+  height: 270px;
+  background: #0a0a0a;
+  border-top: 1px solid rgba(196, 162, 101, 0.14);
+  border-bottom: 1px solid rgba(196, 162, 101, 0.14);
+  padding: 48px 24px;
+  display: flex; flex-direction: column; justify-content: center;
+  text-align: center; overflow: hidden;
+}
+.quote-strip__text {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2vw, 1.4rem);
+  font-style: italic; color: rgba(255,255,255,0.86);
+  max-width: 760px; margin: 0 auto 16px; line-height: 1.65;
+}
+.quote-strip__attr {
+  font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600;
+}
+.quote-strip__attr span {
+  display: block; margin-top: 6px; color: var(--muted);
+  letter-spacing: 0.06em; font-weight: 500; text-transform: none;
+}
+[data-quote-rotate] { transition: opacity 0.35s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .teams-marquee__track { animation: none; }
+  .teams-marquee__viewport {
+    overflow-x: auto; mask-image: none; -webkit-mask-image: none;
+  }
+}
 
 /* ═══════════════════════════════════════════════
    PHILOSOPHY
@@ -475,6 +559,12 @@ ul { list-style: none; }
     linear-gradient(135deg, #1A1A1A 0%, #2A2A2A 100%);
 }
 .difference__image-inner svg { width: 120px; height: 120px; opacity: 0.15; color: var(--gold); }
+.difference__image-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+  filter: grayscale(1) contrast(1.05);
+}
 .difference__image-overlay {
   position: absolute; inset: 0;
   border: 1px solid rgba(196, 162, 101, 0.15);
@@ -524,7 +614,8 @@ ul { list-style: none; }
 .eldoa__bg {
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse 60% 60% at 80% 50%, rgba(196, 162, 101, 0.04) 0%, transparent 60%);
+    linear-gradient(90deg, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.72) 42%, rgba(10,10,10,0.55) 100%),
+    url('/images/eldoa-bg.jpg') center / cover no-repeat;
 }
 .eldoa__inner {
   position: relative; z-index: 1;
@@ -579,6 +670,11 @@ ul { list-style: none; }
   margin-bottom: 24px; display: flex; align-items: center;
   justify-content: center; font-family: var(--font-display);font-weight:500;
   font-size: 1.5rem; color: var(--white); font-style: italic;
+  overflow: hidden;
+}
+.eldoa__bio-avatar img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center 18%;
+  display: block; filter: grayscale(1);
 }
 .eldoa__bio-name {
   font-family: var(--font-display);
@@ -693,6 +789,12 @@ ul { list-style: none; }
   font-family: var(--font-display);font-weight:700;
   font-size: 4rem; font-style: italic;
   color: var(--gold); opacity: 0.15;
+}
+.drj__image-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+  filter: grayscale(1) contrast(1.03);
 }
 .drj__image-overlay {
   position: absolute; bottom: 0; left: 0; right: 0;
@@ -1109,6 +1211,11 @@ ul { list-style: none; }
   .booking__grid { grid-template-columns: 1fr; }
   .services__grid { grid-template-columns: 1fr; }
   .stats-bar__inner { grid-template-columns: repeat(2, 1fr); }
+  .teams-marquee { padding: 36px 0 40px; }
+  .org-logo { padding: 0 36px; }
+  .org-logo__name { font-size: 1.12rem; }
+  .org-logo__kicker { font-size: 0.58rem; }
+  .quote-strip { height: 340px; }
   .form__row { grid-template-columns: 1fr; }
   .difference__image { aspect-ratio: 16/9; }
   .drj__image { aspect-ratio: 16/10; order: -1; }
@@ -1123,6 +1230,7 @@ ul { list-style: none; }
   .stats-bar__inner { grid-template-columns: 1fr 1fr; gap: 24px; }
   .hero__title { font-size: clamp(2.6rem, 12vw, 4rem); }
   .philosophy__quote { padding: 28px; }
+  .quote-strip { height: 440px; padding-inline: 20px; }
 }
 </style>
 </head>
@@ -1936,6 +2044,32 @@ ul { list-style: none; }
   </div>
 </div>
 
+<div class="teams-marquee" aria-label="Teams, organizations, and athletes LINK Pro has consulted and worked with">
+  <span class="teams-marquee__label">Teams, organizations & athletes</span>
+  <div class="teams-marquee__viewport">
+    <div class="teams-marquee__track">
+      <div class="teams-marquee__set">
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">NFL</span><span class="org-logo__kicker">Athletes</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">NHL</span><span class="org-logo__kicker">Athletes</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">NBA</span><span class="org-logo__kicker">Athletes</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">49ers</span><span class="org-logo__kicker">Team</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">Hawks</span><span class="org-logo__kicker">Team</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">PGA</span><span class="org-logo__kicker">Tour</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">Olympic</span><span class="org-logo__kicker">Athletes</span></span></div>
+      </div>
+      <div class="teams-marquee__set" aria-hidden="true">
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">NFL</span><span class="org-logo__kicker">Athletes</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">NHL</span><span class="org-logo__kicker">Athletes</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">NBA</span><span class="org-logo__kicker">Athletes</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">49ers</span><span class="org-logo__kicker">Team</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">Hawks</span><span class="org-logo__kicker">Team</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">PGA</span><span class="org-logo__kicker">Tour</span></span></div>
+        <div class="org-logo"><span class="org-logo__copy"><span class="org-logo__name">Olympic</span><span class="org-logo__kicker">Athletes</span></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════════════
      PHILOSOPHY
      ═══════════════════════════════════════════════ -->
@@ -2037,6 +2171,11 @@ ul { list-style: none; }
   </div>
 </section>
 
+<aside class="quote-strip" data-quote-rotate aria-live="polite">
+  <p class="quote-strip__text" data-quote-text></p>
+  <p class="quote-strip__attr" data-quote-attr></p>
+</aside>
+
 <!-- ═══════════════════════════════════════════════
      THE LINK DIFFERENCE
      ═══════════════════════════════════════════════ -->
@@ -2045,11 +2184,7 @@ ul { list-style: none; }
     <div class="difference__grid">
       <div class="difference__image reveal">
         <div class="difference__image-inner">
-          <svg viewBox="0 0 120 120" fill="none">
-            <path d="M60 10L110 95H10L60 10Z" stroke="currentColor" stroke-width="1"/>
-            <path d="M60 30L90 85H30L60 30Z" stroke="currentColor" stroke-width="0.5"/>
-            <line x1="60" y1="10" x2="60" y2="95" stroke="currentColor" stroke-width="0.3"/>
-          </svg>
+          <img class="difference__image-photo" src="/images/pelvis-diagram.jpg" alt="Pelvis-centered biomechanics">
         </div>
         <div class="difference__image-overlay"></div>
       </div>
@@ -2145,7 +2280,7 @@ ul { list-style: none; }
         </div>
       </div>
       <div class="eldoa__bio reveal reveal-delay-2">
-        <div class="eldoa__bio-avatar">MK</div>
+        <div class="eldoa__bio-avatar"><img src="/images/max.jpg" alt="Max Karish"></div>
         <h3 class="eldoa__bio-name">Max Karish</h3>
         <div class="eldoa__bio-role">Lead ELDOA Instructor</div>
         <p class="eldoa__bio-text">
@@ -2349,7 +2484,7 @@ ul { list-style: none; }
     <div class="drj__grid">
       <div class="drj__image reveal">
         <div class="drj__image-inner">
-          <div class="drj__image-text">Dr. J</div>
+          <img class="drj__image-photo" src="/images/jason.jpg" alt="Dr. Jason Amstutz">
         </div>
         <div class="drj__image-overlay">
           <div class="drj__image-tag">Founder & Lead Practitioner</div>
@@ -2767,6 +2902,7 @@ ul { list-style: none; }
 
 })();
 </script>
+<script src="/js/site-quotes.js" defer></script>
 <script src="/js/site-nav.js" defer></script>
 <script src="/js/flute-checkout.js"></script>
 
