@@ -1,4 +1,7 @@
-const { createCheckoutSession } = require('../lib/checkout');
+const {
+  createCheckoutSession,
+  getCheckoutErrorStatus,
+} = require('../lib/checkout');
 const { readJsonBody } = require('../lib/body');
 
 module.exports = async function handler(req, res) {
@@ -21,6 +24,8 @@ module.exports = async function handler(req, res) {
     });
   } catch (err) {
     console.error('Checkout session error:', err.message);
-    return res.status(500).json({ error: err.message });
+    return res
+      .status(getCheckoutErrorStatus(err))
+      .json({ error: err.message });
   }
 };

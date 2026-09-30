@@ -1,4 +1,7 @@
-const { getCheckoutSession } = require('../../lib/checkout');
+const {
+  getCheckoutSession,
+  getCheckoutErrorStatus,
+} = require('../../lib/checkout');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -18,6 +21,8 @@ module.exports = async function handler(req, res) {
     return res.status(200).json(result);
   } catch (err) {
     console.error('Session lookup error:', err.message);
-    return res.status(400).json({ error: err.message });
+    return res
+      .status(getCheckoutErrorStatus(err))
+      .json({ error: err.message });
   }
 };
