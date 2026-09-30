@@ -61,6 +61,41 @@ test('valid signed webhooks work without API credentials', async () => {
   }
 });
 
+test('completed payment-session webhooks fulfill course access', async () => {
+  const originalSecret = process.env.FLUTE_WEBHOOK_SECRET;
+  process.env.FLUTE_WEBHOOK_SECRET = 'test-webhook-secret';
+  const body = JSON.stringify({
+    id: 'delivery-2',
+    type: 'payment_session.completed',
+    data: { object: { id: 'payment-session-1' } },
+  });
+  let fulfilledSessionId;
+
+  try {
+    assert.deepEqual(
+      await processFluteWebhook(
+        Buffer.from(body),
+        signedWebhook(body, process.env.FLUTE_WEBHOOK_SECRET, {
+          id: 'delivery-2',
+        }),
+        {
+          fulfill: async (sessionId) => {
+            fulfilledSessionId = sessionId;
+          },
+        }
+      ),
+      { received: true }
+    );
+    assert.equal(fulfilledSessionId, 'payment-session-1');
+  } finally {
+    if (originalSecret === undefined) {
+      delete process.env.FLUTE_WEBHOOK_SECRET;
+    } else {
+      process.env.FLUTE_WEBHOOK_SECRET = originalSecret;
+    }
+  }
+});
+
 test('tampered webhooks are rejected', async () => {
   const originalSecret = process.env.FLUTE_WEBHOOK_SECRET;
   process.env.FLUTE_WEBHOOK_SECRET = 'test-webhook-secret';

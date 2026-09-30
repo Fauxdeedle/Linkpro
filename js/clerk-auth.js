@@ -1,12 +1,14 @@
 (function () {
   var clerkPromise;
 
-  function loadScript() {
+  function loadScript(src, attributes) {
     return new Promise(function (resolve, reject) {
       var script = document.createElement('script');
-      script.src =
-        'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@6.35.0/dist/clerk.browser.js';
+      script.src = src;
       script.crossOrigin = 'anonymous';
+      Object.keys(attributes || {}).forEach(function (name) {
+        script.setAttribute(name, attributes[name]);
+      });
       script.onload = resolve;
       script.onerror = function () {
         reject(new Error('Could not load sign-in service.'));
@@ -27,12 +29,29 @@
           });
         })
         .then(async function (publishableKey) {
-          if (!window.Clerk) {
-            await loadScript();
+          var clerkDomain;
+          try {
+            clerkDomain = atob(publishableKey.split('_')[2]).slice(0, -1);
+          } catch {
+            throw new Error('Invalid Clerk publishable key.');
           }
-          var clerk = new window.Clerk(publishableKey);
-          await clerk.load();
-          return clerk;
+          if (!window.Clerk) {
+            await loadScript(
+              'https://' +
+                clerkDomain +
+                '/npm/@clerk/ui@1/dist/ui.browser.js'
+            );
+            await loadScript(
+              'https://' +
+                clerkDomain +
+                '/npm/@clerk/clerk-js@6/dist/clerk.browser.js',
+              { 'data-clerk-publishable-key': publishableKey }
+            );
+          }
+          await window.Clerk.load({
+            ui: { ClerkUI: window.__internal_ClerkUICtor },
+          });
+          return window.Clerk;
         });
     }
     return clerkPromise;
