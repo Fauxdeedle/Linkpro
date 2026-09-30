@@ -5,6 +5,8 @@ require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const checkoutRouter = require('./routes/checkout');
 const webhooksRouter = require('./routes/webhooks');
+const courseAccessRouter = require('./routes/course-access');
+const { getPublicAuthConfig } = require('../lib/auth');
 const { isConfigured } = require('../lib/flute');
 
 const app = express();
@@ -20,6 +22,14 @@ app.use((err, _req, res, next) => {
   return next(err);
 });
 app.use('/api', checkoutRouter);
+app.get('/api/auth-config', (_req, res) => {
+  const result = getPublicAuthConfig();
+  if (result.error) {
+    return res.status(result.status).json({ error: result.error });
+  }
+  return res.json(result);
+});
+app.use('/api/course-access', courseAccessRouter);
 
 /** Match Vercel cleanUrls locally (e.g. /about → about.html). */
 function cleanUrls(req, res, next) {

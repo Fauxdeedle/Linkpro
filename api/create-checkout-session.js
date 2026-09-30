@@ -2,6 +2,8 @@ const {
   createCheckoutSession,
   getCheckoutErrorStatus,
 } = require('../lib/checkout');
+const { authenticateRequest } = require('../lib/auth');
+const { getProduct } = require('../server/config/products');
 const { readJsonBody } = require('../lib/body');
 
 module.exports = async function handler(req, res) {
@@ -11,7 +13,17 @@ module.exports = async function handler(req, res) {
 
   try {
     const { productId } = readJsonBody(req);
-    const result = await createCheckoutSession(productId);
+    const product = getProduct(productId);
+    let userId;
+    if (product?.courseId) {
+      const auth = await authenticateRequest(req);
+      if (auth.error) {
+        return res.status(auth.status).json({ error: auth.error });
+      }
+      userId = auth.userId;
+    }
+
+    const result = await createCheckoutSession(productId, userId);
 
     if (result.error) {
       return res.status(result.status).json({ error: result.error });

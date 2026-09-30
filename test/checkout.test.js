@@ -55,6 +55,28 @@ test('hosted session payload uses a trusted product and documented fields', () =
   }
 });
 
+test('protected-course checkout binds the Clerk user to Flute metadata', () => {
+  const originalBaseUrl = process.env.BASE_URL;
+  process.env.BASE_URL = 'https://linkprosport.com';
+
+  try {
+    const payload = buildPaymentSessionRequest(
+      getProduct('pelvis-1'),
+      'user_123'
+    );
+    assert.deepEqual(payload.metadata, {
+      productId: 'pelvis-1',
+      userId: 'user_123',
+    });
+  } finally {
+    if (originalBaseUrl === undefined) {
+      delete process.env.BASE_URL;
+    } else {
+      process.env.BASE_URL = originalBaseUrl;
+    }
+  }
+});
+
 test('Vercel deployment URL supplies the checkout origin automatically', () => {
   const originalBaseUrl = process.env.BASE_URL;
   const originalVercelUrl = process.env.VERCEL_URL;

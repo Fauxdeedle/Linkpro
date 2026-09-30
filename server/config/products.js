@@ -19,6 +19,7 @@ const products = {
     name: 'Pelvis 1.0',
     amount: amountFromEnv(100, 'FLUTE_AMOUNT_PELVIS_1'),
     successUrl: '/pelvis-1-course.html',
+    courseId: 'pelvis-1',
   },
   llip: {
     id: 'llip',

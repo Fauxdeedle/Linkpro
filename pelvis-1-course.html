@@ -178,7 +178,7 @@ h1 em{color:var(--gold);font-weight:inherit}
   <div class="container">
     <div class="section-heading">
       <h2>Your course <em>curriculum</em></h2>
-      <p>Work through each lesson in order or revisit any topic at any time. Mark a lesson complete when you finish; your progress is saved on this device.</p>
+      <p>Work through each lesson in order or revisit any topic at any time. Your progress is securely saved to your account.</p>
     </div>
     <div class="lesson-list" id="lessonList"></div>
     <button class="reset-button" id="resetProgress" type="button">Reset course progress</button>
@@ -223,15 +223,11 @@ h1 em{color:var(--gold);font-weight:inherit}
   </article>
 </div>
 
+<script src="/js/clerk-auth.js"></script>
 <script>
 (function () {
-  var lessons = [
-    { title: 'The Pelvis as the Foundation', duration: '18 min', description: 'Establish the role of the pelvis in whole-body movement. This lesson introduces the anatomical landmarks, load-transfer principles, and foundational concepts used throughout the course.', youtube: '' },
-    { title: 'Pelvic Biomechanics & Oblique Axes', duration: '27 min', description: 'Explore nutation, counternutation, and the oblique axes that organize pelvic motion. Learn how these mechanics influence gait, force production, and compensation.', youtube: '' },
-    { title: 'Assessment & Identifying Dysfunction', duration: '32 min', description: 'Follow a repeatable movement assessment to identify asymmetry and dysfunction. Connect what you observe to likely restrictions and compensation patterns.', youtube: '' },
-    { title: 'Corrective Exercise Strategies', duration: '29 min', description: 'Translate assessment findings into practical interventions. Apply mobility, stability, and integration strategies that support durable movement outcomes.', youtube: '' }
-  ];
-  var storageKey = 'linkpro-pelvis-1-progress';
+  var courseId = 'pelvis-1';
+  var lessons = [];
   var completed = [];
   var activeLesson = 0;
   var lastFocusedElement = null;
@@ -268,15 +264,18 @@ h1 em{color:var(--gold);font-weight:inherit}
     lessonVideoFrame.title = 'Lesson video';
   }
 
-  try {
-    var saved = JSON.parse(localStorage.getItem(storageKey));
-    if (Array.isArray(saved)) completed = saved.filter(function (index) { return Number.isInteger(index) && index >= 0 && index < lessons.length; });
-  } catch (error) {
-    completed = [];
-  }
-
-  function saveProgress() {
-    try { localStorage.setItem(storageKey, JSON.stringify(completed)); } catch (error) {}
+  async function saveProgress() {
+    var token = await window.LinkProAuth.getToken();
+    if (!token) throw new Error('Sign in required');
+    var response = await fetch('/api/course-access/' + courseId, {
+      method: 'PUT',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ completedLessons: completed })
+    });
+    if (!response.ok) throw new Error('Could not save course progress');
   }
 
   function renderLessons() {
@@ -341,11 +340,11 @@ h1 em{color:var(--gold);font-weight:inherit}
     event.preventDefault();
     openLesson(Number(event.currentTarget.dataset.lesson || 0));
   });
-  document.getElementById('completeLesson').addEventListener('click', function () {
+  document.getElementById('completeLesson').addEventListener('click', async function () {
     if (completed.indexOf(activeLesson) === -1) {
       completed.push(activeLesson);
       completed.sort();
-      saveProgress();
+      await saveProgress();
       renderLessons();
       updateProgress();
       updateCompleteButton();
@@ -356,17 +355,66 @@ h1 em{color:var(--gold);font-weight:inherit}
   document.getElementById('closeLesson').addEventListener('click', closeLesson);
   lessonView.addEventListener('click', function (event) { if (event.target === lessonView) closeLesson(); });
   document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && lessonView.classList.contains('open')) closeLesson(); });
-  document.getElementById('resetProgress').addEventListener('click', function () {
+  document.getElementById('resetProgress').addEventListener('click', async function () {
     if (window.confirm('Reset all progress for Pelvis 1.0?')) {
       completed = [];
-      saveProgress();
+      await saveProgress();
       renderLessons();
       updateProgress();
     }
   });
 
-  renderLessons();
-  updateProgress();
+  function showAccessMessage(message, action, onClick) {
+    lessonList.innerHTML =
+      '<div style="padding:32px 0"><p style="margin-bottom:18px">' +
+      message +
+      '</p><button class="primary-button" id="accessAction" type="button">' +
+      action +
+      '</button></div>';
+    document.getElementById('accessAction').addEventListener('click', onClick);
+  }
+
+  async function loadCourse() {
+    try {
+      var token = await window.LinkProAuth.getToken();
+      if (!token) {
+        showAccessMessage(
+          'Sign in to access your purchased course and saved progress.',
+          'Sign in',
+          function () { window.LinkProAuth.signIn(); }
+        );
+        return;
+      }
+
+      var response = await fetch('/api/course-access/' + courseId, {
+        headers: { Authorization: 'Bearer ' + token }
+      });
+      var data = await response.json();
+      if (response.status === 403) {
+        showAccessMessage(
+          'Purchase Pelvis 1.0 to unlock the full curriculum.',
+          'Purchase course',
+          function () { window.location.href = '/checkout.html?product=pelvis-1'; }
+        );
+        return;
+      }
+      if (!response.ok) throw new Error(data.error || 'Course unavailable');
+
+      lessons = data.course.lessons;
+      completed = Array.isArray(data.completedLessons)
+        ? data.completedLessons
+        : [];
+      renderLessons();
+      updateProgress();
+    } catch (error) {
+      lessonList.innerHTML =
+        '<p style="padding:32px 0;color:#a52626">' +
+        (error.message || 'Course access is unavailable.') +
+        '</p>';
+    }
+  }
+
+  loadCourse();
 })();
 </script>
 <script src="/js/site-nav.js" defer></script>

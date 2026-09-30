@@ -54,6 +54,7 @@
     <a class="back" href="/courses.html">Back to courses</a>
   </main>
 
+  <script src="/js/clerk-auth.js"></script>
   <script>
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('product');
@@ -73,9 +74,24 @@
       message.textContent = 'Redirecting you to Flute’s secure hosted checkout…';
       message.classList.remove('error');
 
+      const headers = { 'Content-Type': 'application/json' };
+      if (productId === 'pelvis-1') {
+        const token = await window.LinkProAuth.getToken();
+        if (!token) {
+          productName.textContent = 'Sign in to purchase Pelvis 1.0';
+          message.textContent = 'Create or sign in to your account, then continue to secure checkout.';
+          retryButton.textContent = 'Sign in';
+          retryButton.hidden = false;
+          retryButton.disabled = false;
+          await window.LinkProAuth.signIn();
+          return;
+        }
+        headers.Authorization = 'Bearer ' + token;
+      }
+
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ productId }),
       });
       const data = await response.json();
@@ -89,6 +105,7 @@
       }
 
       productName.textContent = data.productName;
+      retryButton.textContent = 'Try again';
       window.location.replace(checkoutUrl.href);
     }
 
