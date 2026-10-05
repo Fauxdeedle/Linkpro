@@ -82,7 +82,7 @@ and success URL, plus a matching checkout link on the site.
 
 Current IDs are `pelvis-1`, `llip`, `seminar-upper-limb`,
 `seminar-lower-limb`, `seminar-trunk-pelvis`, `seminar-bundle`,
-`retreat-shared-bunk`, `retreat-king-single`, and
+`retreat-shared-bunk`, `retreat-shared-queen`, `retreat-king-single`, and
 `retreat-king-double`. Optional environment-based price overrides are listed
 in `.env.example`.
 

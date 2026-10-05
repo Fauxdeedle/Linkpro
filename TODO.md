@@ -37,6 +37,7 @@ Product amounts are defined in `server/config/products.js`. Defaults match the p
 - [ ] **Fascia & 2TLS — Trunk & Pelvis seminar** ($1,500) — `seminar-trunk-pelvis`
 - [ ] **Three-seminar bundle** ($3,750) — `seminar-bundle`
 - [ ] **Retreat shared bunk room** ($1,350) — `retreat-shared-bunk`
+- [ ] **Retreat Cuatro shared queen** ($1,450) — `retreat-shared-queen`
 - [ ] **Retreat one-person king** ($2,350) — `retreat-king-single`
 - [ ] **Retreat two-person king** ($3,150) — `retreat-king-double`
 
