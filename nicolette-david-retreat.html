@@ -32,7 +32,9 @@ img{display:block;max-width:100%;height:auto}
 .event-hero__meta strong{color:var(--event-terracotta);font-weight:600}
 
 .moon-divider{display:flex;justify-content:center;align-items:center;gap:clamp(4px,1.2vw,10px);padding:28px var(--side);background:var(--event-cream)}
-.moon-divider svg{width:clamp(14px,2.2vw,22px);height:auto;fill:var(--event-bronze);opacity:.85}
+.moon-divider svg{width:clamp(18px,2.2vw,24px);height:auto}
+.moon-divider__light{fill:var(--event-bronze);opacity:.85}
+.moon-divider__shadow{fill:var(--event-cream)}
 
 .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,2vw,18px);padding:0 var(--side) 64px;max-width:calc(var(--max) + var(--side)*2);margin:0 auto}
 .gallery img{width:100%;aspect-ratio:4/3;object-fit:cover}
@@ -140,17 +142,15 @@ img{display:block;max-width:100%;height:auto}
 </header>
 
 <div class="moon-divider" aria-hidden="true">
-  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A8 8 0 0 1 12 2z"/></svg>
-  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 8.66 5A10 10 0 1 0 12 2z"/></svg>
-  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 7.07 3A10 10 0 1 0 12 2z"/></svg>
-  <svg viewBox="0 0 24 24"><path d="M12 2v20a10 10 0 0 1 0-20z"/></svg>
-  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-7.07 3A10 10 0 1 1 12 22V2z"/></svg>
-  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
-  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0 7.07 3A10 10 0 1 0 12 22V2z"/></svg>
-  <svg viewBox="0 0 24 24"><path d="M12 2v20a10 10 0 0 0 0-20z"/></svg>
-  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.66 5A10 10 0 1 1 12 22V2z"/></svg>
-  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-10 10 8 8 0 0 0 8 8 10 10 0 0 1-8-18z"/></svg>
-  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 1-10 10A8 8 0 0 0 12 2z"/></svg>
+  <svg viewBox="0 0 24 24"><circle class="moon-divider__light" cx="12" cy="12" r="10"/><circle class="moon-divider__shadow" cx="9" cy="12" r="10"/></svg>
+  <svg viewBox="0 0 24 24"><circle class="moon-divider__light" cx="12" cy="12" r="10"/><circle class="moon-divider__shadow" cx="6" cy="12" r="10"/></svg>
+  <svg viewBox="0 0 24 24"><path class="moon-divider__light" d="M12 2a10 10 0 0 1 0 20z"/></svg>
+  <svg viewBox="0 0 24 24"><circle class="moon-divider__light" cx="12" cy="12" r="10"/><circle class="moon-divider__shadow" cx="-2" cy="12" r="10"/></svg>
+  <svg viewBox="0 0 24 24"><circle class="moon-divider__light" cx="12" cy="12" r="10"/></svg>
+  <svg viewBox="0 0 24 24"><circle class="moon-divider__light" cx="12" cy="12" r="10"/><circle class="moon-divider__shadow" cx="26" cy="12" r="10"/></svg>
+  <svg viewBox="0 0 24 24"><path class="moon-divider__light" d="M12 2a10 10 0 0 0 0 20z"/></svg>
+  <svg viewBox="0 0 24 24"><circle class="moon-divider__light" cx="12" cy="12" r="10"/><circle class="moon-divider__shadow" cx="18" cy="12" r="10"/></svg>
+  <svg viewBox="0 0 24 24"><circle class="moon-divider__light" cx="12" cy="12" r="10"/><circle class="moon-divider__shadow" cx="15" cy="12" r="10"/></svg>
 </div>
 
 <div class="gallery">
