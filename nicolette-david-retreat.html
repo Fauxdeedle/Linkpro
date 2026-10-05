@@ -44,16 +44,25 @@ img{display:block;max-width:100%;height:auto}
 .section-mauve h2{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2rem);font-weight:700;margin-bottom:16px}
 .section-mauve p{font-size:.95rem;line-height:1.8;opacity:.92;max-width:720px}
 
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,56px);margin-top:48px}
+.schedule-block{max-width:720px;margin-top:48px}
 .schedule-list{list-style:none;font-size:.9rem;line-height:1.75}
 .schedule-list li{padding:10px 0;border-bottom:1px solid rgba(74,52,40,.12)}
 .schedule-list li:last-child{border-bottom:none}
 .schedule-list strong{font-weight:600;color:var(--event-terracotta)}
 
-.rates{margin-top:12px;font-size:.9rem;line-height:1.85}
-.rates li{margin:0 0 12px 1.1rem}
-.rates a{display:inline-block;margin-left:8px;padding:5px 10px;background:var(--event-terracotta);color:#fff;font-size:.6rem;font-weight:700;letter-spacing:.1em;line-height:1.4;text-transform:uppercase}
-.rates a:hover{background:var(--event-bronze)}
+.section-stay{background:var(--event-cream);padding:72px 0 80px}
+.section-stay .label{font-size:.62rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--event-terracotta);margin-bottom:14px}
+.section-stay h2{font-family:var(--serif);font-size:clamp(1.7rem,3vw,2.3rem);font-weight:700;margin-bottom:16px}
+.section-stay__intro{max-width:760px;font-size:.95rem;line-height:1.8;color:rgba(74,52,40,.88)}
+.section-stay h3{font-family:var(--serif);font-size:clamp(1.3rem,2.4vw,1.7rem);margin:42px 0 20px}
+.accommodation-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,24px)}
+.accommodation-card{display:flex;flex-direction:column;min-width:0;background:#fff;border:1px solid rgba(74,52,40,.12)}
+.accommodation-card img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.accommodation-card__body{display:flex;flex:1;flex-direction:column;padding:18px}
+.accommodation-card h4{font-family:var(--serif);font-size:clamp(1rem,1.7vw,1.2rem);line-height:1.22;text-transform:uppercase}
+.accommodation-card__price{margin:8px 0 18px;font-size:.82rem;font-weight:600}
+.accommodation-card__button{display:block;margin-top:auto;padding:12px 14px;background:var(--event-terracotta);color:#fff;font-size:.64rem;font-weight:700;letter-spacing:.13em;text-align:center;text-transform:uppercase;transition:background .3s var(--ease)}
+.accommodation-card__button:hover{background:var(--event-bronze)}
 
 .section-sand{background:var(--event-sand-deep);padding:72px 0}
 .instructor-grid{display:grid;grid-template-columns:minmax(200px,280px) 1fr;gap:clamp(28px,5vw,48px);align-items:start;margin-top:36px}
@@ -82,8 +91,12 @@ img{display:block;max-width:100%;height:auto}
 
 @media(max-width:768px){
   .gallery{grid-template-columns:1fr}
-  .two-col,.instructor-grid{grid-template-columns:1fr}
+  .accommodation-grid{grid-template-columns:repeat(2,1fr)}
+  .instructor-grid{grid-template-columns:1fr}
   .instructor-grid img{max-width:280px;margin:0 auto}
+}
+@media(max-width:480px){
+  .accommodation-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -164,32 +177,62 @@ img{display:block;max-width:100%;height:auto}
     <div class="label">The setting</div>
     <h2>Soluna Estate</h2>
     <p>Soluna is a serene luxury retreat in Pescadero, on the Pacific coast of Baja California Sur, where farmland meets the ocean. With only eight rooms, the experience stays intimate and personal. A private chef provides healthy meals and snacks. Between yoga sessions, relax by the pool, book a massage, or visit the beach. Cerritos Beach is about a five-minute drive; the historic town of Todos Santos is roughly ten to fifteen minutes by car, with at least one group excursion planned.</p>
-    <div class="two-col">
-      <div>
-        <div class="label">A day at Soluna</div>
-        <h2>Sun &amp; moon practice</h2>
-        <ul class="schedule-list">
-          <li><strong>7–8 am</strong> Coffee, tea, fruit</li>
-          <li><strong>8 am</strong> Morning meditation</li>
-          <li><strong>8:30 am</strong> Sun practice</li>
-          <li><strong>10 am</strong> Breakfast / brunch</li>
-          <li><strong>11 am–2 pm</strong> Rest, relax, explore</li>
-          <li><strong>2:30 pm</strong> Afternoon snack</li>
-          <li><strong>4:30 pm</strong> Moon practice</li>
-          <li><strong>6 pm</strong> Dinner</li>
-        </ul>
-      </div>
-      <div>
-        <div class="label">Logistics</div>
-        <h2>Getting there &amp; stay</h2>
-        <p>Retreat begins <strong>Nov 11 at 4:00 pm</strong> and ends <strong>Nov 15 at 10:00 am</strong>. Fly into San José del Cabo (SJC) from SNA, LAX, or Tijuana. Airport shuttle pick-up and return are provided when possible, coordinated around guest flight times.</p>
-        <p style="margin-top:16px"><strong>Accommodations</strong></p>
-        <ul class="rates">
-          <li>Shared bunk room — $1,350 <a href="/checkout.html?product=retreat-shared-bunk" data-flute-product="retreat-shared-bunk">Reserve</a></li>
-          <li>One-person king — $2,350 <a href="/checkout.html?product=retreat-king-single" data-flute-product="retreat-king-single">Reserve</a></li>
-          <li>Two-person king — $3,150 <a href="/checkout.html?product=retreat-king-double" data-flute-product="retreat-king-double">Reserve</a></li>
-        </ul>
-      </div>
+    <div class="schedule-block">
+      <div class="label">A day at Soluna</div>
+      <h2>Sun &amp; moon practice</h2>
+      <ul class="schedule-list">
+        <li><strong>7–8 am</strong> Coffee, tea, fruit</li>
+        <li><strong>8 am</strong> Morning meditation</li>
+        <li><strong>8:30 am</strong> Sun practice</li>
+        <li><strong>10 am</strong> Breakfast / brunch</li>
+        <li><strong>11 am–2 pm</strong> Rest, relax, explore</li>
+        <li><strong>2:30 pm</strong> Afternoon snack</li>
+        <li><strong>4:30 pm</strong> Moon practice</li>
+        <li><strong>6 pm</strong> Dinner</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section-stay">
+  <div class="container">
+    <div class="label">Logistics</div>
+    <h2>Getting there &amp; stay</h2>
+    <p class="section-stay__intro">Retreat begins <strong>Nov 11 at 4:00 pm</strong> and ends <strong>Nov 15 at 10:00 am</strong>. Fly into San José del Cabo (SJC) from SNA, LAX, or Tijuana. Airport shuttle pick-up and return are provided when possible, coordinated around guest flight times.</p>
+    <h3>Accommodations</h3>
+    <div class="accommodation-grid">
+      <article class="accommodation-card">
+        <img src="/images/events/nicolette-david-retreat/cuatro-shared-queen.jpg" alt="Cuatro shared room with queen bed and built-in bunks" width="632" height="635" loading="lazy">
+        <div class="accommodation-card__body">
+          <h4>Cuatro shared room (queen)</h4>
+          <p class="accommodation-card__price">$1,450</p>
+          <a class="accommodation-card__button" href="/checkout.html?product=retreat-shared-queen" data-flute-product="retreat-shared-queen">Book a bed</a>
+        </div>
+      </article>
+      <article class="accommodation-card">
+        <img src="/images/events/nicolette-david-retreat/cuatro-shared-single.jpg" alt="Cuatro shared room with single bunk beds" width="632" height="635" loading="lazy">
+        <div class="accommodation-card__body">
+          <h4>Cuatro shared room (single bed)</h4>
+          <p class="accommodation-card__price">$1,350</p>
+          <a class="accommodation-card__button" href="/checkout.html?product=retreat-shared-bunk" data-flute-product="retreat-shared-bunk">Book a bed</a>
+        </div>
+      </article>
+      <article class="accommodation-card">
+        <img src="/images/events/nicolette-david-retreat/king-double.jpg" alt="King bedroom for double occupancy" width="632" height="635" loading="lazy">
+        <div class="accommodation-card__body">
+          <h4>King bedroom (double occupancy)</h4>
+          <p class="accommodation-card__price">$3,150</p>
+          <a class="accommodation-card__button" href="/checkout.html?product=retreat-king-double" data-flute-product="retreat-king-double">Book a room</a>
+        </div>
+      </article>
+      <article class="accommodation-card">
+        <img src="/images/events/nicolette-david-retreat/king-single.jpg" alt="King bedroom for single occupancy" width="632" height="635" loading="lazy">
+        <div class="accommodation-card__body">
+          <h4>King bedroom (single occupancy)</h4>
+          <p class="accommodation-card__price">$2,350</p>
+          <a class="accommodation-card__button" href="/checkout.html?product=retreat-king-single" data-flute-product="retreat-king-single">Book a room</a>
+        </div>
+      </article>
     </div>
   </div>
 </section>

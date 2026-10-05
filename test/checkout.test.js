@@ -19,12 +19,13 @@ const expectedProducts = {
   'seminar-trunk-pelvis': 1500,
   'seminar-bundle': 3750,
   'retreat-shared-bunk': 1350,
+  'retreat-shared-queen': 1450,
   'retreat-king-single': 2350,
   'retreat-king-double': 3150,
 };
 
 test('catalog contains every displayed checkout item at its advertised price', () => {
-  assert.equal(Object.keys(products).length, 9);
+  assert.equal(Object.keys(products).length, 10);
 
   for (const [id, amount] of Object.entries(expectedProducts)) {
     assert.equal(getProduct(id)?.amount, amount, id);

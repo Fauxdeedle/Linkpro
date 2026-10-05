@@ -60,6 +60,12 @@ const products = {
     amount: amountFromEnv(1350, 'FLUTE_AMOUNT_RETREAT_SHARED_BUNK'),
     successUrl: '/nicolette-david-retreat.html',
   },
+  'retreat-shared-queen': {
+    id: 'retreat-shared-queen',
+    name: 'Nicolette David Retreat — Cuatro Shared Queen',
+    amount: amountFromEnv(1450, 'FLUTE_AMOUNT_RETREAT_SHARED_QUEEN'),
+    successUrl: '/nicolette-david-retreat.html',
+  },
   'retreat-king-single': {
     id: 'retreat-king-single',
     name: 'Nicolette David Retreat — One-Person King',
