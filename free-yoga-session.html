@@ -7,7 +7,6 @@
 <title>A Practice for Coming Home — Free Yoga Session</title>
 <meta name="description" content="A complimentary guided yoga practice with Nicolette David, presented by LINK Pro.">
 <link rel="stylesheet" href="/css/site-fonts.css">
-<link rel="stylesheet" href="/css/site-nav.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -22,7 +21,7 @@ a{color:inherit;text-decoration:none}
 button,input{font:inherit}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-.session-hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden;padding:140px var(--side) 64px;background:var(--night);color:var(--cream);isolation:isolate}
+.session-hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden;padding:64px var(--side);background:var(--night);color:var(--cream);isolation:isolate}
 .session-hero::before{content:"";position:absolute;inset:-15%;z-index:-3;background:
   radial-gradient(circle at 50% 42%,rgba(201,181,188,.25),transparent 30%),
   radial-gradient(circle at 18% 80%,rgba(143,79,69,.22),transparent 28%),
@@ -76,13 +75,9 @@ h1 span{display:block;color:var(--rose);font-size:.42em;line-height:1.3;letter-s
 .retreat-link{display:inline-block;margin-top:32px;padding:15px 25px;background:var(--earth);color:var(--cream);font-size:.67rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transition:background .3s,transform .3s var(--ease)}
 .retreat-link:hover,.retreat-link:focus-visible{background:var(--clay);transform:translateY(-2px);outline:none}
 
-.footer{background:#0d0d0d;padding:38px var(--side);color:#8a8a8a}
-.footer-inner{max-width:1080px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;font-size:.72rem}
-.footer-logo{font-weight:700;letter-spacing:.15em;color:#fff}.footer-logo span{color:var(--gold)}
-
 @keyframes breathe{50%{transform:translate(-50%,-50%) scale(1.08);opacity:.72}}
 @media(max-width:700px){
-  .session-hero{padding-top:120px}.orb{width:110vw}.invitation-grid{grid-template-columns:1fr;text-align:center}
+  .orb{width:110vw}.invitation-grid{grid-template-columns:1fr;text-align:center}
   .invitation p{margin-left:auto;margin-right:auto}.moon-mark{width:min(230px,65vw)}
   .player-card{padding:32px 20px}.timeline{grid-template-columns:36px 1fr 36px;gap:8px}
 }
@@ -92,49 +87,6 @@ h1 span{display:block;color:var(--rose);font-size:.42em;line-height:1.3;letter-s
 </style>
 </head>
 <body>
-<!-- LINKPRO_NAV_START -->
-<!-- LINK Pro site nav — edit this file, then run: npm run build:nav -->
-<nav class="nav" id="nav">
-  <div class="nav__inner">
-    <a href="/" class="nav__logo" aria-label="LINK Pro home">
-      <img
-        src="/assets/brand/link-site-logo-light.svg"
-        alt=""
-        width="158"
-        height="35"
-        class="nav__logo-lockup"
-        decoding="async"
-      />
-    </a>
-    <div class="nav__links">
-      <a href="/about" data-nav-id="about">About</a>
-      <a href="/services" data-nav-id="services">Services</a>
-      <a href="/classes" data-nav-id="classes">Classes</a>
-      <a href="/peak-athleticism" data-nav-id="peak">Peak</a>
-      <a href="/courses" data-nav-id="courses">Courses</a>
-      <a href="/blog" data-nav-id="blog">Blog</a>
-      <a href="/reviews" data-nav-id="reviews">Reviews</a>
-      <a href="/#contact" class="nav__cta">Book Now</a>
-    </div>
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu" type="button">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
-
-<div class="mobile-nav" id="mobileNav" aria-hidden="true">
-  <a href="/about" class="mobile-nav__link" data-nav-id="about">About</a>
-  <a href="/services" class="mobile-nav__link" data-nav-id="services">Services</a>
-  <a href="/classes" class="mobile-nav__link" data-nav-id="classes">Classes</a>
-  <a href="/peak-athleticism" class="mobile-nav__link" data-nav-id="peak">Peak</a>
-  <a href="/courses" class="mobile-nav__link" data-nav-id="courses">Courses</a>
-  <a href="/blog" class="mobile-nav__link" data-nav-id="blog">Blog</a>
-  <a href="/reviews" class="mobile-nav__link" data-nav-id="reviews">Reviews</a>
-  <a href="/#contact" class="mobile-nav__link">Contact</a>
-  <a href="/#contact" class="mobile-nav__cta">Book a Consultation</a>
-</div>
-<!-- LINKPRO_NAV_END -->
-
 <main>
   <header class="session-hero">
     <div class="orb" aria-hidden="true"></div>
@@ -183,13 +135,6 @@ h1 span{display:block;color:var(--rose);font-size:.42em;line-height:1.3;letter-s
   </section>
 </main>
 
-<footer class="footer">
-  <div class="footer-inner">
-    <a href="/" class="footer-logo">LINK <span>PRO</span></a>
-    <p>&copy; 2026 LINK Pro. All rights reserved.</p>
-  </div>
-</footer>
-<script src="/js/site-nav.js" defer></script>
 <script src="/js/free-yoga-session.js" defer></script>
 </body>
 </html>
