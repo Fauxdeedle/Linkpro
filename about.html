@@ -46,12 +46,12 @@ a{text-decoration:none;color:inherit}
 .label.dark::before{background:var(--gold-dark)}
 
 /* PRACTITIONERS */
-.practitioner{padding:108px 0;background:var(--cream);scroll-margin-top:70px}
+.practitioner{--practitioner-pad:64px;--practitioner-nav:72px;--practitioner-inset:calc(var(--practitioner-nav) + var(--practitioner-pad));padding:var(--practitioner-inset) 0 var(--practitioner-pad);background:var(--cream);scroll-margin-top:var(--practitioner-inset)}
 .practitioner--alt{background:#eee7df}
-.practitioner__grid{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.08fr);gap:clamp(50px,8vw,90px);align-items:center}
+.practitioner__grid{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.08fr);gap:clamp(50px,8vw,90px);align-items:start;min-height:calc(150svh - var(--practitioner-nav) - var(--practitioner-pad) * 2)}
 .practitioner--alt .practitioner__media{order:2}
-.practitioner__media{min-width:0}
-.practitioner__portrait{width:100%;aspect-ratio:4/5;display:block;object-fit:cover;filter:grayscale(1)}
+.practitioner__media{min-width:0;position:sticky;top:var(--practitioner-inset)}
+.practitioner__portrait{width:100%;height:calc(100svh - var(--practitioner-nav) - var(--practitioner-pad) * 2);display:block;object-fit:cover;filter:grayscale(1)}
 .practitioner--jason .practitioner__portrait{object-position:center 25%}
 .practitioner--max .practitioner__portrait{object-position:center 18%}
 .practitioner--nicolette .practitioner__portrait{object-position:center 35%}
@@ -109,10 +109,11 @@ a{text-decoration:none;color:inherit}
   .practice-diagram{width:min(330px,82vw)}
   .practice-labels{gap:8px;margin-top:30px}
   .practice-label{font-size:clamp(1.25rem,7vw,1.8rem)}
-  .practitioner{padding:76px 0}
-  .practitioner__grid{grid-template-columns:1fr;gap:42px}
+  .practitioner{padding:var(--practitioner-pad) 0}
+  .practitioner__grid{grid-template-columns:1fr;gap:42px;min-height:0}
   .practitioner--alt .practitioner__media{order:0}
-  .practitioner__portrait{aspect-ratio:4/4.6}
+  .practitioner__media{position:relative;top:auto}
+  .practitioner__portrait{height:calc(100svh - var(--practitioner-pad) * 2)}
   .framework{padding:82px 0}
   .framework__header{grid-template-columns:1fr;gap:24px}
   .framework__grid{grid-template-columns:1fr}
