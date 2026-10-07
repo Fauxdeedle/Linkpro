@@ -48,7 +48,7 @@ a{text-decoration:none;color:inherit}
 /* PRACTITIONERS */
 .practitioner{padding:64px 0;background:var(--cream);scroll-margin-top:70px}
 .practitioner--alt{background:#eee7df}
-.practitioner__grid{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.08fr);gap:clamp(50px,8vw,90px);align-items:start}
+.practitioner__grid{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.08fr);gap:clamp(50px,8vw,90px);align-items:start;min-height:calc(150svh - 128px)}
 .practitioner--alt .practitioner__media{order:2}
 .practitioner__media{min-width:0;position:sticky;top:64px}
 .practitioner__portrait{width:100%;height:calc(100svh - 128px);display:block;object-fit:cover;filter:grayscale(1)}
@@ -110,7 +110,7 @@ a{text-decoration:none;color:inherit}
   .practice-labels{gap:8px;margin-top:30px}
   .practice-label{font-size:clamp(1.25rem,7vw,1.8rem)}
   .practitioner{padding:64px 0}
-  .practitioner__grid{grid-template-columns:1fr;gap:42px}
+  .practitioner__grid{grid-template-columns:1fr;gap:42px;min-height:0}
   .practitioner--alt .practitioner__media{order:0}
   .practitioner__media{position:relative;top:auto}
   .practitioner__portrait{height:calc(100svh - 128px)}
