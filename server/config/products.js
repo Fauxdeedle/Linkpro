@@ -24,7 +24,7 @@ const products = {
     id: 'llip',
     name: 'Lower Limb Injury Prevention',
     amount: amountFromEnv(199, 'FLUTE_AMOUNT_LLIP'),
-    successUrl: '/courses.html#online',
+    successUrl: '/llip-course.html',
   },
   'seminar-upper-limb': {
     id: 'seminar-upper-limb',

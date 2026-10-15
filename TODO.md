@@ -133,7 +133,8 @@ Apply to **Production** (and **Preview** if you want checkout on preview deploys
 ## Flute follow-ups (after basic checkout works)
 
 - [ ] Implement fulfillment in `server/routes/webhooks.js` (grant course access by email, token, or database)
-- [ ] Gate `pelvis-1-course.html` so only purchasers can access lessons
+- [ ] Gate `pelvis-1-course.html`, `pelvis-3-course.html`, and `llip-course.html` so only purchasers can access lessons
+- [ ] Restore paywalled enroll buttons for Pelvis 3.0 and Lower Limb Injury Prevention on `courses.html`. Those cards currently open the course pages with no checkout so the lessons can be reviewed. Pelvis 3.0 still needs a catalog entry in `server/config/products.js` before it can be sold. Lower Limb Injury Prevention (`llip`) already redirects to `/llip-course.html` after payment.
 - [ ] Collect customer email on checkout for reliable fulfillment
 - [ ] Switch to production Flute credentials and complete merchant activation before accepting real payments
 - [ ] Set up receipts / purchase confirmation emails

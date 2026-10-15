@@ -28,6 +28,8 @@ flowchart TB
     RAMS["rams.html"]
     PEAK["peak-athleticism.html"]
     PELVIS["pelvis-1-course.html"]
+    PELVIS3["pelvis-3-course.html"]
+    LLIP["llip-course.html"]
     CHECKOK["checkout-success.html"]
     CHECKNO["checkout-cancel.html"]
   end
@@ -59,6 +61,8 @@ flowchart TB
   REVIEWS_P --- globalNav
   RAMS --- globalNav
   PELVIS --- globalNav
+  PELVIS3 --- globalNav
+  LLIP --- globalNav
   CHECKOK --- globalNav
   CHECKNO --- globalNav
   POST1 --- globalNav
@@ -73,6 +77,8 @@ flowchart TB
   COURSES_P --> SEMINARS
   COURSES_P --> UPCOMING
   COURSES_P --> PELVIS
+  COURSES_P --> PELVIS3
+  COURSES_P --> LLIP
 
   HOME --> CONTACT
   BOOK --> CONTACT
@@ -94,7 +100,8 @@ flowchart TB
 | From | To |
 |------|-----|
 | Most footers | `/blog`, `/rams`, `/#contact`, Instagram |
-| Course cards (home / courses) | External linkprosport.com enroll URLs |
+| Course cards (courses page) | `/pelvis-1-course.html`, `/pelvis-3-course.html`, `/llip-course.html` |
+| Homepage Pelvis 3.0 / LLIP cards | External linkprosport.com and checkout |
 | SomaTherapy | `/somatherapy` (content links; not in global nav) |
 | Classes page | `/peak-athleticism` (Peak Athleticism sub-brand) |
 
