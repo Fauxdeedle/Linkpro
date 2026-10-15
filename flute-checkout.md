@@ -19,7 +19,7 @@ the Flute dashboard.
 | Product | Price | `data-flute-product` | Post-purchase redirect |
 | --- | --- | --- | --- |
 | Pelvis 1.0 | $100 | `pelvis-1` | `/pelvis-1-course.html` |
-| Lower Limb Injury Prevention | $199 | `llip` | `/courses.html#online` |
+| Lower Limb Injury Prevention | $199 | `llip` | `/llip-course.html` |
 | Upper Limb seminar | $1,500 | `seminar-upper-limb` | `/courses.html#seminars` |
 | Lower Limb seminar | $1,500 | `seminar-lower-limb` | `/courses.html#seminars` |
 | Trunk & Pelvis seminar | $1,500 | `seminar-trunk-pelvis` | `/courses.html#seminars` |
@@ -27,6 +27,8 @@ the Flute dashboard.
 | Retreat — shared bunk | $1,350 | `retreat-shared-bunk` | `/nicolette-david-retreat.html` |
 | Retreat — one-person king | $2,350 | `retreat-king-single` | `/nicolette-david-retreat.html` |
 | Retreat — two-person king | $3,150 | `retreat-king-double` | `/nicolette-david-retreat.html` |
+
+The Lower Limb Injury Prevention card on `courses.html` is not using `data-flute-product` right now. It opens `/llip-course.html` directly so the lessons can be reviewed. Pelvis 3.0 (`/pelvis-3-course.html`) is also open and is not in this catalog yet.
 
 ## Project layout
 

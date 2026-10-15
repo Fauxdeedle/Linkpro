@@ -317,6 +317,8 @@ Accepted formats: raw video ID, `youtube.com/watch?v=…`, `youtu.be/…`, `/emb
 | What | File |
 |------|------|
 | Live Pelvis 1.0 lessons + video IDs | `pelvis-1-course.html` |
+| Pelvis 3.0 lessons (3: Part One, Part Two, Part Three) | `pelvis-3-course.html` |
+| Lower Limb Injury Prevention lessons | `llip-course.html` |
 | Template for new courses | `courses/course-template.html` |
 | Agent checklist for new courses | `.cursor/skills/create-course/SKILL.md` |
 
