@@ -29,6 +29,8 @@ The global nav is defined in **one place** and copied into every page by a build
 
 To register a new page, add it to `activeByFile` in `scripts/build-nav.js`, add the markers + `/css/site-nav.css` + `/js/site-nav.js` to the page, then run `npm run build:nav`.
 
+New HTML pages also need Vercel Web Analytics. Run `npm run build:analytics` so `components/site-analytics.html` is inlined before `</body>` between `<!-- LINKPRO_ANALYTICS_START -->` and `<!-- LINKPRO_ANALYTICS_END -->`.
+
 ## New pages
 
 - Use the homepage nav pattern only (flat links, no dropdowns).

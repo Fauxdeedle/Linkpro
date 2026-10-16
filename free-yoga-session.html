@@ -136,5 +136,22 @@ h1 span{display:block;color:var(--rose);font-size:.42em;line-height:1.3;letter-s
 </main>
 
 <script src="/js/free-yoga-session.js" defer></script>
+<!-- LINKPRO_ANALYTICS_START -->
+<!-- Vercel Web Analytics for the linkpro project. The script is served at /_vercel/insights/* after Web Analytics is enabled. -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  window.va('beforeSend', function (event) {
+    try {
+      var url = new URL(event.url);
+      if (!url.searchParams.has('session_id')) return event;
+      url.searchParams.delete('session_id');
+      return Object.assign({}, event, { url: url.toString() });
+    } catch (err) {
+      return event;
+    }
+  });
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<!-- LINKPRO_ANALYTICS_END -->
 </body>
 </html>
