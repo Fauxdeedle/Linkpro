@@ -10,8 +10,8 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { productId } = readJsonBody(req);
-    const result = await createCheckoutSession(productId);
+    const { productId, customerEmail } = readJsonBody(req);
+    const result = await createCheckoutSession(productId, customerEmail);
 
     if (result.error) {
       return res.status(result.status).json({ error: result.error });

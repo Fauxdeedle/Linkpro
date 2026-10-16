@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/css/site-fonts.css">
 <link rel="stylesheet" href="/css/site-nav.css">
+<link rel="stylesheet" href="/css/course-access.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--charcoal:#1a1a1a;--charcoal-light:#222;--cream:#f5f0eb;--cream-dark:#ede7e0;--gold:#c4a265;--gold-light:#d4b87a;--gold-dark:#a8894f;--white:#fff;--muted:#8a8a8a;--serif:var(--font-display);--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;--transition:cubic-bezier(.25,.46,.45,.94);--side-pad:clamp(24px,5vw,80px)}
@@ -150,7 +151,7 @@ h1 em{color:var(--gold);font-weight:inherit}
       <h1>Pelvis <em>1.0</em></h1>
       <p class="hero__description">The pelvis is the foundation of healthy movement, yet it is one of the most overlooked areas in performance and rehabilitation. Build a clear understanding of pelvic biomechanics, identify dysfunction, and apply corrective exercise strategies that improve stability, mobility, and whole-body function.</p>
       <div class="hero__actions">
-        <a class="primary-button" id="startCourse" href="#lessons">Start course
+        <a class="primary-button" id="startCourse" href="#coursePaywall">Start course
           <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5"/></svg>
         </a>
         <span class="course-meta">4 lessons · Self-paced</span>
@@ -159,7 +160,24 @@ h1 em{color:var(--gold);font-weight:inherit}
   </div>
 </header>
 
-<section class="progress-section" aria-labelledby="progress-title">
+<p class="course-access-status" id="courseAccessStatus">Checking your access…</p>
+<section class="course-paywall" id="coursePaywall" hidden>
+  <div class="container">
+    <h2>Enroll to watch this course</h2>
+    <p>After you pay, this browser stays signed in. On another visit, enter the same email and we’ll send a one-time login link.</p>
+    <p class="course-paywall__price" id="paywallPrice"></p>
+    <a class="primary-button" id="paywallEnroll" href="/checkout.html?product=pelvis-1">Enroll</a>
+    <form class="course-paywall__login" id="paywallLogin">
+      <label for="paywallEmail">Already purchased?</label>
+      <div class="course-paywall__row">
+        <input id="paywallEmail" name="email" type="email" autocomplete="email" required placeholder="Email used at checkout">
+        <button type="submit">Email me a login link</button>
+      </div>
+      <p id="paywallMessage" role="status"></p>
+    </form>
+  </div>
+</section>
+<section class="progress-section" hidden aria-labelledby="progress-title">
   <div class="container">
     <div class="progress__top">
       <div>
@@ -174,7 +192,7 @@ h1 em{color:var(--gold);font-weight:inherit}
   </div>
 </section>
 
-<main class="course-content" id="lessons">
+<main class="course-content" id="lessons" hidden>
   <div class="container">
     <div class="section-heading">
       <h2>Your course <em>curriculum</em></h2>
@@ -224,153 +242,14 @@ h1 em{color:var(--gold);font-weight:inherit}
 </div>
 
 <script>
-(function () {
-  var lessons = [
-    { title: 'The Pelvis as the Foundation', duration: '2:15:12', description: 'Establish the role of the pelvis in whole-body movement. This lesson introduces the anatomical landmarks, load-transfer principles, and foundational concepts used throughout the course.', youtube: 'https://youtu.be/uOCc9gMKEiU' },
-    
-    // these sections are turned off. turn on if more sections are needed
-    //{ title: 'Pelvic Biomechanics & Oblique Axes', duration: '27 min', description: 'Explore nutation, counternutation, and the oblique axes that organize pelvic motion. Learn how these mechanics influence gait, force production, and compensation.', youtube: '' },
-    //{ title: 'Assessment & Identifying Dysfunction', duration: '32 min', description: 'Follow a repeatable movement assessment to identify asymmetry and dysfunction. Connect what you observe to likely restrictions and compensation patterns.', youtube: '' },
-    //{ title: 'Corrective Exercise Strategies', duration: '29 min', description: 'Translate assessment findings into practical interventions. Apply mobility, stability, and integration strategies that support durable movement outcomes.', youtube: '' }
-  ];
-  var storageKey = 'linkpro-pelvis-1-progress';
-  var completed = [];
-  var activeLesson = 0;
-  var lastFocusedElement = null;
-  var lessonList = document.getElementById('lessonList');
-  var lessonView = document.getElementById('lessonView');
-  var lessonMedia = document.getElementById('lessonMedia');
-  var lessonVideoFrame = document.getElementById('lessonVideoFrame');
-
-  function parseYoutubeId(input) {
-    if (!input || typeof input !== 'string') return null;
-    var trimmed = input.trim();
-    if (!trimmed) return null;
-    if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
-    var match = trimmed.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|shorts\/|watch\?v=|watch\?.+&v=))([a-zA-Z0-9_-]{11})/);
-    return match ? match[1] : null;
-  }
-
-  function updateLessonVideo(lesson) {
-    var id = parseYoutubeId(lesson.youtube);
-    if (id) {
-      lessonMedia.classList.add('has-video');
-      lessonVideoFrame.title = lesson.title + ' — lesson video';
-      lessonVideoFrame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0&modestbranding=1';
-    } else {
-      lessonMedia.classList.remove('has-video');
-      lessonVideoFrame.removeAttribute('src');
-      lessonVideoFrame.title = 'Lesson video';
-    }
-  }
-
-  function clearLessonVideo() {
-    lessonMedia.classList.remove('has-video');
-    lessonVideoFrame.removeAttribute('src');
-    lessonVideoFrame.title = 'Lesson video';
-  }
-
-  try {
-    var saved = JSON.parse(localStorage.getItem(storageKey));
-    if (Array.isArray(saved)) completed = saved.filter(function (index) { return Number.isInteger(index) && index >= 0 && index < lessons.length; });
-  } catch (error) {
-    completed = [];
-  }
-
-  function saveProgress() {
-    try { localStorage.setItem(storageKey, JSON.stringify(completed)); } catch (error) {}
-  }
-
-  function renderLessons() {
-    lessonList.innerHTML = lessons.map(function (lesson, index) {
-      var isComplete = completed.indexOf(index) !== -1;
-      return '<article class="lesson' + (isComplete ? ' is-complete' : '') + '" data-index="' + index + '">' +
-        '<div class="lesson__number">' + String(index + 1).padStart(2, '0') + '</div>' +
-        '<div><span class="lesson__kicker">' + (isComplete ? 'Complete' : 'Lesson ' + (index + 1)) + '</span>' +
-        '<h3 class="lesson__title">' + lesson.title + '</h3><span class="lesson__duration">' + lesson.duration + '</span></div>' +
-        '<button class="lesson__action" type="button" data-open="' + index + '"><span>' + (isComplete ? 'Review' : 'Begin') + '</span>' +
-        '<span class="lesson__status"><svg class="lesson__play" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m5 3 7 5-7 5V3Z" fill="currentColor"/></svg>' +
-        '<svg class="lesson__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8 3 3 7-7" stroke="currentColor" stroke-width="1.8"/></svg></span></button></article>';
-    }).join('');
-    lessonList.querySelectorAll('[data-open]').forEach(function (button) {
-      button.addEventListener('click', function () { openLesson(Number(button.dataset.open)); });
-    });
-  }
-
-  function updateProgress() {
-    var percent = Math.round((completed.length / lessons.length) * 100);
-    document.getElementById('progressNumber').textContent = percent + '%';
-    document.getElementById('progressCount').textContent = completed.length + ' of ' + lessons.length + ' lessons complete';
-    document.getElementById('progressFill').style.width = percent + '%';
-    document.querySelector('.progress__track').setAttribute('aria-valuenow', percent);
-    document.getElementById('resetProgress').classList.toggle('visible', completed.length > 0);
-    var nextLesson = lessons.findIndex(function (_, index) { return completed.indexOf(index) === -1; });
-    document.getElementById('startCourse').firstChild.nodeValue = completed.length === 0 ? 'Start course ' : completed.length === lessons.length ? 'Review course ' : 'Continue course ';
-    document.getElementById('startCourse').dataset.lesson = nextLesson === -1 ? 0 : nextLesson;
-  }
-
-  function openLesson(index) {
-    activeLesson = index;
-    lastFocusedElement = document.activeElement;
-    var lesson = lessons[index];
-    document.getElementById('lessonModalEyebrow').textContent = 'Lesson ' + (index + 1) + ' of ' + lessons.length + ' · ' + lesson.duration;
-    document.getElementById('lessonModalTitle').textContent = lesson.title;
-    document.getElementById('lessonModalDescription').textContent = lesson.description;
-    document.getElementById('previousLesson').disabled = index === 0;
-    document.getElementById('nextLesson').disabled = index === lessons.length - 1;
-    updateLessonVideo(lesson);
-    updateCompleteButton();
-    lessonView.classList.add('open');
-    document.body.classList.add('lesson-open');
-    document.getElementById('closeLesson').focus();
-  }
-
-  function closeLesson() {
-    clearLessonVideo();
-    lessonView.classList.remove('open');
-    document.body.classList.remove('lesson-open');
-    if (lastFocusedElement) lastFocusedElement.focus();
-  }
-
-  function updateCompleteButton() {
-    var button = document.getElementById('completeLesson');
-    var isComplete = completed.indexOf(activeLesson) !== -1;
-    button.textContent = isComplete ? 'Lesson complete ✓' : 'Mark lesson complete';
-    button.classList.toggle('completed', isComplete);
-  }
-
-  document.getElementById('startCourse').addEventListener('click', function (event) {
-    event.preventDefault();
-    openLesson(Number(event.currentTarget.dataset.lesson || 0));
-  });
-  document.getElementById('completeLesson').addEventListener('click', function () {
-    if (completed.indexOf(activeLesson) === -1) {
-      completed.push(activeLesson);
-      completed.sort();
-      saveProgress();
-      renderLessons();
-      updateProgress();
-      updateCompleteButton();
-    }
-  });
-  document.getElementById('previousLesson').addEventListener('click', function () { if (activeLesson > 0) openLesson(activeLesson - 1); });
-  document.getElementById('nextLesson').addEventListener('click', function () { if (activeLesson < lessons.length - 1) openLesson(activeLesson + 1); });
-  document.getElementById('closeLesson').addEventListener('click', closeLesson);
-  lessonView.addEventListener('click', function (event) { if (event.target === lessonView) closeLesson(); });
-  document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && lessonView.classList.contains('open')) closeLesson(); });
-  document.getElementById('resetProgress').addEventListener('click', function () {
-    if (window.confirm('Reset all progress for Pelvis 1.0?')) {
-      completed = [];
-      saveProgress();
-      renderLessons();
-      updateProgress();
-    }
-  });
-
-  renderLessons();
-  updateProgress();
-})();
+  window.LINKPRO_COURSE = {
+    slug: 'pelvis-1',
+    storageKey: 'linkpro-pelvis-1-progress',
+    resetLabel: 'Pelvis 1.0'
+  };
 </script>
+<script src="/js/course-player.js" defer></script>
+<script src="/js/course-access.js" defer></script>
 <script src="/js/site-nav.js" defer></script>
 <!-- LINKPRO_ANALYTICS_START -->
 <!-- Vercel Web Analytics for the linkpro project. The script is served at /_vercel/insights/* after Web Analytics is enabled. -->

@@ -13,6 +13,7 @@ const {
 
 const expectedProducts = {
   'pelvis-1': 100,
+  'pelvis-3': 150,
   llip: 199,
   'seminar-upper-limb': 1500,
   'seminar-lower-limb': 1500,
@@ -24,7 +25,7 @@ const expectedProducts = {
 };
 
 test('catalog contains every displayed checkout item at its advertised price', () => {
-  assert.equal(Object.keys(products).length, 9);
+  assert.equal(Object.keys(products).length, 10);
 
   for (const [id, amount] of Object.entries(expectedProducts)) {
     assert.equal(getProduct(id)?.amount, amount, id);
@@ -36,7 +37,10 @@ test('hosted session payload uses a trusted product and documented fields', () =
   process.env.BASE_URL = 'https://linkprosport.com/some/path';
 
   try {
-    const payload = buildPaymentSessionRequest(getProduct('seminar-bundle'));
+    const payload = buildPaymentSessionRequest(
+      getProduct('seminar-bundle'),
+      'Buyer@Example.com'
+    );
 
     assert.equal(payload.amount, 3750);
     assert.equal(
@@ -44,7 +48,10 @@ test('hosted session payload uses a trusted product and documented fields', () =
       'https://linkprosport.com/checkout-success.html?session_id={{paymentSessionId}}'
     );
     assert.deepEqual(payload.paymentMethodTypes, ['card']);
-    assert.deepEqual(payload.metadata, { productId: 'seminar-bundle' });
+    assert.deepEqual(payload.metadata, {
+      productId: 'seminar-bundle',
+      customerEmail: 'buyer@example.com',
+    });
     assert.match(payload.referenceId, /^seminar-bundle-\d+$/);
   } finally {
     if (originalBaseUrl === undefined) {

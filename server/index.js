@@ -5,7 +5,10 @@ require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const checkoutRouter = require('./routes/checkout');
 const webhooksRouter = require('./routes/webhooks');
+const accessRouter = require('./routes/access');
+const coursesRouter = require('./routes/courses');
 const { isConfigured } = require('../lib/flute');
+const { entitlementStoreMode } = require('../lib/entitlements');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -20,6 +23,8 @@ app.use((err, _req, res, next) => {
   return next(err);
 });
 app.use('/api', checkoutRouter);
+app.use('/api/access', accessRouter);
+app.use('/api/courses', coursesRouter);
 
 /** Match Vercel cleanUrls locally (e.g. /about → about.html). */
 function cleanUrls(req, res, next) {
@@ -41,10 +46,17 @@ function cleanUrls(req, res, next) {
   return next();
 }
 
+app.use((req, res, next) => {
+  if (req.path.startsWith('/content/courses/')) {
+    return res.status(404).end();
+  }
+  return next();
+});
 app.use(cleanUrls);
 app.use(express.static(rootDir));
 
 app.listen(PORT, () => {
   console.log(`LINK Pro running at http://localhost:${PORT}`);
   console.log(isConfigured() ? 'Flute: configured' : 'Flute: add credentials in .env to enable checkout');
+  console.log(`Entitlements: ${entitlementStoreMode()}`);
 });

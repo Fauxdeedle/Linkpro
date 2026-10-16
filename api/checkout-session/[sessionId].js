@@ -1,6 +1,7 @@
 const {
   getCheckoutSession,
   getCheckoutErrorStatus,
+  publicCheckoutResult,
 } = require('../../lib/checkout');
 
 module.exports = async function handler(req, res) {
@@ -18,7 +19,10 @@ module.exports = async function handler(req, res) {
     if (result.error) {
       return res.status(result.status).json({ error: result.error });
     }
-    return res.status(200).json(result);
+    if (result.accessCookie) {
+      res.setHeader('Set-Cookie', result.accessCookie);
+    }
+    return res.status(200).json(publicCheckoutResult(result));
   } catch (err) {
     console.error('Session lookup error:', err.message);
     return res
