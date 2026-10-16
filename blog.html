@@ -113,5 +113,22 @@ html{scroll-behavior:smooth}body{font-family:var(--sans);color:var(--charcoal);b
 <footer class="footer"><div class="container"><div class="footer-inner"><a href="index.html" class="footer-logo">LINK <span>PRO</span></a><p>&copy; 2026 LINK Pro. All rights reserved.</p><div class="footer-links"><a href="blog.html" class="active">Blog</a><a href="rams.html">Rams</a><a href="/media-kit">Media Kit</a><a href="/sharks-proposal">Client pitch (sample)</a><a href="index.html#contact">Contact</a><a href="https://www.instagram.com/linkprosport/" target="_blank">Instagram</a></div></div></div></footer>
 <script>document.querySelectorAll('.reveal').forEach(function(el){new IntersectionObserver(function(e){e.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('visible')}})},{threshold:.1}).observe(el)});</script>
 <script src="/js/site-nav.js" defer></script>
+<!-- LINKPRO_ANALYTICS_START -->
+<!-- Vercel Web Analytics for the linkpro project. The script is served at /_vercel/insights/* after Web Analytics is enabled. -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  window.va('beforeSend', function (event) {
+    try {
+      var url = new URL(event.url);
+      if (!url.searchParams.has('session_id')) return event;
+      url.searchParams.delete('session_id');
+      return Object.assign({}, event, { url: url.toString() });
+    } catch (err) {
+      return event;
+    }
+  });
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<!-- LINKPRO_ANALYTICS_END -->
 </body>
 </html>

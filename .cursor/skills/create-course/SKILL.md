@@ -122,6 +122,7 @@ New course pages must use the shared site nav:
 2. After `<body>`, add `<!-- LINKPRO_NAV_START -->` and `<!-- LINKPRO_NAV_END -->` (run `npm run build:nav` to fill between them).
 3. Add `<script src="/js/site-nav.js" defer></script>` before `</body>`.
 4. Register the file in `scripts/build-nav.js` (`activeByFile`, usually `courses`).
+5. Run `npm run build:analytics` so the page includes the Vercel Web Analytics snippet.
 
 ## Page Structure (do not remove)
 

@@ -8,6 +8,7 @@
     "dev": "node --watch server/index.js",
     "vercel:dev": "vercel dev",
     "build:nav": "node scripts/build-nav.js",
+    "build:analytics": "node scripts/build-analytics.js",
     "test": "node --test"
   },
   "engines": {

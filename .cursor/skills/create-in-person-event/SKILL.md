@@ -87,6 +87,7 @@ Then:
 
 ```bash
 npm run build:nav
+npm run build:analytics
 ```
 
 Commit updated HTML files the script touches.

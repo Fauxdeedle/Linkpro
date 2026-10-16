@@ -79,6 +79,7 @@ Replace all `{{PLACEHOLDER}}` tokens (`SLUG`, `PAGE_TITLE`, `META_DESCRIPTION`, 
 - `data-sales-css-prefix="sales"`
 - Nav markers + `/css/site-nav.css` + `/js/site-nav.js`
 - `<script src="/js/sales-page.js" defer></script>`
+- Vercel Web Analytics markers (`npm run build:analytics` after copying the shell)
 
 **Program:** copy `peak-athleticism.html`, set `data-sales-content`, `data-sales-mount="peak-content"`, `data-sales-css-prefix="peak"`, update static hero/logo paths.
 
@@ -99,9 +100,10 @@ In [`scripts/build-nav.js`](../../scripts/build-nav.js) `activeByFile`:
 
 ```bash
 npm run build:nav
+npm run build:analytics
 ```
 
-Commit the HTML files the script updates.
+Commit the HTML files the scripts update.
 
 ### 6. Footer (optional)
 
@@ -159,7 +161,7 @@ See `content/peak-athleticism.json`: `intro`, `pillars`, `method`, `classes`, `t
 - Do not add every pitch page to the footer (default unlisted)
 - Do not add backend auth or PDF generation in v1
 - Do not duplicate renderer logic — extend `js/sales-page.js` if new block types are needed
-- Do not skip `npm run build:nav` after creating a new HTML page with nav markers
+- Do not skip `npm run build:nav` or `npm run build:analytics` after creating a new HTML page
 
 ## Example
 
@@ -168,5 +170,5 @@ See `content/peak-athleticism.json`: `intro`, `pillars`, `method`, `classes`, `t
 1. Archive → `content/acme-fc-proposal-source.md`
 2. `content/acme-fc-proposal.json` with `pageType: proposal`
 3. `acme-fc-proposal.html` from template + brand colors
-4. Register in `build-nav.js`, run `npm run build:nav`
+4. Register in `build-nav.js`, run `npm run build:nav` and `npm run build:analytics`
 5. Output local + production URLs (no footer link)
