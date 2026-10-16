@@ -122,7 +122,7 @@ p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:1.5rem}
     return;
   }
 
-  fetch('/api/checkout-session/' + encodeURIComponent(sessionId))
+  fetch('/api/checkout-session/' + encodeURIComponent(sessionId), { credentials: 'same-origin' })
     .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
     .then(function (result) {
       if (!result.ok || result.data.status !== 'paid') {
@@ -136,7 +136,9 @@ p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:1.5rem}
       iconEl.textContent = '✓';
       titleEl.textContent = 'Thank you!';
       statusEl.textContent = result.data.productName ? 'Enrolled in ' + result.data.productName : 'Payment verified';
-      messageEl.textContent = 'Your enrollment is confirmed. Access your course whenever you’re ready.';
+      messageEl.textContent = result.data.accessGranted
+        ? 'Your enrollment is confirmed. This browser can open the course now. On another device, use the same email to request a login link.'
+        : 'Your enrollment is confirmed. Access your course whenever you’re ready.';
       linkEl.href = result.data.successUrl || 'courses.html';
       linkEl.style.display = 'inline-block';
     })

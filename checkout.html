@@ -24,6 +24,21 @@
     }
     h1 { margin: 0 0 0.5rem; font: 500 2rem Georgia, serif; }
     .product { margin: 0 0 1.75rem; color: #666; }
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    input {
+      width: 100%;
+      padding: 0.85rem 0.9rem;
+      border: 1px solid rgba(0, 0, 0, 0.16);
+      font: inherit;
+    }
+    .hint { margin: 0.75rem 0 0; color: #666; font-size: 0.92rem; line-height: 1.5; }
     button {
       width: 100%;
       margin-top: 1.5rem;
@@ -46,10 +61,14 @@
 <body>
   <main>
     <h1>Secure checkout</h1>
-    <p id="product-name" class="product">Preparing your payment…</p>
-    <p id="checkout-message" class="message" role="status" aria-live="polite">
-      Redirecting you to Flute’s secure hosted checkout…
-    </p>
+    <p id="product-name" class="product">Enter the email that should keep access to this purchase.</p>
+    <form id="checkout-form">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required>
+      <p class="hint">Online courses unlock again later for this same email.</p>
+      <button id="pay-button" type="submit">Continue to payment</button>
+    </form>
+    <p id="checkout-message" class="message" role="status" aria-live="polite" hidden></p>
     <button id="retry-button" type="button" hidden>Try again</button>
     <a class="back" href="/courses.html">Back to courses</a>
   </main>
@@ -60,23 +79,32 @@
     const productName = document.getElementById('product-name');
     const message = document.getElementById('checkout-message');
     const retryButton = document.getElementById('retry-button');
+    const form = document.getElementById('checkout-form');
+    const payButton = document.getElementById('pay-button');
+    const emailInput = document.getElementById('email');
 
     function showError(text) {
+      message.hidden = false;
       message.textContent = text;
       message.classList.add('error');
-      retryButton.hidden = false;
+      form.hidden = false;
+      retryButton.hidden = true;
     }
 
-    async function createSession() {
-      retryButton.hidden = true;
-      retryButton.disabled = true;
+    async function createSession(event) {
+      event.preventDefault();
+      payButton.disabled = true;
+      message.hidden = false;
       message.textContent = 'Redirecting you to Flute’s secure hosted checkout…';
       message.classList.remove('error');
 
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId }),
+        body: JSON.stringify({
+          productId,
+          customerEmail: emailInput.value,
+        }),
       });
       const data = await response.json();
       if (!response.ok) {
@@ -92,25 +120,23 @@
       window.location.replace(checkoutUrl.href);
     }
 
-    async function initializeCheckout() {
+    form.addEventListener('submit', async function (event) {
       if (!productId) {
+        event.preventDefault();
         productName.textContent = 'No product selected';
         showError('Choose a product before starting checkout.');
         return;
       }
 
       try {
-        await createSession();
+        await createSession(event);
       } catch (error) {
         productName.textContent = 'Checkout unavailable';
         showError(error.message || 'Could not initialize checkout.');
       } finally {
-        retryButton.disabled = false;
+        payButton.disabled = false;
       }
-    }
-
-    retryButton.addEventListener('click', initializeCheckout);
-    initializeCheckout();
+    });
   </script>
 <!-- LINKPRO_ANALYTICS_START -->
 <!-- Vercel Web Analytics for the linkpro project. The script is served at /_vercel/insights/* after Web Analytics is enabled. -->

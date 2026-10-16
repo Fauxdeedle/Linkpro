@@ -20,6 +20,13 @@ const products = {
     amount: amountFromEnv(100, 'FLUTE_AMOUNT_PELVIS_1'),
     successUrl: '/pelvis-1-course.html',
   },
+  // Placeholder amount until the live Pelvis 3.0 price is confirmed.
+  'pelvis-3': {
+    id: 'pelvis-3',
+    name: 'Pelvis 3.0',
+    amount: amountFromEnv(150, 'FLUTE_AMOUNT_PELVIS_3'),
+    successUrl: '/pelvis-3-course.html',
+  },
   llip: {
     id: 'llip',
     name: 'Lower Limb Injury Prevention',

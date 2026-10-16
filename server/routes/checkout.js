@@ -4,6 +4,7 @@ const {
   createCheckoutSession,
   getCheckoutSession,
   getCheckoutErrorStatus,
+  publicCheckoutResult,
 } = require('../../lib/checkout');
 
 const router = express.Router();
@@ -18,7 +19,10 @@ router.get('/flute-config', (_req, res) => {
 
 router.post('/create-checkout-session', async (req, res) => {
   try {
-    const result = await createCheckoutSession(req.body.productId);
+    const result = await createCheckoutSession(
+      req.body.productId,
+      req.body.customerEmail
+    );
     if (result.error) {
       return res.status(result.status).json({ error: result.error });
     }
@@ -39,7 +43,10 @@ router.get('/checkout-session/:sessionId', async (req, res) => {
     if (result.error) {
       return res.status(result.status).json({ error: result.error });
     }
-    res.json(result);
+    if (result.accessCookie) {
+      res.setHeader('Set-Cookie', result.accessCookie);
+    }
+    res.json(publicCheckoutResult(result));
   } catch (err) {
     console.error('Session lookup error:', err.message);
     res.status(getCheckoutErrorStatus(err)).json({ error: err.message });

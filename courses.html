@@ -113,6 +113,7 @@
     <p class="label" style="justify-content:center;margin-bottom:24px;color:var(--gold)">Professional Education</p>
     <h1>Courses & <em>Certifications</em></h1>
     <p>Elevate your practice with comprehensive course offerings — from self-paced online programs to intensive hands-on seminars led by Dr. Amstutz.</p>
+    <p id="access-notice" hidden style="margin-top:24px;color:var(--gold)">That login link is invalid or already used. Open the course and request a new one with your email.</p>
   </div>
 </section>
 
@@ -129,14 +130,14 @@
         <div class="course-price">$100</div>
         <div class="course-meta">✦ Unlimited Lifetime Access</div>
         <a href="/checkout.html?product=pelvis-1" class="course-cta" data-flute-product="pelvis-1">Enroll Now — $100</a>
-        <a href="pelvis-1-course.html" class="course-cta-secondary">Preview test course</a>
       </div>
       <div class="course-card reveal">
         <span class="course-badge">Self-Paced</span>
         <h3>Pelvis 3.0</h3>
         <p>Advanced pelvic expertise — address complex cases and build targeted strength. Three in-depth video lessons totaling 3+ hours.</p>
-        <div class="course-meta" style="margin-top:auto">3 Lessons · 3:18:45</div>
-        <a href="pelvis-3-course.html" class="course-cta">View course</a>
+        <div class="course-price">$150</div>
+        <div class="course-meta">3 Lessons · 3:18:45 · ✦ Unlimited Lifetime Access</div>
+        <a href="/checkout.html?product=pelvis-3" class="course-cta" data-flute-product="pelvis-3">Enroll Now — $150</a>
       </div>
       <div class="course-card reveal">
         <span class="course-badge">Self-Paced</span>
@@ -144,7 +145,7 @@
         <p>Comprehensive protocols for preventing and addressing lower limb injuries through fascial chain assessment and targeted intervention.</p>
         <div class="course-price">$199</div>
         <div class="course-meta">✦ Unlimited Lifetime Access</div>
-        <a href="llip-course.html" class="course-cta">View course</a>
+        <a href="/checkout.html?product=llip" class="course-cta" data-flute-product="llip">Enroll Now — $199</a>
       </div>
     </div>
   </div>
@@ -232,6 +233,11 @@
 
 <footer class="footer"><div class="container"><div class="footer-inner"><a href="index.html" class="footer-logo">LINK <span>PRO</span></a><p>&copy; 2026 LINK Pro. All rights reserved.</p><div class="footer-links"><a href="blog.html">Blog</a><a href="rams.html">Rams</a><a href="/media-kit">Media Kit</a><a href="/sharks-proposal">Client pitch (sample)</a><a href="index.html#contact">Contact</a><a href="https://www.instagram.com/linkprosport/" target="_blank">Instagram</a></div></div></div></footer>
 <script src="js/flute-checkout.js"></script>
+<script>
+  if (new URLSearchParams(location.search).get('access') === 'invalid') {
+    document.getElementById('access-notice').hidden = false;
+  }
+</script>
 <script>document.querySelectorAll('.reveal').forEach(function(el){new IntersectionObserver(function(e){e.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('visible')}})},{threshold:.1}).observe(el)});</script>
 <script src="/js/site-nav.js" defer></script>
 <!-- LINKPRO_ANALYTICS_START -->

@@ -60,31 +60,32 @@ Replace every `{{PLACEHOLDER}}` in the new file:
 | `{{SERIES}}` | series label for eyebrow |
 | `{{DESCRIPTION}}` | hero + meta description |
 | `{{LESSON_COUNT}}` | number of lessons |
-| `{{LESSONS_JSON}}` | JavaScript array of lesson objects |
 | `{{RESET_LABEL}}` | short name for reset confirm dialog |
 
-**Lessons JSON format** (keep valid JS):
+Lesson videos are not in the HTML. Create `content/courses/{slug}.json`:
 
-```javascript
-[
-  {
-    title: 'Lesson Title',
-    duration: '18 min',
-    description: 'Lesson summary shown in the modal.',
-    youtube: 'dQw4w9WgXcQ' // optional: 11-char ID or full YouTube URL (unlisted OK)
-  }
-]
+```json
+{
+  "lessons": [
+    {
+      "title": "Lesson Title",
+      "duration": "18 min",
+      "description": "Lesson summary shown in the modal.",
+      "youtube": "dQw4w9WgXcQ"
+    }
+  ]
+}
 ```
 
-Omit `youtube` or use an empty string until the video is uploaded; the modal shows the gold play-icon placeholder until a valid ID/URL is set.
+Omit `youtube` or use an empty string until the video is uploaded. Register the slug in `lib/entitlements.js` (`ONLINE_COURSE_IDS` and `COURSE_PATHS`), `lib/course-content.js` (`LESSON_FILES`), and `server/config/products.js` so checkout can sell it and the access check can serve the lessons.
 
-Do **not** change CSS, HTML structure, or JavaScript behavior unless the user explicitly asks. Only swap course-specific content and the `lessons` / `storageKey` values.
+Do **not** change CSS, HTML structure, or JavaScript behavior unless the user explicitly asks. Only swap course-specific content and the `storageKey` / slug values.
 
 ### 3. Link from the catalog
 
 Update `courses.html` (and `index.html` `.courses` section if the course should appear on the homepage):
 
-- Point the course card CTA to `{slug}-course.html`
+- Point the course card CTA to `/checkout.html?product={slug}`
 - Match card title, description, price, and lesson count to the new course
 
 Use relative links only (no `target="_blank"` for internal course pages).
@@ -153,7 +154,7 @@ Match the homepage (`index.html`) design system:
 
 ## What Not to Do
 
-- Do not add a build step, framework, or backend for v1
+- Do not put lesson titles or YouTube URLs in the HTML page
 - Do not share one `localStorage` key across courses
 - Do not add `youtube` values unless the user provides video IDs or URLs (placeholder is fine without them)
 - Do not duplicate nav markup; edit `components/site-nav.html` and run `npm run build:nav`
@@ -165,7 +166,7 @@ Match the homepage (`index.html`) design system:
 
 **Agent actions:**
 1. Copy `courses/course-template.html` → `pelvis-3-course.html`
-2. Fill placeholders for Pelvis 3.0 content and 3 lessons
+2. Fill placeholders for Pelvis 3.0 content and write `content/courses/pelvis-3.json`
 3. Set `storageKey` to `linkpro-pelvis-3-progress`
-4. Update Pelvis 3.0 card in `courses.html` to link to `pelvis-3-course.html`
+4. Update the Pelvis 3.0 card in `courses.html` to enroll through `/checkout.html?product=pelvis-3`
 5. Test progress flow locally
