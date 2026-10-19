@@ -20,6 +20,7 @@ const expectedProducts = {
   'seminar-trunk-pelvis': 1500,
   'seminar-bundle': 3750,
   'retreat-shared-bunk': 1350,
+  'retreat-shared-queen': 1450,
   'retreat-king-single': 2350,
   'retreat-king-double': 3150,
 };
