@@ -246,6 +246,14 @@ body.nav-surface-light .nav {
     background 0.3s ease, color 0.3s ease;
 }
 
+/* Footer link rows are page-local, but a nowrap row widens the layout
+   viewport on phones and lets the whole page pan sideways. */
+.footer__links,
+.footer-links {
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
 @media (max-width: 768px) {
   .nav__links {
     display: none;
