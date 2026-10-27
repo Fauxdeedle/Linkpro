@@ -26,6 +26,12 @@
   border-bottom: 1px solid rgba(196, 162, 101, 0.1);
 }
 
+.nav.menu-open {
+  background: rgba(26, 26, 26, 0.98);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+}
+
 body.nav-surface-light .nav {
   background: rgba(26, 26, 26, 0.95);
   backdrop-filter: blur(20px);
@@ -154,7 +160,10 @@ body.nav-surface-light .nav {
 
 .mobile-nav {
   position: fixed;
-  inset: 0;
+  top: var(--site-nav-height, 72px);
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 999;
   background: rgba(26, 26, 26, 0.98);
   backdrop-filter: blur(30px);
@@ -162,11 +171,26 @@ body.nav-surface-light .nav {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 32px;
+  padding: 8px var(--nav-side-pad) calc(28px + env(safe-area-inset-bottom, 0px));
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s var(--nav-transition);
+}
+
+/* Equal flexible spacers center the list when it fits. They collapse to
+   nothing when it doesn't, so the first link starts under the bar and the
+   panel can scroll instead of clipping off the top of the screen. */
+.mobile-nav::before,
+.mobile-nav::after {
+  content: '';
+  flex: 1 0 0px;
+  width: 100%;
 }
 
 .mobile-nav.open {
@@ -184,6 +208,7 @@ body.nav-surface-light .nav {
   transform: translateY(20px);
   opacity: 0;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .mobile-nav.open a {
