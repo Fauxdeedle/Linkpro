@@ -47,6 +47,10 @@ process.env.UPSTASH_REDIS_REST_TOKEN = '';
 process.env.RESEND_API_KEY = '';
 process.env.ACCESS_EMAIL_FROM = '';
 delete process.env.VERCEL;
+delete process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+delete process.env.GOOGLE_SHEETS_TAB;
+delete process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+delete process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
 
 const { grantPaidCheckout, publicCheckoutResult } = require('../lib/checkout');
 const { serializeSessionCookie } = require('../lib/access');

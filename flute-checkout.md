@@ -63,6 +63,10 @@ Copy `.env.example` to `.env`:
 | `FLUTE_ENVIRONMENT` | `sandbox` or `production` |
 | `FLUTE_WEBHOOK_SECRET` | HMAC secret from webhook endpoint setup |
 | `BASE_URL` | Optional public site URL override; Vercel's deployment URL is used automatically when unset |
+| `GOOGLE_SHEETS_SPREADSHEET_ID` | Purchase sheet id from the sheet URL |
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Service account that can edit the sheet |
+| `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` | PEM private key. Escaped `\n` sequences are accepted |
+| `GOOGLE_SHEETS_TAB` | Optional tab name. Defaults to `Purchases` |
 
 ### Run locally
 
@@ -89,6 +93,16 @@ https://your-domain.com/api/webhooks/flute
 ```
 
 Subscribe to `payment_session.completed`.
+
+### Purchase sheet
+
+A completed payment appends one row to the Google Sheet named by `GOOGLE_SHEETS_SPREADSHEET_ID`. Courses, seminars, and retreats are all recorded. A repeated webhook for the same Flute session updates that row instead of adding another one. Online course access is unchanged, and older payments are not backfilled.
+
+Share the spreadsheet with `GOOGLE_SERVICE_ACCOUNT_EMAIL` as Editor. The tab (`Purchases`, unless `GOOGLE_SHEETS_TAB` is set) must use this header row:
+
+`Timestamp | Email | Product | Product ID | Amount | Session ID`
+
+The success page writes the same row when the buyer returns. A sheet error there does not block course access. A sheet error on the webhook returns 500 so Flute retries.
 
 ## API routes
 
