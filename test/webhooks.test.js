@@ -4,6 +4,10 @@ const crypto = require('node:crypto');
 
 const { processFluteWebhook } = require('../lib/webhooks');
 
+const SHEET_KEY = crypto
+  .generateKeyPairSync('rsa', { modulusLength: 2048 })
+  .privateKey.export({ type: 'pkcs8', format: 'pem' });
+
 function signedWebhook(body, secret, overrides = {}) {
   const id = overrides.id || 'delivery-1';
   const timestamp =
@@ -79,6 +83,51 @@ test('tampered webhooks are rejected', async () => {
       delete process.env.FLUTE_WEBHOOK_SECRET;
     } else {
       process.env.FLUTE_WEBHOOK_SECRET = originalSecret;
+    }
+  }
+});
+
+test('a configured purchase sheet error makes the webhook return 500', async () => {
+  const originalSecret = process.env.FLUTE_WEBHOOK_SECRET;
+  const originalFetch = globalThis.fetch;
+  const saved = {
+    GOOGLE_SHEETS_SPREADSHEET_ID: process.env.GOOGLE_SHEETS_SPREADSHEET_ID,
+    GOOGLE_SERVICE_ACCOUNT_EMAIL: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY,
+  };
+  process.env.FLUTE_WEBHOOK_SECRET = 'test-webhook-secret';
+  process.env.GOOGLE_SHEETS_SPREADSHEET_ID = 'sheet123';
+  process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL = 'sheets@example.iam.gserviceaccount.com';
+  process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY = SHEET_KEY.replace(/\n/g, '\\n');
+  globalThis.fetch = async () => ({
+    ok: false,
+    status: 503,
+    statusText: 'unavailable',
+    text: async () => JSON.stringify({ error: { message: 'unavailable' } }),
+  });
+
+  const body = JSON.stringify({
+    type: 'payment_session.completed',
+    data: {
+      object: {
+        id: 'ps_sheet',
+        metadata: { productId: 'seminar-upper-limb', customerEmail: 'buyer@example.com' },
+      },
+    },
+  });
+
+  try {
+    assert.deepEqual(
+      await processFluteWebhook(Buffer.from(body), signedWebhook(body, process.env.FLUTE_WEBHOOK_SECRET)),
+      { error: 'Purchase sheet update failed', status: 500 }
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalSecret === undefined) delete process.env.FLUTE_WEBHOOK_SECRET;
+    else process.env.FLUTE_WEBHOOK_SECRET = originalSecret;
+    for (const [key, value] of Object.entries(saved)) {
+      if (value === undefined) delete process.env[key];
+      else process.env[key] = value;
     }
   }
 });

@@ -25,9 +25,74 @@ const {
 const { getCourseForRequest } = require('../lib/course-content');
 const { grantPaidCheckout, publicCheckoutResult, createCheckoutSession } = require('../lib/checkout');
 const { importGrantCsv } = require('../lib/grant-csv');
+const { HEADERS, recordPurchase } = require('../lib/purchase-sheet');
 const { processFluteWebhook } = require('../lib/webhooks');
 
 const SECRET = 'test-access-secret';
+const SHEET_KEY = crypto
+  .generateKeyPairSync('rsa', { modulusLength: 2048 })
+  .privateKey.export({ type: 'pkcs8', format: 'pem' });
+
+function clearSheetEnv() {
+  delete process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+  delete process.env.GOOGLE_SHEETS_TAB;
+  delete process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  delete process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
+}
+
+function sheetEnv() {
+  return {
+    GOOGLE_SHEETS_SPREADSHEET_ID: 'sheet123',
+    GOOGLE_SHEETS_TAB: 'Purchases',
+    GOOGLE_SERVICE_ACCOUNT_EMAIL: 'sheets@example.iam.gserviceaccount.com',
+    GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: SHEET_KEY.replace(/\n/g, '\\n'),
+  };
+}
+
+function useSheetEnv() {
+  Object.assign(process.env, sheetEnv());
+}
+
+function createMemorySheet(initialRows = [HEADERS]) {
+  const rows = initialRows.map((row) => [...row]);
+  async function fetchImpl(url, options = {}) {
+    const href = String(url);
+    if (href.includes('oauth2.googleapis.com/token')) {
+      return {
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify({ access_token: 'token' }),
+      };
+    }
+
+    const decoded = decodeURIComponent(href);
+    if (href.includes(':append')) {
+      assert.match(decoded, /valueInputOption=RAW/);
+      rows.push(JSON.parse(options.body).values[0]);
+      return {
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify({ updates: { updatedRows: 1 } }),
+      };
+    }
+    if (options.method === 'PUT') {
+      assert.match(decoded, /valueInputOption=RAW/);
+      const match = decoded.match(/!A(\d+):F\1/);
+      rows[Number(match[1]) - 1] = JSON.parse(options.body).values[0];
+      return {
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify({ updatedRows: 1 }),
+      };
+    }
+    return {
+      ok: true,
+      status: 200,
+      text: async () => JSON.stringify({ values: rows.map((row) => [...row]) }),
+    };
+  }
+  return { fetchImpl, rows };
+}
 
 function signedWebhook(body, secret) {
   const id = 'delivery-access';
@@ -46,6 +111,7 @@ function signedWebhook(body, secret) {
 test.beforeEach(() => {
   process.env.ACCESS_SECRET = SECRET;
   process.env.BASE_URL = 'http://localhost:8080';
+  clearSheetEnv();
   setEntitlementStore(createMemoryStore());
 });
 
@@ -242,6 +308,133 @@ test('file and redis stores record course grants', async () => {
   await redis.rememberLogin('jti-1', 1800);
   assert.equal(await redis.consumeLogin('jti-1'), true);
   assert.deepEqual(commands.map((command) => command[0]), ['SADD', 'SMEMBERS', 'SET', 'GETDEL']);
+});
+
+test('a purchase sheet appends a session and updates that same session', async () => {
+  const sheet = createMemorySheet();
+  const env = sheetEnv();
+  const now = () => new Date('2026-10-27T18:00:00.000Z');
+  const purchase = {
+    email: 'Buyer@Example.com',
+    productId: 'pelvis-1',
+    sessionId: 'ps_1',
+    paidAt: '2026-10-27T18:00:00.000Z',
+  };
+
+  assert.deepEqual(await recordPurchase(purchase, { fetchImpl: sheet.fetchImpl, env, now }), {
+    recorded: true,
+    action: 'append',
+  });
+  assert.deepEqual(
+    await recordPurchase(
+      { ...purchase, email: 'buyer@example.com', amount: 1 },
+      { fetchImpl: sheet.fetchImpl, env, now }
+    ),
+    { recorded: true, action: 'update' }
+  );
+  assert.equal(sheet.rows.length, 2);
+  assert.deepEqual(sheet.rows[1], [
+    '2026-10-27T18:00:00.000Z',
+    'buyer@example.com',
+    'Pelvis 1.0',
+    'pelvis-1',
+    100,
+    'ps_1',
+  ]);
+
+  assert.deepEqual(
+    await recordPurchase(
+      { email: 'new@example.com', productId: 'custom-retreat', sessionId: 'ps_custom', amount: 40 },
+      { fetchImpl: sheet.fetchImpl, env, now }
+    ),
+    { recorded: true, action: 'append' }
+  );
+  assert.deepEqual(sheet.rows[2].slice(1), [
+    'new@example.com',
+    'custom-retreat',
+    'custom-retreat',
+    40,
+    'ps_custom',
+  ]);
+});
+
+test('a purchase sheet is skipped when it is not configured', async () => {
+  let called = false;
+  const result = await recordPurchase(
+    { email: 'buyer@example.com', productId: 'pelvis-1', sessionId: 'ps_1' },
+    {
+      env: {},
+      fetchImpl: async () => {
+        called = true;
+        throw new Error('fetch should not run');
+      },
+    }
+  );
+  assert.deepEqual(result, { recorded: false });
+  assert.equal(called, false);
+});
+
+test('a seminar payment is recorded without granting course access', async () => {
+  const originalFetch = globalThis.fetch;
+  const sheet = createMemorySheet();
+  useSheetEnv();
+  globalThis.fetch = sheet.fetchImpl;
+  const originalSecret = process.env.FLUTE_WEBHOOK_SECRET;
+  process.env.FLUTE_WEBHOOK_SECRET = 'test-webhook-secret';
+  const seminar = JSON.stringify({
+    type: 'payment_session.completed',
+    data: {
+      object: {
+        id: 'ps_seminar',
+        metadata: { productId: 'seminar-bundle', customerEmail: 'Bundle@Example.com' },
+      },
+    },
+  });
+
+  try {
+    assert.deepEqual(
+      await processFluteWebhook(Buffer.from(seminar), signedWebhook(seminar, process.env.FLUTE_WEBHOOK_SECRET)),
+      { received: true }
+    );
+    assert.deepEqual(await getCourses('bundle@example.com'), []);
+    assert.equal(sheet.rows[1][1], 'bundle@example.com');
+    assert.equal(sheet.rows[1][2], 'Fascia & 2TLS — Three-Seminar Bundle');
+    assert.equal(sheet.rows[1][3], 'seminar-bundle');
+    assert.equal(sheet.rows[1][4], 3750);
+    assert.equal(sheet.rows[1][5], 'ps_seminar');
+  } finally {
+    globalThis.fetch = originalFetch;
+    clearSheetEnv();
+    if (originalSecret === undefined) delete process.env.FLUTE_WEBHOOK_SECRET;
+    else process.env.FLUTE_WEBHOOK_SECRET = originalSecret;
+  }
+});
+
+test('a sheet error during checkout still returns the course access cookie', async () => {
+  const originalFetch = globalThis.fetch;
+  useSheetEnv();
+  globalThis.fetch = async () => ({
+    ok: false,
+    status: 503,
+    statusText: 'unavailable',
+    text: async () => JSON.stringify({ error: { message: 'unavailable' } }),
+  });
+
+  try {
+    const result = await grantPaidCheckout({
+      id: 'ps_cookie',
+      status: 'Completed',
+      metadata: { productId: 'pelvis-1', customerEmail: 'Buyer@Example.com' },
+      transactionDetails: { status: 'Captured', transactionReceipt: { amount: 100 } },
+    });
+    assert.equal(result.status, 'paid');
+    assert.equal(result.accessGranted, true);
+    assert.match(result.accessCookie, /^linkpro_access=/);
+    assert.deepEqual(await getCourses('buyer@example.com'), ['pelvis-1']);
+  } finally {
+    globalThis.fetch = originalFetch;
+    clearSheetEnv();
+  }
 });
 
 test('course pages do not publish lesson videos', () => {
