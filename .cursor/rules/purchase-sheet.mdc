@@ -1,0 +1,45 @@
+---
+description: How LINK Pro logs completed purchases to the Google Sheet and how to change that sheet safely
+globs:
+  - lib/purchase-sheet.js
+  - lib/webhooks.js
+  - lib/checkout.js
+  - server/config/products.js
+  - flute-checkout.md
+  - site-notes.md
+alwaysApply: false
+---
+
+# Purchase sheet
+
+Completed Flute payments are upserted into a Google Sheet, one row per payment session. Human-facing notes live in `site-notes.md` under **Purchase sheet**. Keep that section in sync when this behavior changes.
+
+## Contract
+
+Tab `Purchases` (override with `GOOGLE_SHEETS_TAB`). Row 1 must equal `HEADERS` in `lib/purchase-sheet.js`:
+
+`Timestamp | Email | Product | Product ID | Amount | Session ID`
+
+`recordPurchase` reads `A:F`, finds the Flute session id in column F, and updates that row. Otherwise it appends. Missing `GOOGLE_SHEETS_SPREADSHEET_ID`, service-account email, or private key returns `{ recorded: false }` and does not throw. A configured write that fails throws.
+
+Writers:
+
+- `lib/webhooks.js` on `payment_session.completed`, after the online-course grant. A thrown sheet error returns HTTP 500 so Flute retries.
+- `grantPaidCheckout` in `lib/checkout.js` for every paid session, including seminars and retreats. A sheet error is logged and must not block the access cookie.
+
+Amount and product name come from `server/config/products.js`. An unknown product id is still written, with that id in both Product and Product ID. Emails are normalized. Do not record CSV grants from `scripts/grant-access.js` here.
+
+## Changing the sheet
+
+A new catalog product needs a `server/config/products.js` entry and a checkout link. Do not change the sheet or `lib/purchase-sheet.js` for that.
+
+Changing columns means all of these in the same change:
+
+1. `HEADERS` in `lib/purchase-sheet.js`
+2. Row 1 of the live sheet, same names and order
+3. The column table in `site-notes.md` and the header line in `flute-checkout.md`
+4. Tests in `test/access.test.js` and `test/webhooks.test.js`
+
+Writes refuse to run while the live header and `HEADERS` differ. Do not insert, rename, or reorder columns A–F. Columns after F are not written and can hold hand-written notes.
+
+Env var changes (`GOOGLE_SHEETS_SPREADSHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`, `GOOGLE_SHEETS_TAB`) apply on the next Vercel deployment. Never commit the private key.
