@@ -25,7 +25,7 @@ const {
 const { getCourseForRequest } = require('../lib/course-content');
 const { grantPaidCheckout, publicCheckoutResult, createCheckoutSession } = require('../lib/checkout');
 const { importGrantCsv } = require('../lib/grant-csv');
-const { HEADERS, recordPurchase } = require('../lib/purchase-sheet');
+const { HEADERS, recordManualGrant, recordPurchase } = require('../lib/purchase-sheet');
 const { processFluteWebhook } = require('../lib/webhooks');
 
 const SECRET = 'test-access-secret';
@@ -356,6 +356,61 @@ test('a purchase sheet appends a session and updates that same session', async (
     40,
     'ps_custom',
   ]);
+});
+
+test('a manual grant appends a blank amount and updates that same course', async () => {
+  const sheet = createMemorySheet();
+  const env = sheetEnv();
+  const now = () => new Date('2026-10-27T18:00:00.000Z');
+  const grant = { email: 'Buyer@Example.com', courseId: 'pelvis-1' };
+
+  assert.deepEqual(await recordManualGrant(grant, { fetchImpl: sheet.fetchImpl, env, now }), {
+    recorded: true,
+    action: 'append',
+  });
+  assert.deepEqual(await recordManualGrant(grant, { fetchImpl: sheet.fetchImpl, env, now }), {
+    recorded: true,
+    action: 'update',
+  });
+  assert.equal(sheet.rows.length, 2);
+  assert.deepEqual(sheet.rows[1], [
+    '2026-10-27T18:00:00.000Z',
+    'buyer@example.com',
+    'Pelvis 1.0',
+    'pelvis-1',
+    '',
+    'manual:buyer@example.com:pelvis-1',
+  ]);
+
+  let called = false;
+  assert.deepEqual(
+    await recordManualGrant(
+      { email: 'buyer@example.com', courseId: 'seminar-bundle' },
+      {
+        fetchImpl: async () => {
+          called = true;
+          throw new Error('fetch should not run');
+        },
+        env,
+        now,
+      }
+    ),
+    { recorded: false }
+  );
+  assert.equal(called, false);
+  assert.equal(sheet.rows.length, 2);
+
+  assert.deepEqual(
+    await recordManualGrant(grant, {
+      env: {},
+      fetchImpl: async () => {
+        called = true;
+        throw new Error('fetch should not run');
+      },
+    }),
+    { recorded: false }
+  );
+  assert.equal(called, false);
 });
 
 test('a purchase sheet is skipped when it is not configured', async () => {

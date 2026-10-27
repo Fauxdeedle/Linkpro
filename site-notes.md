@@ -327,16 +327,17 @@ Accepted formats: raw video ID, `youtube.com/watch?v=…`, `youtu.be/…`, `/emb
 
 ## Purchase sheet
 
-Completed course, seminar, and retreat payments are logged in a Google Sheet. One row is one Flute payment session. The same person buying two things gets two rows. A webhook retry updates the existing row instead of adding a second one.
+Completed course, seminar, and retreat payments are logged in a Google Sheet. One row is one Flute payment session. The same person buying two things gets two rows. A webhook retry updates the existing row instead of adding a second one. A manual course grant from `scripts/grant-access.js` is also one row, keyed by `manual:{email}:{courseId}`.
 
-This is the purchase log, not the course-access list. Online course access still lives in the entitlement store. People added with `scripts/grant-access.js`, and payments from before this sheet was turned on, are not written here.
+This sheet is the purchase log. Online course access still lives in the entitlement store. Payments from before this sheet was turned on are not backfilled.
 
 ### When a row appears
 
 1. Flute sends `payment_session.completed` to `/api/webhooks/flute`. The site grants online course access when the product is an online course, then writes the sheet.
 2. If the buyer lands on the success page, that check writes the same row. Seminars and retreats are included even though they do not unlock a course.
+3. `node scripts/grant-access.js` saves online course access, then writes one row per course. The Session ID is `manual:{email}:{courseId}`. Amount is left blank. Running the same grant again updates that row. Seminars and retreats in the CSV are skipped and are not written.
 
-A sheet failure on the success page does not block the buyer. A sheet failure on the webhook makes Flute retry. Both writes use the Flute session id, so they stay one row.
+A sheet failure on the success page does not block the buyer. A sheet failure on the webhook makes Flute retry. Both payment writes use the Flute session id, so they stay one row. A Redis grant whose sheet write does not happen exits with an error after access has been saved. Running the same CSV again updates the manual row.
 
 ### The columns
 
@@ -350,8 +351,8 @@ The `Purchases` tab, row 1, must stay exactly:
 | Email | Buyer email, lowercased |
 | Product | Name from `server/config/products.js` |
 | Product ID | Catalog id, such as `pelvis-1` or `seminar-bundle` |
-| Amount | Whole dollars from that catalog entry |
-| Session ID | Flute payment session id. This is the key for updates |
+| Amount | Whole dollars from that catalog entry for a payment. Blank for a manual grant |
+| Session ID | Flute payment session id, or `manual:{email}:{courseId}` for a grant from `scripts/grant-access.js`. This is the key for updates |
 
 ### How to update the sheet
 
@@ -359,13 +360,13 @@ Safe to do in Google Sheets:
 
 - Read, filter, and sort for yourself. The site finds a row by Session ID, not by row order.
 - Add notes in columns to the right of Session ID (column G and onward). Updates only rewrite columns A–F.
-- Fix a typo in a Product or Email cell. A later retry for that same Session ID will overwrite columns A–F with the catalog values.
+- Fix a typo in a Product or Email cell. A later write for that same Session ID will overwrite columns A–F. A payment rewrite uses the catalog amount. A manual-grant rewrite leaves Amount blank.
 
 Do not:
 
 - Rename, reorder, or insert columns in A–F. The site refuses to write until row 1 matches the six headers above. Webhooks then fail until it matches again.
 - Rename the tab unless you also set `GOOGLE_SHEETS_TAB` in Vercel to the new name and redeploy.
-- Put a real-looking value in Session ID on a hand-typed row unless it is that payment’s Flute session id. A later payment with the same id replaces that row.
+- Put a real-looking value in Session ID on a hand-typed row unless it is that payment’s Flute session id, or a manual grant id `manual:{email}:{courseId}`. A later write with the same id replaces that row. Leave those manual ids as the script wrote them.
 - Delete row 1.
 
 Adding a new course, seminar, or retreat does not require a sheet edit. Add the product in `server/config/products.js` and point a checkout link at it. The next purchase uses that product’s name and price.
@@ -392,7 +393,7 @@ Set these in Vercel (Production, and Preview if you want it there) and in local 
 
 Share the spreadsheet with the service-account email as **Editor**. If any of the first three variables is missing, payments still complete and the sheet is left unchanged.
 
-Code: `lib/purchase-sheet.js`, called from `lib/webhooks.js` and `grantPaidCheckout` in `lib/checkout.js`. Setup steps also live in `flute-checkout.md`. Agent checklist: `.cursor/rules/purchase-sheet.mdc`.
+Code: `lib/purchase-sheet.js`, called from `lib/webhooks.js`, `grantPaidCheckout` in `lib/checkout.js`, and `scripts/grant-access.js`. Setup steps also live in `flute-checkout.md`. Agent checklist: `.cursor/rules/purchase-sheet.mdc`.
 
 ---
 
