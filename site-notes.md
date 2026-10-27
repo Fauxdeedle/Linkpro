@@ -100,6 +100,7 @@ in `.env.example`.
 - Run `npm test` after changing products, session payloads, or payment-status
   handling.
 - See `flute-checkout.md` for setup, endpoint, and webhook details.
+- Completed payments are also written to the purchase sheet. See **Purchase sheet** below.
 
 ---
 
@@ -321,6 +322,77 @@ Accepted formats: raw video ID, `youtube.com/watch?v=…`, `youtu.be/…`, `/emb
 | Lower Limb Injury Prevention lessons | `llip-course.html` |
 | Template for new courses | `courses/course-template.html` |
 | Agent checklist for new courses | `.cursor/skills/create-course/SKILL.md` |
+
+---
+
+## Purchase sheet
+
+Completed course, seminar, and retreat payments are logged in a Google Sheet. One row is one Flute payment session. The same person buying two things gets two rows. A webhook retry updates the existing row instead of adding a second one.
+
+This is the purchase log, not the course-access list. Online course access still lives in the entitlement store. People added with `scripts/grant-access.js`, and payments from before this sheet was turned on, are not written here.
+
+### When a row appears
+
+1. Flute sends `payment_session.completed` to `/api/webhooks/flute`. The site grants online course access when the product is an online course, then writes the sheet.
+2. If the buyer lands on the success page, that check writes the same row. Seminars and retreats are included even though they do not unlock a course.
+
+A sheet failure on the success page does not block the buyer. A sheet failure on the webhook makes Flute retry. Both writes use the Flute session id, so they stay one row.
+
+### The columns
+
+The `Purchases` tab, row 1, must stay exactly:
+
+`Timestamp | Email | Product | Product ID | Amount | Session ID`
+
+| Column | What it is |
+|--------|------------|
+| Timestamp | When the site recorded the row, ISO 8601 UTC |
+| Email | Buyer email, lowercased |
+| Product | Name from `server/config/products.js` |
+| Product ID | Catalog id, such as `pelvis-1` or `seminar-bundle` |
+| Amount | Whole dollars from that catalog entry |
+| Session ID | Flute payment session id. This is the key for updates |
+
+### How to update the sheet
+
+Safe to do in Google Sheets:
+
+- Read, filter, and sort for yourself. The site finds a row by Session ID, not by row order.
+- Add notes in columns to the right of Session ID (column G and onward). Updates only rewrite columns A–F.
+- Fix a typo in a Product or Email cell. A later retry for that same Session ID will overwrite columns A–F with the catalog values.
+
+Do not:
+
+- Rename, reorder, or insert columns in A–F. The site refuses to write until row 1 matches the six headers above. Webhooks then fail until it matches again.
+- Rename the tab unless you also set `GOOGLE_SHEETS_TAB` in Vercel to the new name and redeploy.
+- Put a real-looking value in Session ID on a hand-typed row unless it is that payment’s Flute session id. A later payment with the same id replaces that row.
+- Delete row 1.
+
+Adding a new course, seminar, or retreat does not require a sheet edit. Add the product in `server/config/products.js` and point a checkout link at it. The next purchase uses that product’s name and price.
+
+Changing the price in the catalog changes the amount on future rows only. Existing rows stay as they were written.
+
+To change the columns themselves, update both places in one change, then redeploy:
+
+1. `HEADERS` in `lib/purchase-sheet.js`
+2. Row 1 of the live `Purchases` tab, same names, same order
+
+Until those match, new purchases are not logged.
+
+### Configuration
+
+Set these in Vercel (Production, and Preview if you want it there) and in local `.env`. Saving variables does not update the running site. Redeploy after you add or change them.
+
+| Variable | Role |
+|----------|------|
+| `GOOGLE_SHEETS_SPREADSHEET_ID` | The id between `/d/` and `/edit` in the sheet URL |
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | `client_email` from the service-account JSON |
+| `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` | PEM private key. A value with `\n` between lines is fine |
+| `GOOGLE_SHEETS_TAB` | Optional. Defaults to `Purchases` |
+
+Share the spreadsheet with the service-account email as **Editor**. If any of the first three variables is missing, payments still complete and the sheet is left unchanged.
+
+Code: `lib/purchase-sheet.js`, called from `lib/webhooks.js` and `grantPaidCheckout` in `lib/checkout.js`. Setup steps also live in `flute-checkout.md`. Agent checklist: `.cursor/rules/purchase-sheet.mdc`.
 
 ---
 
