@@ -25,6 +25,7 @@ the Flute dashboard.
 | Trunk & Pelvis seminar | $1,500 | `seminar-trunk-pelvis` | `/courses.html#seminars` |
 | Three-seminar bundle | $3,750 | `seminar-bundle` | `/courses.html#seminars` |
 | Retreat — shared bunk | $1,350 | `retreat-shared-bunk` | `/nicolette-david-retreat.html` |
+| Retreat — Cuatro shared queen | $1,450 | `retreat-shared-queen` | `/nicolette-david-retreat.html` |
 | Retreat — one-person king | $2,350 | `retreat-king-single` | `/nicolette-david-retreat.html` |
 | Retreat — two-person king | $3,150 | `retreat-king-double` | `/nicolette-david-retreat.html` |
 
