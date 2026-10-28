@@ -397,6 +397,25 @@ Code: `lib/purchase-sheet.js`, called from `lib/webhooks.js`, `grantPaidCheckout
 
 ---
 
+## Lower Limb course survey
+
+Unlisted feedback page for people who attended **Fascia Normalization and 2TLS Treatment of the Lower Limb** with Dr. Jason Amstutz. Send the direct link after the course. It is not in the nav, footer, homepage, or courses list.
+
+- **URL:** `/lower-limb-survey` (`lower-limb-survey.html`)
+- **Local:** `http://localhost:8080/lower-limb-survey`
+- **Production:** `https://www.linkprosport.com/lower-limb-survey`
+- **SEO:** `noindex, nofollow`. Anyone with the link can open it. There is no password.
+
+The questions match the previous course form: name, email, an optional news signup, course-format checkboxes, five agreement scales, and the written prompts (lectures, teaching method, three-day versus four-day format, practice application, one-sentence value, and an “aha moment”).
+
+Submitting posts to `/api/event-survey`. The server emails the full response through Resend. The From address is `ACCESS_EMAIL_FROM`. The To address is `SURVEY_NOTIFY_EMAIL`. Reply-To is the attendee’s email. The news checkbox is included in that email only. It does not add anyone to a mailing list.
+
+If `RESEND_API_KEY`, `ACCESS_EMAIL_FROM`, or `SURVEY_NOTIFY_EMAIL` is missing, the page asks the visitor to try again. Responses are not stored anywhere else.
+
+Set `SURVEY_NOTIFY_EMAIL` in Vercel (and in local `.env` when testing). The example value is `concierge@linkmedicalcenter.com`.
+
+---
+
 ## (Add more sections below)
 
 Examples you might add later: booking form behavior, Flute checkout flow, who to contact for domain/DNS, etc.
