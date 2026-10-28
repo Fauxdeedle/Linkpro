@@ -7,6 +7,7 @@ globs:
   - server/config/products.js
   - flute-checkout.md
   - site-notes.md
+  - scripts/grant-access.js
 alwaysApply: false
 ---
 
@@ -20,14 +21,15 @@ Tab `Purchases` (override with `GOOGLE_SHEETS_TAB`). Row 1 must equal `HEADERS` 
 
 `Timestamp | Email | Product | Product ID | Amount | Session ID`
 
-`recordPurchase` reads `A:F`, finds the Flute session id in column F, and updates that row. Otherwise it appends. Missing `GOOGLE_SHEETS_SPREADSHEET_ID`, service-account email, or private key returns `{ recorded: false }` and does not throw. A configured write that fails throws.
+`recordPurchase` reads `A:F`, finds the Flute session id in column F, and updates that row. Otherwise it appends. `recordManualGrant` uses that same upsert with Session ID `manual:{email}:{courseId}` and a blank Amount. Missing `GOOGLE_SHEETS_SPREADSHEET_ID`, service-account email, or private key returns `{ recorded: false }` and does not throw. A configured write that fails throws.
 
 Writers:
 
 - `lib/webhooks.js` on `payment_session.completed`, after the online-course grant. A thrown sheet error returns HTTP 500 so Flute retries.
 - `grantPaidCheckout` in `lib/checkout.js` for every paid session, including seminars and retreats. A sheet error is logged and must not block the access cookie.
+- `scripts/grant-access.js` after each successful online-course grant (`pelvis-1`, `pelvis-3`, `llip`). A repeat grant updates that row. Seminars and retreats are skipped. When the store is Redis and the sheet is skipped or the write throws, the script exits non-zero after access has been saved. A file-store run with no sheet config still exits 0.
 
-Amount and product name come from `server/config/products.js`. An unknown product id is still written, with that id in both Product and Product ID. Emails are normalized. Do not record CSV grants from `scripts/grant-access.js` here.
+Amount and product name for a payment come from `server/config/products.js`. An unknown product id is still written, with that id in both Product and Product ID. A manual grant uses the catalog name and leaves Amount blank. Emails are normalized.
 
 ## Changing the sheet
 

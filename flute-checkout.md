@@ -104,6 +104,8 @@ Share the spreadsheet with `GOOGLE_SERVICE_ACCOUNT_EMAIL` as Editor. The tab (`P
 
 The success page writes the same row when the buyer returns. A sheet error there does not block course access. A sheet error on the webhook returns 500 so Flute retries.
 
+`scripts/grant-access.js` writes the same columns for a comped online course. The Session ID is `manual:{email}:{courseId}`, and Amount is blank. A repeat of that grant updates the row.
+
 ## API routes
 
 | Method | Path | Description |
