@@ -325,6 +325,73 @@ Accepted formats: raw video ID, `youtube.com/watch?v=…`, `youtu.be/…`, `/emb
 
 ---
 
+## Grant course access
+
+Use this when someone should have an online course without going through checkout. The command saves their email in the course-access store (Upstash Redis) and writes one row per course on the Purchases sheet.
+
+Deploying the site does not grant anyone. Run the command on your computer, from the repo, after `main` includes `scripts/grant-access.js`.
+
+### Which courses
+
+| Course | Put this in the CSV |
+|--------|---------------------|
+| Pelvis 1.0 | `pelvis-1` |
+| Pelvis 3.0 | `pelvis-3` |
+| Lower Limb Injury Prevention | `llip` |
+
+Seminars and retreats are skipped. They are not online courses.
+
+### The CSV
+
+Keep the file outside the repo. One row per email and course. A header row is optional.
+
+```csv
+email,courseId
+someone@example.com,pelvis-1
+someone@example.com,llip
+```
+
+To add more people later, edit that file and run the command again. You can replace the old rows or add new ones under them. An email and course that already have access stay as they are in Redis. The sheet updates that person’s existing row instead of adding a second one.
+
+### Run it
+
+```bash
+node scripts/grant-access.js /tmp/linkpro-grant.csv
+```
+
+A finished grant prints `Store: redis`, `Granted` with a count, and `sheet append` or `sheet update` for each course.
+
+The person signs in with that email from the course page. The site emails a one-time link when the address already has a course. This command does not send that email itself.
+
+### Local `.env`
+
+The command reads `.env` next to `package.json`. It does not read `.env.local` or `.env.example`. Pulling `main` leaves `.env` alone, because that file is gitignored.
+
+| Variable | Role |
+|----------|------|
+| `UPSTASH_REDIS_REST_URL` | Redis REST URL. Course access is stored here |
+| `UPSTASH_REDIS_REST_TOKEN` | Redis REST token |
+| `GOOGLE_SHEETS_SPREADSHEET_ID` | Purchases spreadsheet |
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Account that can edit the sheet |
+| `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` | That account’s private key |
+
+Vercel’s storage integration labels the same Redis database `PAY_CHECK_KV_REST_API_URL` and `PAY_CHECK_KV_REST_API_TOKEN`. Copy those two values into the `UPSTASH_REDIS_*` names above, both in `.env` and in Vercel production, then redeploy. Use the normal token, not the read-only token. Leave `ENTITLEMENT_FILE` unset so the grant is stored in production Redis.
+
+If the Redis variables are missing, the command stops with `Refusing to grant` and writes nothing. If Redis succeeds and the sheet write does not, it prints `Access was saved, but the purchase sheet was not updated.` Run the same CSV again to fill in the sheet.
+
+### Where the pieces live
+
+| What | File |
+|------|------|
+| The command | `scripts/grant-access.js` |
+| Course ids and Redis | `lib/entitlements.js` |
+| Sheet row for a manual grant | `lib/purchase-sheet.js` (`recordManualGrant`) |
+| Agent checklist | `.cursor/skills/grant-course-access/SKILL.md` |
+
+Sheet columns and the `manual:{email}:{courseId}` session id are under **Purchase sheet** below.
+
+---
+
 ## Purchase sheet
 
 Completed course, seminar, and retreat payments are logged in a Google Sheet. One row is one Flute payment session. The same person buying two things gets two rows. A webhook retry updates the existing row instead of adding a second one. A manual course grant from `scripts/grant-access.js` is also one row, keyed by `manual:{email}:{courseId}`.
@@ -335,7 +402,7 @@ This sheet is the purchase log. Online course access still lives in the entitlem
 
 1. Flute sends `payment_session.completed` to `/api/webhooks/flute`. The site grants online course access when the product is an online course, then writes the sheet.
 2. If the buyer lands on the success page, that check writes the same row. Seminars and retreats are included even though they do not unlock a course.
-3. `node scripts/grant-access.js` saves online course access, then writes one row per course. The Session ID is `manual:{email}:{courseId}`. Amount is left blank. Running the same grant again updates that row. Seminars and retreats in the CSV are skipped and are not written.
+3. `node scripts/grant-access.js` saves online course access, then writes one row per course. The Session ID is `manual:{email}:{courseId}`. Amount is left blank. Running the same grant again updates that row. Seminars and retreats in the CSV are skipped and are not written. The full steps are under **Grant course access** above.
 
 A sheet failure on the success page does not block the buyer. A sheet failure on the webhook makes Flute retry. Both payment writes use the Flute session id, so they stay one row. A Redis grant whose sheet write does not happen exits with an error after access has been saved. Running the same CSV again updates the manual row.
 
