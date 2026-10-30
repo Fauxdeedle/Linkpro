@@ -151,32 +151,38 @@ h1 em{color:var(--gold);font-weight:inherit}
       <h1>Pelvis <em>1.0</em></h1>
       <p class="hero__description">The pelvis is the foundation of healthy movement, yet it is one of the most overlooked areas in performance and rehabilitation. Build a clear understanding of pelvic biomechanics, identify dysfunction, and apply corrective exercise strategies that improve stability, mobility, and whole-body function.</p>
       <div class="hero__actions">
-        <a class="primary-button" id="startCourse" href="#coursePaywall">Start course
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5"/></svg>
-        </a>
+        <div class="hero__buttons">
+          <a class="primary-button" id="startCourse" href="#coursePaywall">Start course
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5"/></svg>
+          </a>
+          <button class="secondary-button" id="continueCourse" type="button" aria-expanded="false" aria-controls="coursePaywall">Continue course</button>
+        </div>
         <span class="course-meta">4 lessons · Self-paced</span>
       </div>
     </div>
   </div>
 </header>
 
-<p class="course-access-status" id="courseAccessStatus">Checking your access…</p>
-<section class="course-paywall" id="coursePaywall" hidden>
+<p class="course-access-status" id="courseAccessStatus" hidden>Checking your access…</p>
+<div class="course-reveal" id="coursePaywallReveal" aria-hidden="true">
+  <div class="course-reveal__inner">
+<section class="course-paywall" id="coursePaywall" inert>
   <div class="container">
-    <h2>Enroll to watch this course</h2>
-    <p>After you pay, this browser stays signed in. On another visit, enter the same email and we’ll send a one-time login link.</p>
+    <h2>Continue to this course</h2>
+    <p>Enter your email. If it already has this course, we’ll send a one-time access link. Otherwise you’ll continue to payment.</p>
     <p class="course-paywall__price" id="paywallPrice"></p>
-    <a class="primary-button" id="paywallEnroll" href="/checkout.html?product=pelvis-1">Enroll</a>
     <form class="course-paywall__login" id="paywallLogin">
-      <label for="paywallEmail">Already purchased?</label>
+      <label for="paywallEmail">Email</label>
       <div class="course-paywall__row">
-        <input id="paywallEmail" name="email" type="email" autocomplete="email" required placeholder="Email used at checkout">
-        <button type="submit">Email me a login link</button>
+        <input id="paywallEmail" name="email" type="email" autocomplete="email" required placeholder="Email">
+        <button type="submit">Continue</button>
       </div>
       <p id="paywallMessage" role="status"></p>
     </form>
   </div>
 </section>
+  </div>
+</div>
 <section class="progress-section" hidden aria-labelledby="progress-title">
   <div class="container">
     <div class="progress__top">

@@ -61,15 +61,17 @@ payment sessions from server-side routes.
 
 ### Checkout flow
 
-1. A site link opens `/checkout.html?product={productId}`.
-2. The page posts only the product ID to `/api/create-checkout-session`.
-3. The backend looks up the trusted price in `server/config/products.js`,
-   creates a Flute session, and returns its `checkoutUrl`.
-4. The browser redirects to Flute. Flute substitutes the session ID into the
-   configured return URL and sends the visitor to `checkout-success.html`.
-5. The return page calls `/api/checkout-session/{sessionId}`. The backend
-   confirms both payment-session status `Completed` and a documented successful
-   transaction status before showing enrollment confirmation.
+Online courses (`pelvis-1`, `pelvis-3`, `llip`) start on the course page.
+
+1. **View course** opens that course page.
+2. If the browser cookie already belongs to an email with that course, the lessons load.
+3. Otherwise the page asks for an email and posts it to `/api/access/continue`.
+4. When that email has the course, the site sends a one-time link and shows `/access-link-sent`. The link signs the browser in. Typing the email does not.
+5. When that email does not have the course, the backend creates a Flute session and the browser goes to its `checkoutUrl`. A direct call to `/api/create-checkout-session` for an owned online course is refused.
+
+Seminars and retreats still open `/checkout.html?product={productId}` and post the product ID and email to `/api/create-checkout-session`. An old online-course checkout link uses the same email check: a cookie that already has the course returns to the course page, an entitled email goes to `/access-link-sent`, and any other email continues to Flute.
+
+The backend looks up the trusted price in `server/config/products.js`. Flute substitutes the session ID into the configured return URL and sends the visitor to `checkout-success.html`. The return page calls `/api/checkout-session/{sessionId}`. The backend confirms both payment-session status `Completed` and a documented successful transaction status before showing enrollment confirmation.
 
 Never put an amount in the browser request or trust the return URL by itself.
 
@@ -361,7 +363,7 @@ node scripts/grant-access.js /tmp/linkpro-grant.csv
 
 A finished grant prints `Store: redis`, `Granted` with a count, and `sheet append` or `sheet update` for each course.
 
-The person signs in with that email from the course page. The site emails a one-time link when the address already has a course. This command does not send that email itself.
+The person opens that course and enters the same email. If the address has that course, the site emails a one-time link and shows `/access-link-sent`. Opening the link signs them in. An email with a different course still goes to payment for the one they do not have. This command does not send that email itself.
 
 ### Local `.env`
 

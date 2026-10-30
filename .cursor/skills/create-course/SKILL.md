@@ -79,6 +79,8 @@ Lesson videos are not in the HTML. Create `content/courses/{slug}.json`:
 
 Omit `youtube` or use an empty string until the video is uploaded. Register the slug in `lib/entitlements.js` (`ONLINE_COURSE_IDS` and `COURSE_PATHS`), `lib/course-content.js` (`LESSON_FILES`), and `server/config/products.js` so checkout can sell it and the access check can serve the lessons.
 
+The copied page already has one email form. It stays closed under the hero until **Continue course** is clicked. Continue posts to `/api/access/continue`. An email that has the course goes to `/access-link-sent` after the one-time link is sent. Any other email goes to payment. **Enroll to watch** goes to checkout. Point the catalog card at `/{slug}-course`, not at checkout.
+
 Do **not** change CSS, HTML structure, or JavaScript behavior unless the user explicitly asks. Only swap course-specific content and the `storageKey` / slug values.
 
 ### 3. Link from the catalog
@@ -168,5 +170,5 @@ Match the homepage (`index.html`) design system:
 1. Copy `courses/course-template.html` → `pelvis-3-course.html`
 2. Fill placeholders for Pelvis 3.0 content and write `content/courses/pelvis-3.json`
 3. Set `storageKey` to `linkpro-pelvis-3-progress`
-4. Update the Pelvis 3.0 card in `courses.html` to enroll through `/checkout.html?product=pelvis-3`
+4. Point the Pelvis 3.0 card in `courses.html` at `/pelvis-3-course`. The course page asks for an email: an address that already has the course is sent to `/access-link-sent` after the one-time link goes out, and any other address continues to payment.
 5. Test progress flow locally

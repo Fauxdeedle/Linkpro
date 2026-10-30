@@ -110,7 +110,8 @@ The success page writes the same row when the buyer returns. A sheet error there
 
 | Method | Path | Description |
 | --- | --- | --- |
-| `POST` | `/api/create-checkout-session` | Body: `{ "productId": "pelvis-1" }` → `{ "sessionId": "...", "checkoutUrl": "https://public.flute.com/checkout/...", "productName": "..." }` |
+| `POST` | `/api/access/continue` | Body: `{ "email": "...", "courseId": "pelvis-1" }` → `{ "action": "login" }` or `{ "action": "pay", "checkoutUrl": "..." }` |
+| `POST` | `/api/create-checkout-session` | Body: `{ "productId": "pelvis-1", "customerEmail": "..." }` → `{ "sessionId": "...", "checkoutUrl": "https://public.flute.com/checkout/...", "productName": "..." }`. Refuses an online course the email already has. |
 | `GET` | `/api/checkout-session/:sessionId` | Verify payment status after redirect |
 | `GET` | `/api/flute-config` | Returns `{ "configured": true }` when credentials are set |
 | `POST` | `/api/webhooks/flute` | Flute webhook receiver (HMAC verified) |
@@ -118,7 +119,14 @@ The success page writes the same row when the buyer returns. A sheet error there
 ## Flow
 
 ```
-course or retreat checkout link
+online course
+  → course page
+  → cookie already has this course: show the lessons
+  → otherwise POST /api/access/continue with the email
+  → email has this course: one-time link, then /access-link-sent
+  → email does not: Flute checkoutUrl
+
+seminar or retreat
   → checkout.html?product=...
   → POST /api/create-checkout-session
   → backend creates a session with amount, returnUrl, card method, and product metadata
@@ -126,7 +134,7 @@ course or retreat checkout link
   → customer pays
   → redirect to checkout-success.html?session_id=...
   → GET /api/checkout-session/:sessionId
-  → show course access link
+  → show enrollment confirmation
 
 Parallel: Flute → POST /api/webhooks/flute → payment_session.completed
 ```
@@ -136,8 +144,7 @@ Parallel: Flute → POST /api/webhooks/flute → payment_session.completed
 1. Add an entry to `server/config/products.js` with `amount` in whole USD dollars.
 2. Give it a stable ID, display name, and post-purchase `successUrl`.
 3. Optionally add a dedicated amount override to `.env.example`.
-4. Add a link to `/checkout.html?product=your-product-id`; the
-   `data-flute-product` attribute is supported for non-link controls.
+4. Add a link to `/checkout.html?product=your-product-id` for a seminar or retreat. An online course card links to `/{slug}-course`. The `data-flute-product` attribute is supported for non-link controls.
 
 Each item needs this trusted server-side catalog entry so a customer cannot
 choose their own price. It does **not** need a separate Flute dashboard setup,

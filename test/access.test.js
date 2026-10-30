@@ -11,6 +11,7 @@ const {
   createRedisStore,
   grantCourse,
   getCourses,
+  getEntitlementStore,
   setEntitlementStore,
 } = require('../lib/entitlements');
 const {
@@ -23,7 +24,12 @@ const {
   verifyCourseLogin,
 } = require('../lib/access');
 const { getCourseForRequest } = require('../lib/course-content');
-const { grantPaidCheckout, publicCheckoutResult, createCheckoutSession } = require('../lib/checkout');
+const {
+  grantPaidCheckout,
+  publicCheckoutResult,
+  createCheckoutSession,
+  continueCourseAccess,
+} = require('../lib/checkout');
 const { importGrantCsv } = require('../lib/grant-csv');
 const { HEADERS, recordManualGrant, recordPurchase } = require('../lib/purchase-sheet');
 const { processFluteWebhook } = require('../lib/webhooks');
@@ -142,6 +148,80 @@ test('checkout rejects a missing email before contacting Flute', async () => {
   assert.equal((await createCheckoutSession('pelvis-3', 'buyer@example.com')).status, 503);
 });
 
+test('checkout does not start payment when the email already has that course', async () => {
+  await grantCourse('buyer@example.com', 'pelvis-1');
+  const owned = await createCheckoutSession('pelvis-1', 'Buyer@Example.com');
+  assert.equal(owned.status, 409);
+  assert.equal(owned.checkoutUrl, undefined);
+
+  const other = await createCheckoutSession('llip', 'buyer@example.com');
+  assert.equal(other.status, 503);
+  assert.equal(other.checkoutUrl, undefined);
+});
+
+test('continue sends a link for this course and a payment session otherwise', async () => {
+  const sent = [];
+  const sessions = [];
+  await grantCourse('owner@example.com', 'pelvis-1');
+
+  async function sendLoginLink(message) {
+    sent.push(message);
+    return { sent: true };
+  }
+  async function createSession(productId, email) {
+    sessions.push({ productId, email });
+    return {
+      sessionId: `ps_${productId}`,
+      checkoutUrl: `https://public.flute.com/checkout/${productId}`,
+      productName: productId,
+    };
+  }
+
+  const owned = await continueCourseAccess({
+    email: 'Owner@Example.com',
+    courseId: 'pelvis-1',
+    sendLoginLink,
+    createSession,
+  });
+  assert.equal(owned.status, 200);
+  assert.equal(owned.body.action, 'login');
+  assert.equal(owned.body.checkoutUrl, undefined);
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].to, 'owner@example.com');
+  assert.equal(sessions.length, 0);
+
+  const otherCourse = await continueCourseAccess({
+    email: 'owner@example.com',
+    courseId: 'pelvis-3',
+    sendLoginLink,
+    createSession,
+  });
+  assert.equal(otherCourse.body.action, 'pay');
+  assert.equal(otherCourse.body.checkoutUrl, 'https://public.flute.com/checkout/pelvis-3');
+  assert.equal(sent.length, 1);
+  assert.deepEqual(sessions, [{ productId: 'pelvis-3', email: 'owner@example.com' }]);
+
+  const stranger = await continueCourseAccess({
+    email: 'new@example.com',
+    courseId: 'llip',
+    sendLoginLink,
+    createSession,
+  });
+  assert.equal(stranger.body.action, 'pay');
+  assert.equal(stranger.body.productName, 'llip');
+  assert.equal(sent.length, 1);
+
+  assert.equal(
+    (await continueCourseAccess({ email: 'not-an-email', courseId: 'pelvis-1', sendLoginLink, createSession })).status,
+    400
+  );
+  assert.equal(
+    (await continueCourseAccess({ email: 'new@example.com', courseId: 'seminar-bundle', sendLoginLink, createSession })).status,
+    400
+  );
+  assert.equal(sent.length, 1);
+});
+
 test('webhook completion grants the online course and ignores other products', async () => {
   const originalSecret = process.env.FLUTE_WEBHOOK_SECRET;
   process.env.FLUTE_WEBHOOK_SECRET = 'test-webhook-secret';
@@ -228,6 +308,17 @@ test('login links are one-time, and expired or unsigned tokens are rejected', as
   assert.equal(sent.length, 1);
   assert.equal(sent[0].to, 'return@example.com');
 
+  const otherCourse = await requestCourseAccess({
+    email: 'return@example.com',
+    courseId: 'llip',
+    sendLoginLink: async (message) => {
+      sent.push(message);
+      return { sent: true };
+    },
+  });
+  assert.equal(otherCourse.body.message, LOGIN_MESSAGE);
+  assert.equal(sent.length, 1);
+
   const token = new URL(sent[0].url).searchParams.get('token');
   const first = await verifyCourseLogin(token);
   assert.equal(first.ok, true);
@@ -254,6 +345,18 @@ test('login links are one-time, and expired or unsigned tokens are rejected', as
     headers: { cookie: first.cookie },
   });
   assert.equal(session, 'return@example.com');
+
+  await getEntitlementStore().rememberLogin('offsite', 60);
+  const offsite = signToken({
+    purpose: 'login',
+    email: 'return@example.com',
+    exp: Math.floor(Date.now() / 1000) + 60,
+    jti: 'offsite',
+    next: 'https://evil.example',
+  });
+  const redirected = await verifyCourseLogin(offsite);
+  assert.equal(redirected.ok, true);
+  assert.equal(redirected.next, '/courses');
 });
 
 test('CSV import maps old buyers onto course ids', async () => {

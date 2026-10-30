@@ -66,7 +66,7 @@ Access is an Upstash Redis set, `entitlement:{email}`. The purchase sheet row us
 7. Delete the temp CSV. Do not commit the email, the CSV, or `.env`.
 8. Confirm `getCourses` for that email includes every granted id, and the script logged `sheet append` or `sheet update` for each course. `Store:` must be `redis`.
 9. If access was saved and the sheet was not, say that plainly and stop. Retrying the same CSV is safe: Redis `SADD` and the `manual:` session id both update in place.
-10. Do not send a login email unless asked. The buyer signs in with that address from the course page.
+10. Do not send a login email unless asked. The buyer opens that course and enters the same email. If the address has that course, the site emails a one-time link and shows a confirmation page.
 
 ## References
 

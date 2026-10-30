@@ -31,6 +31,7 @@ const activeByFile = {
   'nicolette-david-retreat.html': 'courses',
   'events/event-template.html': 'courses',
   'checkout-success.html': null,
+  'access-link-sent.html': null,
   'checkout-cancel.html': null,
   'blog/your-pain-has-an-address.html': 'blog',
   'blog/what-pro-teams-know-about-the-pelvis.html': 'blog',
