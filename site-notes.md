@@ -63,7 +63,7 @@ payment sessions from server-side routes.
 
 Online courses (`pelvis-1`, `pelvis-3`, `llip`) start on the course page.
 
-1. **Enroll Now** opens that course page.
+1. **View course** opens that course page.
 2. If the browser cookie already belongs to an email with that course, the lessons load.
 3. Otherwise the page asks for an email and posts it to `/api/access/continue`.
 4. When that email has the course, the site sends a one-time link and shows `/access-link-sent`. The link signs the browser in. Typing the email does not.

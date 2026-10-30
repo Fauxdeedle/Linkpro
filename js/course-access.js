@@ -42,7 +42,8 @@
       priceEl.textContent = '$' + offer.amount;
     }
     if (startButton) {
-      startButton.textContent = 'Enroll to watch';
+      var priceLabel = offer && typeof offer.amount === 'number' ? ' — $' + offer.amount : '';
+      startButton.textContent = 'Enroll to watch' + priceLabel;
       startButton.href = '/checkout.html?product=' + encodeURIComponent(config.slug);
     }
   }
