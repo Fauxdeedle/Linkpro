@@ -10,6 +10,21 @@
   var form = document.getElementById('paywallLogin');
   var messageEl = document.getElementById('paywallMessage');
   var startButton = document.getElementById('startCourse');
+  var continueButton = document.getElementById('continueCourse');
+  var reveal = document.getElementById('coursePaywallReveal');
+
+  function openPaywall() {
+    if (!reveal || reveal.classList.contains('is-open')) return;
+    reveal.classList.add('is-open');
+    reveal.setAttribute('aria-hidden', 'false');
+    if (paywall) paywall.inert = false;
+    if (continueButton) continueButton.setAttribute('aria-expanded', 'true');
+    window.requestAnimationFrame(function () {
+      reveal.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      var emailInput = paywall && paywall.querySelector('input[type="email"]');
+      if (emailInput) emailInput.focus({ preventScroll: true });
+    });
+  }
 
   function showStatus(text) {
     if (statusEl) {
@@ -22,24 +37,36 @@
     if (statusEl) statusEl.hidden = true;
     if (progress) progress.hidden = true;
     if (curriculum) curriculum.hidden = true;
-    if (paywall) paywall.hidden = false;
+    if (continueButton) continueButton.hidden = false;
     if (offer && priceEl && typeof offer.amount === 'number') {
       priceEl.textContent = '$' + offer.amount;
     }
     if (startButton) {
       startButton.textContent = 'Enroll to watch';
-      startButton.href = '#coursePaywall';
+      startButton.href = '/checkout.html?product=' + encodeURIComponent(config.slug);
     }
   }
 
   function showCourse(lessons) {
     if (statusEl) statusEl.hidden = true;
-    if (paywall) paywall.hidden = true;
+    if (reveal) {
+      reveal.classList.remove('is-open');
+      reveal.setAttribute('aria-hidden', 'true');
+    }
+    if (paywall) paywall.inert = true;
+    if (continueButton) {
+      continueButton.hidden = true;
+      continueButton.setAttribute('aria-expanded', 'false');
+    }
     if (progress) progress.hidden = false;
     if (curriculum) curriculum.hidden = false;
     if (window.LINKPRO_COURSE_PLAYER) {
       window.LINKPRO_COURSE_PLAYER.start(lessons);
     }
+  }
+
+  if (continueButton) {
+    continueButton.addEventListener('click', openPaywall);
   }
 
   if (form) {

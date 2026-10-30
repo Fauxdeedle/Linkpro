@@ -151,17 +151,22 @@ h1 em{color:var(--gold);font-weight:inherit}
       <h1>{{TITLE_HTML}}</h1>
       <p class="hero__description">{{DESCRIPTION}}</p>
       <div class="hero__actions">
-        <a class="primary-button" id="startCourse" href="#coursePaywall">Start course
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5"/></svg>
-        </a>
+        <div class="hero__buttons">
+          <a class="primary-button" id="startCourse" href="#coursePaywall">Start course
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5"/></svg>
+          </a>
+          <button class="secondary-button" id="continueCourse" type="button" aria-expanded="false" aria-controls="coursePaywall">Continue course</button>
+        </div>
         <span class="course-meta">{{LESSON_COUNT}} lessons · Self-paced</span>
       </div>
     </div>
   </div>
 </header>
 
-<p class="course-access-status" id="courseAccessStatus">Checking your access…</p>
-<section class="course-paywall" id="coursePaywall" hidden>
+<p class="course-access-status" id="courseAccessStatus" hidden>Checking your access…</p>
+<div class="course-reveal" id="coursePaywallReveal" aria-hidden="true">
+  <div class="course-reveal__inner">
+<section class="course-paywall" id="coursePaywall" inert>
   <div class="container">
     <h2>Continue to this course</h2>
     <p>Enter your email. If it already has this course, we’ll send a one-time access link. Otherwise you’ll continue to payment.</p>
@@ -176,6 +181,8 @@ h1 em{color:var(--gold);font-weight:inherit}
     </form>
   </div>
 </section>
+  </div>
+</div>
 <section class="progress-section" hidden aria-labelledby="progress-title">
   <div class="container">
     <div class="progress__top">

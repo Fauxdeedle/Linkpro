@@ -79,7 +79,7 @@ Lesson videos are not in the HTML. Create `content/courses/{slug}.json`:
 
 Omit `youtube` or use an empty string until the video is uploaded. Register the slug in `lib/entitlements.js` (`ONLINE_COURSE_IDS` and `COURSE_PATHS`), `lib/course-content.js` (`LESSON_FILES`), and `server/config/products.js` so checkout can sell it and the access check can serve the lessons.
 
-The copied page already has one email form. Continue posts to `/api/access/continue`. An email that has the course goes to `/access-link-sent` after the one-time link is sent. Any other email goes to payment. Point the catalog card at `/{slug}-course`, not at checkout.
+The copied page already has one email form. It stays closed under the hero until **Continue course** is clicked. Continue posts to `/api/access/continue`. An email that has the course goes to `/access-link-sent` after the one-time link is sent. Any other email goes to payment. **Enroll to watch** goes to checkout. Point the catalog card at `/{slug}-course`, not at checkout.
 
 Do **not** change CSS, HTML structure, or JavaScript behavior unless the user explicitly asks. Only swap course-specific content and the `storageKey` / slug values.
 

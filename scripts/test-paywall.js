@@ -273,6 +273,12 @@ async function main() {
       `${page} has one continue form`,
       html.text.includes('>Continue</button>') && !html.text.includes('paywallEnroll')
     );
+    check(
+      `${page} keeps the email section closed`,
+      html.text.includes('id="continueCourse"') &&
+        html.text.includes('id="coursePaywallReveal"') &&
+        !html.text.includes('course-reveal is-open')
+    );
   }
 
   const sentPage = await request('GET', '/access-link-sent.html');
