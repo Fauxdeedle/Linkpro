@@ -10,75 +10,123 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --cream:#f5f0eb;--sand:#fff;--earth:#4a3428;--ink:#1a1a1a;--gold:#c4a265;
-  --slate:#5c6a78;--muted:#6d645c;--line:rgba(26,26,26,.22);
-  --display:var(--font-display);--sans:var(--font-body)
+  --charcoal:#1a1a1a;--charcoal-light:#222;--cream:#f5f0eb;--gold:#c4a265;
+  --gold-dark:#a8894f;--white:#fff;--muted:#8a8a8a;
+  --line:rgba(255,255,255,.15);--transition:cubic-bezier(.25,.46,.45,.94)
 }
 html{scroll-behavior:smooth}
-body{min-width:320px;background:var(--cream);color:var(--earth);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
-.wrap{width:min(760px,calc(100% - 40px));margin:0 auto;padding:36px 0 80px}
-.brand{display:inline-block;margin-bottom:36px}
-.brand img{display:block;width:168px;height:auto}
-h1{font-family:var(--display);font-size:clamp(3.2rem,9vw,5.4rem);font-weight:400;line-height:.88;letter-spacing:.02em;text-transform:uppercase;color:var(--slate);text-align:center}
-.intro{max-width:34rem;margin:22px auto 40px;text-align:center;font-size:1.05rem;color:var(--ink)}
-form{display:grid;gap:34px}
+body{
+  min-width:320px;background:var(--charcoal);color:var(--cream);
+  font-family:Inter,system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 42% at 50% 0%,rgba(196,162,101,.08),transparent 62%)
+}
+a{color:inherit;text-decoration:none}
+.survey{position:relative;width:min(820px,100%);margin:0 auto;padding:36px clamp(24px,5vw,80px) 88px}
+.brand{display:inline-flex;margin-bottom:56px}
+.brand img{display:block;width:158px;height:auto}
+.survey__header{text-align:center;margin-bottom:48px}
+.eyebrow{
+  display:inline-flex;align-items:center;justify-content:center;gap:12px;
+  margin-bottom:22px;font-size:.7rem;font-weight:600;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--gold)
+}
+.eyebrow::before{content:"";width:40px;height:1px;background:var(--gold)}
+h1{
+  font-family:var(--font-display);font-size:clamp(2.6rem,6vw,4.4rem);font-weight:700;
+  line-height:.95;color:var(--white);margin-bottom:18px
+}
+h1 em{font-style:italic;color:var(--gold);font-weight:inherit}
+.intro{max-width:34rem;margin:0 auto;font-size:1rem;font-weight:300;color:rgba(255,255,255,.62)}
+.panel{
+  padding:clamp(28px,5vw,48px);background:var(--charcoal-light);
+  border:1px solid rgba(255,255,255,.05)
+}
+form{display:grid;gap:32px}
 [hidden]{display:none !important}
 fieldset{border:0;min-width:0}
-legend,label.field-label,.question{display:block;font-weight:650;color:var(--ink);margin-bottom:10px}
-.req{font-weight:500;color:var(--muted)}
-.hint{margin:-4px 0 14px;color:var(--muted);font-size:.92rem}
-.name-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.field label{display:block;font-weight:650;margin-bottom:8px}
-input[type="text"],input[type="email"],textarea{
-  width:100%;border:1.5px solid var(--ink);border-radius:999px;background:var(--sand);
-  color:var(--ink);font:inherit;padding:14px 18px
+legend,label,.written label{
+  padding:0;color:var(--white);font-size:1rem;font-weight:400;line-height:1.55
 }
-textarea{border-radius:28px;min-height:148px;resize:vertical;line-height:1.5}
-input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.checks{display:grid;gap:12px}
-.check{display:flex;align-items:center;gap:12px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
-.check input,.choice input{width:18px;height:18px;accent-color:var(--earth);flex:none}
-.news{margin-top:6px}
-.scale{padding-top:8px;border-top:1px solid rgba(26,26,26,.18)}
-.scale legend{font-weight:650;padding-top:16px;max-width:40rem}
+.group-label{
+  display:block;margin-bottom:14px;font-size:.68rem;font-weight:600;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--gold)
+}
+.field label,label.field-label{
+  display:block;margin-bottom:10px;font-size:.68rem;font-weight:600;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--muted)
+}
+.req{font-weight:500;letter-spacing:0;text-transform:none;color:var(--muted)}
+.hint{margin:6px 0 14px;color:var(--muted);font-size:.92rem;font-weight:300}
+.name-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+input[type="text"],input[type="email"],textarea{
+  width:100%;padding:16px 20px;background:rgba(255,255,255,.07);
+  border:1px solid var(--line);color:var(--white);font:inherit;font-size:.9rem;font-weight:300;
+  outline:none;transition:border-color .3s ease,background .3s ease
+}
+textarea{min-height:140px;resize:vertical;line-height:1.6}
+input:focus,textarea:focus{border-color:var(--gold);background:rgba(196,162,101,.04)}
+.checks{display:grid;gap:12px;margin-top:16px}
+.check{
+  display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.82);
+  font-size:.95rem;font-weight:300;cursor:pointer
+}
+.check input,.choice input{
+  width:18px;height:18px;accent-color:var(--gold);flex:none
+}
+.prompt{margin-bottom:4px}
+.scale{margin-top:8px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08)}
+.scale legend{max-width:40rem;padding-bottom:16px}
 .scale-options{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .choice{
-  display:flex;flex-direction:column;align-items:center;gap:8px;min-height:108px;padding:12px 8px;
-  border:1.5px solid var(--line);border-radius:18px;background:var(--sand);text-align:center;
-  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  min-height:104px;padding:12px 8px;text-align:center;cursor:pointer;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);color:rgba(255,255,255,.72);
+  font-size:.64rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase
 }
-.choice:has(input:focus-visible){outline:2px solid var(--gold);outline-offset:2px}
-.choice:has(input:checked){border-color:var(--gold);background:rgba(196,162,101,.16)}
-.written{display:grid;gap:8px}
-.form-error{color:#8d2b24;font-weight:600}
-.actions{display:flex;justify-content:flex-start}
+.choice:has(input:focus-visible){outline:1px solid var(--gold);outline-offset:3px}
+.choice:has(input:checked){border-color:var(--gold);background:rgba(196,162,101,.12);color:var(--gold)}
+.written{display:grid;gap:12px}
+.form-error{color:#f0c2bc;font-weight:500}
 button[type="submit"]{
-  border:0;border-radius:999px;background:var(--slate);color:#fff;font:inherit;font-size:.84rem;
-  font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:16px 34px;cursor:pointer
+  width:100%;margin-top:4px;padding:18px;border:1px solid var(--gold);
+  background:var(--gold);color:var(--charcoal);font:inherit;font-size:.72rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background .4s var(--transition),color .4s var(--transition)
 }
-button[type="submit"]:hover{background:#4d5b68}
+button[type="submit"]:hover{background:transparent;color:var(--gold)}
 button[type="submit"]:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 button[type="submit"]:disabled{opacity:.65;cursor:wait}
-.thanks{max-width:36rem;margin:12px auto 0;text-align:center}
-.thanks h2{font-family:var(--display);font-size:clamp(2.8rem,7vw,4.2rem);font-weight:400;letter-spacing:.03em;text-transform:uppercase;color:var(--slate);margin-bottom:14px}
-.thanks p{font-size:1.05rem}
+.thanks{max-width:36rem;margin:8px auto;text-align:center}
+.thanks h2{
+  font-family:var(--font-display);font-size:clamp(2.6rem,6vw,4.2rem);font-weight:700;
+  line-height:.95;color:var(--white);margin-bottom:16px
+}
+.thanks h2 em{font-style:italic;color:var(--gold);font-weight:inherit}
+.thanks p{font-size:1rem;font-weight:300;color:rgba(255,255,255,.62)}
 .thanks:focus{outline:none}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 @media(max-width:700px){
-  .name-row{grid-template-columns:1fr}
-  .scale-options{grid-template-columns:1fr}
-  .choice{flex-direction:row;justify-content:flex-start;min-height:0;padding:12px 16px;border-radius:999px;text-align:left}
+  .brand{margin-bottom:36px}
+  .panel{padding:28px 20px}
+  .name-row,.scale-options{grid-template-columns:1fr}
+  .choice{flex-direction:row;justify-content:flex-start;min-height:0;padding:14px 16px;text-align:left}
 }
 </style>
 </head>
 <body>
-<main class="wrap">
+<main class="survey">
   <a class="brand" href="/" aria-label="LINK Pro home">
-    <img src="/assets/brand/link-pro-lockup-dark.svg" alt="" width="168" height="37">
+    <img src="/assets/brand/link-site-logo-light.svg" alt="" width="158" height="35">
   </a>
-  <h1>We would love your feedback</h1>
-  <p class="intro">Thank you for attending Fascia Normalization and 2TLS Treatment of the Lower Limb with Dr. Jason Amstutz</p>
+  <header class="survey__header">
+    <p class="eyebrow">Course feedback</p>
+    <h1>We would love your <em>feedback</em></h1>
+    <p class="intro">Thank you for attending Fascia Normalization and 2TLS Treatment of the Lower Limb with Dr. Jason Amstutz</p>
+  </header>
 
+  <div class="panel">
   <form id="survey-form" novalidate>
     <div class="hp" aria-hidden="true">
       <label for="company">Company</label>
@@ -86,7 +134,7 @@ button[type="submit"]:disabled{opacity:.65;cursor:wait}
     </div>
 
     <fieldset>
-      <legend>Name</legend>
+      <legend class="group-label">Name</legend>
       <div class="name-row">
         <div class="field">
           <label for="firstName">First name <span class="req">(required)</span></label>
@@ -110,7 +158,7 @@ button[type="submit"]:disabled{opacity:.65;cursor:wait}
     </label>
 
     <fieldset>
-      <legend id="format-legend" tabindex="-1">What type of course format do you prefer?</legend>
+      <legend class="prompt" id="format-legend" tabindex="-1">What type of course format do you prefer?</legend>
       <p class="hint">(required)</p>
       <div class="checks">
         <label class="check"><input type="checkbox" name="formats" value="hands-on"> <span>Hands on workshops</span></label>
@@ -122,7 +170,7 @@ button[type="submit"]:disabled{opacity:.65;cursor:wait}
     </fieldset>
 
     <fieldset>
-      <legend>Please answer the following questions, ranging from strongly disagree to strongly agree.</legend>
+      <legend class="prompt">Please answer the following questions, ranging from strongly disagree to strongly agree.</legend>
       <p class="hint">(required)</p>
 
       <fieldset class="scale">
@@ -219,8 +267,9 @@ button[type="submit"]:disabled{opacity:.65;cursor:wait}
   </form>
 
   <div id="survey-thanks" class="thanks" tabindex="-1" hidden>
-    <h2>Thank you</h2>
+    <h2>Thank <em>you</em></h2>
     <p>Your feedback was sent. We appreciate you taking the time after the course.</p>
+  </div>
   </div>
 </main>
 <script src="/js/lower-limb-survey.js" defer></script>
