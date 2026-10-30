@@ -163,15 +163,14 @@ h1 em{color:var(--gold);font-weight:inherit}
 <p class="course-access-status" id="courseAccessStatus">Checking your access…</p>
 <section class="course-paywall" id="coursePaywall" hidden>
   <div class="container">
-    <h2>Enroll to watch this course</h2>
-    <p>After you pay, this browser stays signed in. On another visit, enter the same email and we’ll send a one-time login link.</p>
+    <h2>Continue to this course</h2>
+    <p>Enter your email. If it already has this course, we’ll send a one-time access link. Otherwise you’ll continue to payment.</p>
     <p class="course-paywall__price" id="paywallPrice"></p>
-    <a class="primary-button" id="paywallEnroll" href="/checkout.html?product=pelvis-3">Enroll</a>
     <form class="course-paywall__login" id="paywallLogin">
-      <label for="paywallEmail">Already purchased?</label>
+      <label for="paywallEmail">Email</label>
       <div class="course-paywall__row">
-        <input id="paywallEmail" name="email" type="email" autocomplete="email" required placeholder="Email used at checkout">
-        <button type="submit">Email me a login link</button>
+        <input id="paywallEmail" name="email" type="email" autocomplete="email" required placeholder="Email">
+        <button type="submit">Continue</button>
       </div>
       <p id="paywallMessage" role="status"></p>
     </form>

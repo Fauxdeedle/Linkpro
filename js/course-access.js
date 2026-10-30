@@ -7,7 +7,6 @@
   var progress = document.querySelector('.progress-section');
   var curriculum = document.getElementById('lessons');
   var priceEl = document.getElementById('paywallPrice');
-  var enrollEl = document.getElementById('paywallEnroll');
   var form = document.getElementById('paywallLogin');
   var messageEl = document.getElementById('paywallMessage');
   var startButton = document.getElementById('startCourse');
@@ -26,9 +25,6 @@
     if (paywall) paywall.hidden = false;
     if (offer && priceEl && typeof offer.amount === 'number') {
       priceEl.textContent = '$' + offer.amount;
-    }
-    if (offer && enrollEl && offer.checkoutUrl) {
-      enrollEl.href = offer.checkoutUrl;
     }
     if (startButton) {
       startButton.textContent = 'Enroll to watch';
@@ -50,8 +46,10 @@
     form.addEventListener('submit', function (event) {
       event.preventDefault();
       var emailInput = form.querySelector('input[type="email"]');
-      messageEl.textContent = 'Sending a login link…';
-      fetch('/api/access/request', {
+      var submitButton = form.querySelector('button[type="submit"]');
+      if (submitButton) submitButton.disabled = true;
+      messageEl.textContent = 'Checking this email…';
+      fetch('/api/access/continue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -65,10 +63,24 @@
           });
         })
         .then(function (result) {
-          messageEl.textContent = result.data.message || result.data.error || 'Check your email for a login link.';
+          if (result.ok && result.data.action === 'login') {
+            window.location.assign('/access-link-sent');
+            return;
+          }
+          if (result.ok && result.data.action === 'pay' && result.data.checkoutUrl) {
+            var checkoutUrl = new URL(result.data.checkoutUrl);
+            if (checkoutUrl.protocol !== 'https:') {
+              throw new Error('Invalid checkout URL.');
+            }
+            window.location.assign(checkoutUrl.href);
+            return;
+          }
+          messageEl.textContent = (result.data && result.data.error) || 'Could not continue. Try again.';
+          if (submitButton) submitButton.disabled = false;
         })
         .catch(function () {
-          messageEl.textContent = 'Could not send a login link. Try again.';
+          messageEl.textContent = 'Could not continue. Try again.';
+          if (submitButton) submitButton.disabled = false;
         });
     });
   }

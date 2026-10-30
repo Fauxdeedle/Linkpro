@@ -62,7 +62,7 @@
   <main>
     <h1>Secure checkout</h1>
     <p id="product-name" class="product">Enter the email that should keep access to this purchase.</p>
-    <form id="checkout-form">
+    <form id="checkout-form" hidden>
       <label for="email">Email</label>
       <input id="email" name="email" type="email" autocomplete="email" required>
       <p class="hint">Online courses unlock again later for this same email.</p>
@@ -82,6 +82,13 @@
     const form = document.getElementById('checkout-form');
     const payButton = document.getElementById('pay-button');
     const emailInput = document.getElementById('email');
+    const coursePaths = {
+      'pelvis-1': '/pelvis-1-course',
+      'pelvis-3': '/pelvis-3-course',
+      llip: '/llip-course',
+    };
+    const coursePath = coursePaths[productId];
+    const prompt = 'Enter the email that should keep access to this purchase.';
 
     function showError(text) {
       message.hidden = false;
@@ -91,13 +98,48 @@
       retryButton.hidden = true;
     }
 
+    function redirectToPayment(data) {
+      if (!data.checkoutUrl) {
+        throw new Error(data.error || 'Could not create a payment session.');
+      }
+      const checkoutUrl = new URL(data.checkoutUrl);
+      if (checkoutUrl.protocol !== 'https:') {
+        throw new Error('Flute returned an invalid checkout URL.');
+      }
+      productName.textContent = data.productName;
+      window.location.replace(checkoutUrl.href);
+    }
+
     async function createSession(event) {
       event.preventDefault();
       payButton.disabled = true;
       message.hidden = false;
-      message.textContent = 'Redirecting you to Flute’s secure hosted checkout…';
       message.classList.remove('error');
 
+      if (coursePath) {
+        message.textContent = 'Checking this email…';
+        const response = await fetch('/api/access/continue', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: emailInput.value,
+            courseId: productId,
+          }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Could not continue.');
+        }
+        if (data.action === 'login') {
+          window.location.assign('/access-link-sent');
+          return;
+        }
+        message.textContent = 'Redirecting you to Flute’s secure hosted checkout…';
+        redirectToPayment(data);
+        return;
+      }
+
+      message.textContent = 'Redirecting you to Flute’s secure hosted checkout…';
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -110,14 +152,26 @@
       if (!response.ok) {
         throw new Error(data.error || 'Could not create a payment session.');
       }
+      redirectToPayment(data);
+    }
 
-      const checkoutUrl = new URL(data.checkoutUrl);
-      if (checkoutUrl.protocol !== 'https:') {
-        throw new Error('Flute returned an invalid checkout URL.');
-      }
-
-      productName.textContent = data.productName;
-      window.location.replace(checkoutUrl.href);
+    if (!coursePath) {
+      form.hidden = false;
+    } else {
+      productName.textContent = 'Checking your access…';
+      fetch('/api/courses/' + encodeURIComponent(productId), { credentials: 'same-origin' })
+        .then(function (res) {
+          if (res.status === 200) {
+            window.location.replace(coursePath);
+            return;
+          }
+          form.hidden = false;
+          productName.textContent = prompt;
+        })
+        .catch(function () {
+          form.hidden = false;
+          productName.textContent = prompt;
+        });
     }
 
     form.addEventListener('submit', async function (event) {

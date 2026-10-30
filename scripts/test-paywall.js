@@ -269,17 +269,40 @@ async function main() {
     check(`${page} does not embed videos`, !html.text.includes('youtu'), 'found youtu');
     check(`${page} asks the access api`, html.text.includes('/js/course-access.js'));
     check(`${page} hides the curriculum until access`, html.text.includes('id="lessons" hidden'));
+    check(
+      `${page} has one continue form`,
+      html.text.includes('>Continue</button>') && !html.text.includes('paywallEnroll')
+    );
   }
+
+  const sentPage = await request('GET', '/access-link-sent.html');
+  check('access link page loads', sentPage.status === 200, String(sentPage.status));
+  check(
+    'access link page confirms the email was sent',
+    sentPage.text.includes('An access link was sent to your email.')
+  );
 
   const catalog = await request('GET', '/courses.html');
   check('catalog has no preview bypass', !catalog.text.includes('Preview test course'));
-  check('catalog sells Pelvis 1.0 through checkout', catalog.text.includes('/checkout.html?product=pelvis-1'));
-  check('catalog sells Pelvis 3.0 through checkout', catalog.text.includes('/checkout.html?product=pelvis-3'));
-  check('catalog sells Lower Limb through checkout', catalog.text.includes('/checkout.html?product=llip'));
+  check(
+    'catalog opens Pelvis 1.0 on its course page',
+    catalog.text.includes('href="/pelvis-1-course"') && !catalog.text.includes('/checkout.html?product=pelvis-1')
+  );
+  check(
+    'catalog opens Pelvis 3.0 on its course page',
+    catalog.text.includes('href="/pelvis-3-course"') && !catalog.text.includes('/checkout.html?product=pelvis-3')
+  );
+  check(
+    'catalog opens Lower Limb on its course page',
+    catalog.text.includes('href="/llip-course"') && !catalog.text.includes('/checkout.html?product=llip')
+  );
   check('catalog shows the Pelvis 3.0 placeholder price', catalog.text.includes('$150'));
 
   const home = await request('GET', '/');
-  check('homepage sells Pelvis 3.0 through checkout', home.text.includes('/checkout.html?product=pelvis-3'));
+  check(
+    'homepage opens Pelvis 3.0 on its course page',
+    home.text.includes('href="/pelvis-3-course"') && !home.text.includes('/checkout.html?product=pelvis-3')
+  );
 
   section('2. Checkout requires an email and ignores a browser-supplied price');
   const checkoutPage = await request('GET', '/checkout.html?product=pelvis-1');
@@ -288,6 +311,10 @@ async function main() {
   check(
     'checkout page posts only the product id and email',
     checkoutPage.text.includes('customerEmail') && !checkoutPage.text.includes('amount:')
+  );
+  check(
+    'online checkout can send an access link instead of charging',
+    checkoutPage.text.includes('/api/access/continue') && checkoutPage.text.includes('/access-link-sent')
   );
 
   const missingEmail = await request('POST', '/api/create-checkout-session', {
@@ -423,6 +450,26 @@ async function main() {
     body: JSON.stringify({ email: 'webhook@example.com', courseId: 'llip' }),
   });
   check('login request returns the generic message', linkRequest.json?.message?.includes('If this email has a course'));
+  const continueOwned = await request('POST', '/api/access/continue', {
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ email: 'webhook@example.com', courseId: 'llip' }),
+  });
+  check(
+    'continue sends a link when this course is owned',
+    continueOwned.status === 200 &&
+      continueOwned.json?.action === 'login' &&
+      !continueOwned.json?.checkoutUrl,
+    JSON.stringify(continueOwned.json)
+  );
+  const continueOther = await request('POST', '/api/access/continue', {
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ email: 'webhook@example.com', courseId: 'pelvis-1' }),
+  });
+  check(
+    'continue does not unlock a different course',
+    continueOther.status === 503 && !continueOther.json?.checkoutUrl,
+    JSON.stringify(continueOther.json)
+  );
   const webhookLink = await waitForLoginLink(beforeLogin);
   const webhookVerify = await request(
     'GET',
@@ -496,6 +543,42 @@ async function main() {
   });
   check('login form rejects an invalid email', badAddress.status === 400, JSON.stringify(badAddress.json));
 
+  const ownedBefore = loginLinks().length;
+  const ownedContinue = await request('POST', '/api/access/continue', {
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ email: 'buyer@example.com', courseId: 'pelvis-1' }),
+  });
+  check(
+    'an email with this course gets a login action',
+    ownedContinue.status === 200 && ownedContinue.json?.action === 'login',
+    JSON.stringify(ownedContinue.json)
+  );
+  check('an email with this course does not get a payment url', !ownedContinue.json?.checkoutUrl);
+  await waitForLoginLink(ownedBefore);
+
+  const otherBefore = loginLinks().length;
+  const otherContinue = await request('POST', '/api/access/continue', {
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ email: 'buyer@example.com', courseId: 'llip' }),
+  });
+  await delay(150);
+  check(
+    'an email without this course is not given a payment url',
+    otherContinue.status === 503 && !otherContinue.json?.checkoutUrl,
+    JSON.stringify(otherContinue.json)
+  );
+  check('an email without this course does not get a link', loginLinks().length === otherBefore);
+
+  const blockedCheckout = await request('POST', '/api/create-checkout-session', {
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ productId: 'pelvis-1', customerEmail: 'buyer@example.com' }),
+  });
+  check(
+    'checkout refuses an email that already has the course',
+    blockedCheckout.status === 409,
+    JSON.stringify(blockedCheckout.json)
+  );
+
   const buyerLink = loginLinks().at(-1);
   const firstUse = await request('GET', new URL(buyerLink).pathname + new URL(buyerLink).search);
   check('first login link redirects to Pelvis 1.0', firstUse.headers.location === '/pelvis-1-course.html', firstUse.headers.location);
@@ -528,16 +611,16 @@ async function main() {
   );
 
   const evilBefore = loginLinks().length;
-  await request('POST', '/api/access/request', {
+  const evilContinue = await request('POST', '/api/access/continue', {
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ email: 'buyer@example.com', courseId: 'https://evil.example' }),
   });
-  const evilLink = await waitForLoginLink(evilBefore);
-  const evilVisit = await request('GET', new URL(evilLink).pathname + new URL(evilLink).search);
+  await delay(150);
+  check('a course id cannot leave this site', evilContinue.status === 400, JSON.stringify(evilContinue.json));
   check(
-    'a login link cannot redirect off this site',
-    evilVisit.headers.location === '/courses',
-    evilVisit.headers.location
+    'a bogus course id does not send a link',
+    loginLinks().length === evilBefore,
+    `links ${loginLinks().length}`
   );
 
   const invalidNotice = await request('GET', '/courses?access=invalid');

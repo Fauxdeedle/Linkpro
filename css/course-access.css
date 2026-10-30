@@ -35,9 +35,7 @@
 
 .course-paywall__login {
   max-width: 560px;
-  margin-top: 36px;
-  padding-top: 28px;
-  border-top: 1px solid rgba(26, 26, 26, 0.14);
+  margin-top: 8px;
 }
 
 .course-paywall__login label {
