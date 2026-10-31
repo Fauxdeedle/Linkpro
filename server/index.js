@@ -7,6 +7,7 @@ const checkoutRouter = require('./routes/checkout');
 const webhooksRouter = require('./routes/webhooks');
 const accessRouter = require('./routes/access');
 const coursesRouter = require('./routes/courses');
+const surveyRouter = require('./routes/survey');
 const { isConfigured } = require('../lib/flute');
 const { entitlementStoreMode } = require('../lib/entitlements');
 
@@ -25,6 +26,7 @@ app.use((err, _req, res, next) => {
 app.use('/api', checkoutRouter);
 app.use('/api/access', accessRouter);
 app.use('/api/courses', coursesRouter);
+app.use('/api/event-survey', surveyRouter);
 
 /** Match Vercel cleanUrls locally (e.g. /about → about.html). */
 function cleanUrls(req, res, next) {
