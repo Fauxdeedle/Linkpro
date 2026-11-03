@@ -8,7 +8,8 @@
  * Usage:
  *   node scripts/grant-access.js purchasers.csv
  *
- * Reads UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN, or ENTITLEMENT_FILE
+ * Reads UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN, the Vercel Redis
+ * names PAY_CHECK_KV_REST_API_* or KV_REST_API_*, or ENTITLEMENT_FILE
  * for a local JSON store. A Redis grant also needs the Google Sheets variables
  * in .env.example. See .env.example.
  */

@@ -9,6 +9,8 @@ const {
   createFileStore,
   createMemoryStore,
   createRedisStore,
+  entitlementStoreMode,
+  redisSettings,
   grantCourse,
   getCourses,
   getEntitlementStore,
@@ -427,6 +429,45 @@ test('file and redis stores record course grants', async () => {
   await redis.rememberLogin('jti-1', 1800);
   assert.equal(await redis.consumeLogin('jti-1'), true);
   assert.deepEqual(commands.map((command) => command[0]), ['SADD', 'SMEMBERS', 'SET', 'GETDEL']);
+});
+
+test('course access reads Vercel Redis variable names', () => {
+  assert.equal(
+    entitlementStoreMode({
+      PAY_CHECK_KV_REST_API_URL: ' https://pay-check.upstash.io ',
+      PAY_CHECK_KV_REST_API_TOKEN: 'pay-token',
+    }),
+    'redis'
+  );
+  assert.deepEqual(
+    redisSettings({
+      PAY_CHECK_KV_REST_API_URL: ' https://pay-check.upstash.io ',
+      PAY_CHECK_KV_REST_API_TOKEN: 'pay-token',
+      KV_REST_API_URL: 'https://kv.upstash.io',
+      KV_REST_API_TOKEN: 'kv-token',
+    }),
+    { url: 'https://pay-check.upstash.io', token: 'pay-token' }
+  );
+  assert.deepEqual(
+    redisSettings({
+      UPSTASH_REDIS_REST_URL: 'https://primary.upstash.io',
+      UPSTASH_REDIS_REST_TOKEN: 'primary',
+      PAY_CHECK_KV_REST_API_URL: 'https://pay-check.upstash.io',
+      PAY_CHECK_KV_REST_API_TOKEN: 'pay-token',
+    }),
+    { url: 'https://primary.upstash.io', token: 'primary' }
+  );
+  assert.equal(
+    redisSettings({
+      UPSTASH_REDIS_REST_URL: '...',
+      UPSTASH_REDIS_REST_TOKEN: '...',
+      KV_REST_API_URL: 'https://kv.upstash.io',
+      KV_REST_API_TOKEN: 'kv-token',
+    }).url,
+    'https://kv.upstash.io'
+  );
+  assert.equal(entitlementStoreMode({ ENTITLEMENT_FILE: './data/entitlements.json' }), 'file');
+  assert.equal(entitlementStoreMode({}), 'memory');
 });
 
 test('a purchase sheet appends a session and updates that same session', async () => {

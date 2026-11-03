@@ -40,8 +40,7 @@ Access is an Upstash Redis set, `entitlement:{email}`. The purchase sheet row us
 2. Map each course to an id from the table above.
 3. Require a durable store and the purchase sheet before granting. `.env` (gitignored) needs:
 
-   - `UPSTASH_REDIS_REST_URL`
-   - `UPSTASH_REDIS_REST_TOKEN`
+   - `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`, or Vercel’s `PAY_CHECK_KV_REST_API_URL` and `PAY_CHECK_KV_REST_API_TOKEN`, or `KV_REST_API_URL` and `KV_REST_API_TOKEN`
    - `GOOGLE_SHEETS_SPREADSHEET_ID`
    - `GOOGLE_SERVICE_ACCOUNT_EMAIL`
    - `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`

@@ -82,7 +82,7 @@ test('missing Resend configuration does not call the API', async () => {
         throw new Error('should not send');
       },
     });
-    assert.deepEqual(result, { sent: false });
+    assert.deepEqual(result, { sent: false, reason: 'not-configured' });
   } finally {
     restoreEnv(previous);
   }

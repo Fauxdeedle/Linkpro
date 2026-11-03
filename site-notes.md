@@ -377,7 +377,7 @@ The command reads `.env` next to `package.json`. It does not read `.env.local` o
 | `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Account that can edit the sheet |
 | `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` | That account’s private key |
 
-Vercel’s storage integration labels the same Redis database `PAY_CHECK_KV_REST_API_URL` and `PAY_CHECK_KV_REST_API_TOKEN`. Copy those two values into the `UPSTASH_REDIS_*` names above, both in `.env` and in Vercel production, then redeploy. Use the normal token, not the read-only token. Leave `ENTITLEMENT_FILE` unset so the grant is stored in production Redis.
+The site reads `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` first. When that pair is empty, it uses Vercel’s `PAY_CHECK_KV_REST_API_URL` and `PAY_CHECK_KV_REST_API_TOKEN`, then `KV_REST_API_URL` and `KV_REST_API_TOKEN`. Use the read-write token, not the read-only token. Leave `ENTITLEMENT_FILE` unset so the grant is stored in production Redis. A login email is sent only when that store already has the course for the address. An address without the course goes to checkout and Resend is not called.
 
 If the Redis variables are missing, the command stops with `Refusing to grant` and writes nothing. If Redis succeeds and the sheet write does not, it prints `Access was saved, but the purchase sheet was not updated.` Run the same CSV again to fill in the sheet.
 
