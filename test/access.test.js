@@ -17,6 +17,7 @@ const {
 const {
   LOGIN_MESSAGE,
   emailFromRequest,
+  readRequestToken,
   readToken,
   requestCourseAccess,
   serializeSessionCookie,
@@ -281,6 +282,21 @@ test('lesson JSON requires a cookie and does not leak videos when locked', async
   assert.equal(otherCourse.status, 401);
   assert.equal(JSON.stringify(otherCourse.body).includes('youtu'), false);
   assert.equal((await getCourseForRequest('not-a-course', { headers: { cookie } })).status, 404);
+});
+
+test('the email link token is read with the WHATWG URL API', () => {
+  const token = 'body.signature_part-1';
+  assert.equal(
+    readRequestToken({ url: `/api/access/verify?token=${encodeURIComponent(token)}` }),
+    token
+  );
+  assert.equal(
+    readRequestToken({ url: `/verify?token=${encodeURIComponent(token)}` }),
+    token
+  );
+  assert.equal(readRequestToken({ query: { token } }), token);
+  assert.equal(readRequestToken({ query: { token: [token, 'other'] } }), token);
+  assert.equal(readRequestToken({ url: '/api/access/verify' }), null);
 });
 
 test('login links are one-time, and expired or unsigned tokens are rejected', async () => {
