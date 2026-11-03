@@ -1,4 +1,4 @@
-const { verifyCourseLogin } = require('../../lib/access');
+const { readRequestToken, verifyCourseLogin } = require('../../lib/access');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -7,7 +7,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const result = await verifyCourseLogin(req.query.token);
+    const result = await verifyCourseLogin(readRequestToken(req));
     if (!result.ok) {
       res.setHeader('Location', '/courses?access=invalid');
       return res.status(302).end();

@@ -1,6 +1,6 @@
 const express = require('express');
 const { readJsonBody } = require('../../lib/body');
-const { requestCourseAccess, verifyCourseLogin } = require('../../lib/access');
+const { readRequestToken, requestCourseAccess, verifyCourseLogin } = require('../../lib/access');
 const { continueCourseAccess, getCheckoutErrorStatus } = require('../../lib/checkout');
 
 const router = express.Router();
@@ -29,7 +29,7 @@ router.post('/continue', async (req, res) => {
 
 router.get('/verify', async (req, res) => {
   try {
-    const result = await verifyCourseLogin(req.query.token);
+    const result = await verifyCourseLogin(readRequestToken(req));
     if (!result.ok) {
       return res.redirect(302, '/courses?access=invalid');
     }
