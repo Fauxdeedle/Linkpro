@@ -1,0 +1,56 @@
+[
+  {
+    "id": "nicolette-david-retreat",
+    "title": "Live By The Sun, Love By The Moon — Hatha Yoga Retreat",
+    "location": "El Pescadero, Baja · with Nicolette David",
+    "summary": "Five days at Soluna Estate — sun and moon hatha practices, meditation, chef-prepared meals, and time to explore the Baja coast. Intimate eight-room retreat.",
+    "start": "2026-11-11",
+    "end": "2026-11-15",
+    "priceLabel": "From $1,350",
+    "href": "/nicolette-david-retreat",
+    "ctaLabel": "View retreat — Register",
+    "showOnHome": false
+  },
+  {
+    "id": "trunk-pelvis",
+    "title": "Fascia & 2TLS Treatment of the Trunk & Pelvis",
+    "location": "Newport Beach, CA",
+    "summary": "The culmination — integrating trunk and pelvic fascial systems for complete body treatment mastery.",
+    "start": "2026-12-04",
+    "end": "2026-12-06",
+    "priceLabel": "$1,500",
+    "productId": "seminar-trunk-pelvis",
+    "showOnHome": true
+  },
+  {
+    "id": "upper-limb",
+    "title": "Fascia & 2TLS Treatment of the Upper Limb",
+    "location": "Newport Beach, CA · 9 AM – 5 PM",
+    "summary": "Treat the upper limb as an integrated fascial system. Learn osteoarticular pumping, fascial chain identification, and transverse tendon & ligament stretching techniques.",
+    "start": "2027-06-07",
+    "end": "2027-06-09",
+    "priceLabel": "$1,500",
+    "productId": "seminar-upper-limb",
+    "showOnHome": true
+  },
+  {
+    "id": "cranial-diaphragm",
+    "title": "Cranial Diaphragm feat. Scott Herrara",
+    "location": "Dallas, TX",
+    "summary": "Advanced cranial techniques exploring the cranial diaphragm, fascial continuity, and neurological function.",
+    "start": "2027-08-01",
+    "end": "2027-08-05",
+    "showOnHome": true
+  },
+  {
+    "id": "lower-limb",
+    "title": "Fascia & 2TLS Treatment of the Lower Limb",
+    "location": "Newport Beach, CA",
+    "summary": "Lower limb fascial chain assessment and treatment. Osteoarticular pumping for the hip, knee, and ankle complex.",
+    "start": "2027-09-25",
+    "end": "2027-09-27",
+    "priceLabel": "$1,500",
+    "productId": "seminar-lower-limb",
+    "showOnHome": true
+  }
+]

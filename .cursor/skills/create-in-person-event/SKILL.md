@@ -20,7 +20,7 @@ Build static event detail pages with desert-luxe styling (from retreat fliers), 
 | [`events/event-template.html`](../../events/event-template.html) | HTML shell + CSS + placeholder tokens |
 | [`nicolette-david-retreat.html`](../../nicolette-david-retreat.html) | Working example (filled) |
 | [`content/nicolette-david-retreat-source.md`](../../content/nicolette-david-retreat-source.md) | Archived brief shape |
-| [`courses.html`](../../courses.html) | In-person seminar cards (`#seminars`, `.seminar`) |
+| [`content/events.json`](../../content/events.json) | In-person seminar cards (courses page and homepage) |
 | [`create-course` skill](../create-course/SKILL.md) | Nav registration pattern |
 | [`scripts/build-nav.js`](../../scripts/build-nav.js) | `activeByFile` + `npm run build:nav` |
 
@@ -92,32 +92,31 @@ npm run build:analytics
 
 Commit updated HTML files the script touches.
 
-### 4. Add courses.html listing
+### 4. Add the catalog row
 
-Inside `<div class="seminars" id="upcoming">`, add a `.seminar.reveal` block **above** unrelated seminars (newest / next event first).
+Add one object to `content/events.json`. Do not edit the card markup in `courses.html` or `index.html`. `js/live-events.js` sorts by `start` and hides an event after its `end` date (America/Los_Angeles, inclusive).
 
-Use this structure:
-
-```html
-<div class="seminar reveal">
-  <div class="seminar-date"><span class="seminar-month">MON</span><span class="seminar-days">11–15</span></div>
-  <div class="seminar-content">
-    <h4>Event title (short)</h4>
-    <p class="seminar-location">City, Region · host or context</p>
-    <p class="seminar-text">One or two sentences.</p>
-  </div>
-  <div class="seminar-price-block">
-    <span class="seminar-price">From $X</span>
-    <a href="/{slug}" class="seminar-cta">View event — Register</a>
-  </div>
-</div>
+```json
+{
+  "id": "newport-fascia-intensive",
+  "title": "Event title (short)",
+  "location": "City, Region · host or context",
+  "summary": "One or two sentences.",
+  "start": "2027-03-12",
+  "end": "2027-03-14",
+  "priceLabel": "From $X",
+  "href": "/newport-fascia-intensive",
+  "ctaLabel": "View event — Register",
+  "showOnHome": true
+}
 ```
 
-- Use `<a class="seminar-cta">` when registration is on the event page or external.
-- Use `<button type="button" class="seminar-cta" data-flute-product="…">` only when Flute checkout is configured (see `js/flute-checkout.js`, `server/config/products.js`).
-- Use `<span class="seminar-soon">Coming Soon</span>` when there is no public registration yet.
+- `href` for a landing page. Optional `ctaLabel` (default “View event — Register”).
+- `productId` for Flute checkout, matching `server/config/products.js` (for example `seminar-upper-limb`). The courses button reads `Register — {priceLabel}`; the homepage button reads `Register`.
+- Omit `priceLabel`, `href`, and `productId` for Coming Soon.
+- `showOnHome: false` keeps the row on `/courses#seminars` only. The bundle under the list stays static HTML.
 
-Do **not** add every event to `index.html` unless the user asks.
+To take an event down before `end`, delete that object. Do not put listings on the Purchases sheet.
 
 ### 5. Verify
 
@@ -128,7 +127,7 @@ npm start
 Check:
 
 1. `http://localhost:8080/{slug}` — hero, gallery, schedule, CTA, mobile ~400px
-2. `http://localhost:8080/courses#seminars` — new row links to `/{slug}`
+2. `http://localhost:8080/courses#seminars` — the row from `content/events.json` links to `/{slug}`
 3. Nav highlights **Courses** on the event page
 
 Use the `walkthrough-artifacts` skill if demo evidence is needed.
@@ -160,10 +159,11 @@ Use `BASE_URL` from `.env` when set.
 
 ## What not to do
 
-- Do not add a build step or JSON renderer for v1 (inline HTML like course pages)
+- Do not hand-edit seminar cards in `courses.html` or `index.html` — add the row to `content/events.json`
 - Do not duplicate nav markup — use `build:nav`
-- Do not skip the courses.html entry when the event should appear in **In-Person Seminars**
+- Do not skip the `content/events.json` entry when the event should appear in **In-Person Seminars**
 - Do not add footer nav links for one-off events unless the user asks
+- Do not record event listings on the Purchases sheet
 
 ## Example
 
@@ -173,5 +173,5 @@ Use `BASE_URL` from `.env` when set.
 2. `cp events/event-template.html newport-fascia-intensive.html` → fill content
 3. `images/events/newport-fascia-intensive/` + photos
 4. Register in `build-nav.js`, `npm run build:nav`
-5. New `.seminar` on `courses.html` → `/newport-fascia-intensive`
+5. New object in `content/events.json` → `/newport-fascia-intensive`
 6. Test + output local/production URLs

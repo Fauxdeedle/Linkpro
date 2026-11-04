@@ -485,6 +485,27 @@ Set `SURVEY_NOTIFY_EMAIL` in Vercel (and in local `.env` when testing). The exam
 
 ---
 
+## In-person seminars
+
+The courses page (`/courses#seminars`) and the homepage “In-Person Seminars” block both read [`content/events.json`](content/events.json). [`js/live-events.js`](js/live-events.js) draws the cards. The bundle under each list is still written in the HTML.
+
+### Add, edit, or remove a listing
+
+Edit `content/events.json` and deploy. Each object needs `id`, `title`, `location`, `summary`, `start`, and `end` (`YYYY-MM-DD`).
+
+- The date box (NOV / 11–15) comes from `start` and `end`.
+- An event stays up through its `end` date in Pacific time, then both pages drop it. Delete the object to take it down sooner.
+- `priceLabel` is the price visitors see (`$1,500`, `From $1,350`). Leave it off, and leave off `href` and `productId`, for Coming Soon.
+- `href` links to a landing page such as `/nicolette-david-retreat`. Set `ctaLabel` when the button should say something other than “View event — Register”.
+- `productId` opens Flute checkout and must already exist in `server/config/products.js`. Charged amounts stay in that file. The courses button includes the price label; the homepage button says “Register”.
+- `showOnHome: false` keeps a row on the courses page only. The Baja retreat uses that.
+
+Rows are shown in `start` order, not the order they appear in the file.
+
+The month-and-day cards that were already on the site did not name a year. As of November 2026 the file uses the next date that is still ahead: the retreat is November 11–15, 2026 and trunk and pelvis is December 4–6, 2026; upper limb, cranial diaphragm, and lower limb are in 2027. Change `start` and `end` if a seminar is actually a different year.
+
+Do not add these listings to the Purchases sheet. That tab only logs payments.
+
 ## (Add more sections below)
 
 Examples you might add later: booking form behavior, Flute checkout flow, who to contact for domain/DNS, etc.
