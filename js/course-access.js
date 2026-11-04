@@ -6,7 +6,6 @@
   var paywall = document.getElementById('coursePaywall');
   var progress = document.querySelector('.progress-section');
   var curriculum = document.getElementById('lessons');
-  var priceEl = document.getElementById('paywallPrice');
   var form = document.getElementById('paywallLogin');
   var messageEl = document.getElementById('paywallMessage');
   var startButton = document.getElementById('startCourse');
@@ -83,9 +82,6 @@
     if (progress) progress.hidden = true;
     if (curriculum) curriculum.hidden = true;
     if (continueButton) continueButton.hidden = false;
-    if (offer && priceEl && typeof offer.amount === 'number') {
-      priceEl.textContent = '$' + offer.amount;
-    }
     if (startButton) {
       var priceLabel = offer && typeof offer.amount === 'number' ? ' — $' + offer.amount : '';
       startButton.textContent = 'Enroll to watch' + priceLabel;
