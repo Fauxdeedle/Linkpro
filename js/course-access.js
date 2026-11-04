@@ -13,17 +13,62 @@
   var continueButton = document.getElementById('continueCourse');
   var reveal = document.getElementById('coursePaywallReveal');
 
+  function centerEmailForm() {
+    var formEl = document.getElementById('paywallLogin');
+    if (!formEl) return false;
+    var rect = formEl.getBoundingClientRect();
+    if (rect.height < 8) return false;
+    var formBottom = window.scrollY + rect.bottom;
+    var scrollHeight = document.documentElement.scrollHeight;
+    // Collapsed overflow still reports the form's layout box, but that box
+    // is not part of the scrollable page yet.
+    if (formBottom > scrollHeight + 2) return false;
+    var target = window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2;
+    var maxScroll = Math.max(0, scrollHeight - window.innerHeight);
+    if (target > maxScroll && paywall) {
+      var current = parseFloat(window.getComputedStyle(paywall).paddingBottom) || 0;
+      paywall.style.paddingBottom = current + (target - maxScroll) + 'px';
+      scrollHeight = document.documentElement.scrollHeight;
+      maxScroll = Math.max(0, scrollHeight - window.innerHeight);
+    }
+    if (target > maxScroll + 24) return false;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({
+      top: Math.max(0, Math.min(target, maxScroll)),
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    });
+    return true;
+  }
+
   function openPaywall() {
     if (!reveal || reveal.classList.contains('is-open')) return;
     reveal.classList.add('is-open');
     reveal.setAttribute('aria-hidden', 'false');
     if (paywall) paywall.inert = false;
     if (continueButton) continueButton.setAttribute('aria-expanded', 'true');
-    window.requestAnimationFrame(function () {
-      reveal.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    var centered = false;
+    function alignForm(forceFocus) {
+      if (!centered && centerEmailForm()) centered = true;
+      if (!centered && !forceFocus) return;
       var emailInput = paywall && paywall.querySelector('input[type="email"]');
       if (emailInput) emailInput.focus({ preventScroll: true });
+    }
+
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(alignForm);
     });
+
+    function onRevealEnd(event) {
+      if (event.target !== reveal || event.propertyName !== 'grid-template-rows') return;
+      reveal.removeEventListener('transitionend', onRevealEnd);
+      alignForm();
+    }
+    reveal.addEventListener('transitionend', onRevealEnd);
+    window.setTimeout(function () {
+      reveal.removeEventListener('transitionend', onRevealEnd);
+      alignForm(true);
+    }, 560);
   }
 
   function showStatus(text) {
@@ -54,7 +99,10 @@
       reveal.classList.remove('is-open');
       reveal.setAttribute('aria-hidden', 'true');
     }
-    if (paywall) paywall.inert = true;
+    if (paywall) {
+      paywall.inert = true;
+      paywall.style.paddingBottom = '';
+    }
     if (continueButton) {
       continueButton.hidden = true;
       continueButton.setAttribute('aria-expanded', 'false');
