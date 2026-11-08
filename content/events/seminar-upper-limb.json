@@ -1,0 +1,47 @@
+{
+  "slug": "seminar-upper-limb",
+  "status": "upcoming",
+  "pageMode": "generated",
+  "listOn": ["courses", "home"],
+  "sort": 20,
+  "productId": "seminar-upper-limb",
+  "catalog": {
+    "month": "JUN",
+    "days": "7–9",
+    "title": "Fascia & 2TLS Treatment of the Upper Limb",
+    "location": "Newport Beach, CA · 9 AM – 5 PM",
+    "summary": "Treat the upper limb as an integrated fascial system. Learn osteoarticular pumping, fascial chain identification, and transverse tendon & ligament stretching techniques.",
+    "priceLabel": "$1,500",
+    "ctaLabel": "View training — Register"
+  },
+  "meta": {
+    "title": "Fascia & 2TLS Treatment of the Upper Limb — LINK Pro",
+    "description": "Treat the upper limb as an integrated fascial system. Hands-on seminar in Newport Beach with Dr. Jason Amstutz."
+  },
+  "hero": {
+    "eyebrow": "In-person seminar",
+    "titleHtml": "Fascia &amp; 2TLS Treatment of the <em>Upper Limb</em>",
+    "tagline": "Treat the upper limb as an integrated fascial system.",
+    "metaHtml": "June 7–9 · 9 AM – 5 PM<br><strong>Newport Beach, CA</strong>"
+  },
+  "details": {
+    "label": "The training",
+    "heading": "Hands-on intensive",
+    "intro": "Treat the upper limb as an integrated fascial system. Learn osteoarticular pumping, fascial chain identification, and transverse tendon and ligament stretching techniques.",
+    "logisticsLabel": "Logistics",
+    "logistics": ["Newport Beach, CA", "9 AM – 5 PM", "$1,500"]
+  },
+  "instructor": {
+    "name": "Dr. Jason Amstutz",
+    "role": "Founder & Lead Practitioner",
+    "image": "/assets/about/dr-jason-amstutz-portrait.png",
+    "imageAlt": "Dr. Jason Amstutz",
+    "bio": "Dr. Amstutz has spent his career studying how the body works as a single system, and why treating it in pieces so often fails. Under years of mentorship with osteopath Guy Voyer, DO, he developed a pelvis-first methodology that addresses musculoskeletal, visceral, and neurological function together rather than as separate problems."
+  },
+  "gallery": [],
+  "cta": {
+    "title": "Register for this training",
+    "body": "Intensive, hands-on training in fascial chain treatment and 2TLS technique for practitioners ready to change how they treat the upper limb.",
+    "buttonText": "Register — $1,500"
+  }
+}

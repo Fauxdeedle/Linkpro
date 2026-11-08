@@ -1,0 +1,47 @@
+{
+  "slug": "seminar-trunk-pelvis",
+  "status": "upcoming",
+  "pageMode": "generated",
+  "listOn": ["courses", "home"],
+  "sort": 50,
+  "productId": "seminar-trunk-pelvis",
+  "catalog": {
+    "month": "DEC",
+    "days": "4–6",
+    "title": "Fascia & 2TLS Treatment of the Trunk & Pelvis",
+    "location": "Newport Beach, CA",
+    "summary": "The culmination — integrating trunk and pelvic fascial systems for complete body treatment mastery.",
+    "priceLabel": "$1,500",
+    "ctaLabel": "View training — Register"
+  },
+  "meta": {
+    "title": "Fascia & 2TLS Treatment of the Trunk & Pelvis — LINK Pro",
+    "description": "Integrating trunk and pelvic fascial systems. Hands-on seminar in Newport Beach with Dr. Jason Amstutz."
+  },
+  "hero": {
+    "eyebrow": "In-person seminar",
+    "titleHtml": "Fascia &amp; 2TLS Treatment of the <em>Trunk &amp; Pelvis</em>",
+    "tagline": "Integrating trunk and pelvic fascial systems for complete body treatment mastery.",
+    "metaHtml": "December 4–6<br><strong>Newport Beach, CA</strong>"
+  },
+  "details": {
+    "label": "The training",
+    "heading": "Hands-on intensive",
+    "intro": "The culmination — integrating trunk and pelvic fascial systems for complete body treatment mastery.",
+    "logisticsLabel": "Logistics",
+    "logistics": ["Newport Beach, CA", "$1,500"]
+  },
+  "instructor": {
+    "name": "Dr. Jason Amstutz",
+    "role": "Founder & Lead Practitioner",
+    "image": "/assets/about/dr-jason-amstutz-portrait.png",
+    "imageAlt": "Dr. Jason Amstutz",
+    "bio": "Dr. Amstutz has spent his career studying how the body works as a single system, and why treating it in pieces so often fails. Under years of mentorship with osteopath Guy Voyer, DO, he developed a pelvis-first methodology that addresses musculoskeletal, visceral, and neurological function together rather than as separate problems."
+  },
+  "gallery": [],
+  "cta": {
+    "title": "Register for this training",
+    "body": "Intensive, hands-on training that brings trunk and pelvic fascial systems into one treatment approach.",
+    "buttonText": "Register — $1,500"
+  }
+}

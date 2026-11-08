@@ -15,13 +15,13 @@ The site previously linked out to `linkprosport.com` for enrollment. This scaffo
 - Success/cancel pages after payment
 - Webhook endpoint for post-payment fulfillment
 
-Paid enroll buttons on `courses.html` currently wired:
+Paid enroll buttons on `courses.html` currently wired. Seminar registration is on each training page; the catalog card links there:
 
 | Product | Price | `data-stripe-product` | Post-purchase redirect |
 |---------|-------|------------------------|-------------------------|
 | Pelvis 1.0 | $100 | `pelvis-1` | `/pelvis-1-course.html` |
 | Lower Limb Injury Prevention | $199 | `llip` | `/llip-course.html` |
-| Fascia & 2TLS — Upper Limb (seminar) | $1,500 | `seminar-upper-limb` | `/courses.html#seminars` |
+| Fascia & 2TLS — Upper Limb (seminar) | $1,500 | `seminar-upper-limb` | `/seminar-upper-limb.html` |
 
 Pelvis 1.0 still has a **Preview test course** link to the free local test page. Pelvis 3.0 and Lower Limb Injury Prevention cards on `courses.html` currently open `pelvis-3-course.html` and `llip-course.html` with no checkout, so the lessons can be reviewed. The `llip` catalog entry still redirects to `/llip-course.html` after payment once that button is wired back to checkout.
 

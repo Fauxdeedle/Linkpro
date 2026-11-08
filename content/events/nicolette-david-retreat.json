@@ -1,0 +1,16 @@
+{
+  "slug": "nicolette-david-retreat",
+  "status": "upcoming",
+  "pageMode": "static",
+  "listOn": ["courses"],
+  "sort": 10,
+  "catalog": {
+    "month": "NOV",
+    "days": "11–15",
+    "title": "Live By The Sun, Love By The Moon — Hatha Yoga Retreat",
+    "location": "El Pescadero, Baja · with Nicolette David",
+    "summary": "Five days at Soluna Estate — sun and moon hatha practices, meditation, chef-prepared meals, and time to explore the Baja coast. Intimate eight-room retreat.",
+    "priceLabel": "From $1,350",
+    "ctaLabel": "View retreat — Register"
+  }
+}

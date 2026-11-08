@@ -1,0 +1,47 @@
+{
+  "slug": "seminar-lower-limb",
+  "status": "upcoming",
+  "pageMode": "generated",
+  "listOn": ["courses", "home"],
+  "sort": 40,
+  "productId": "seminar-lower-limb",
+  "catalog": {
+    "month": "SEP",
+    "days": "25–27",
+    "title": "Fascia & 2TLS Treatment of the Lower Limb",
+    "location": "Newport Beach, CA",
+    "summary": "Lower limb fascial chain assessment and treatment. Osteoarticular pumping for the hip, knee, and ankle complex.",
+    "priceLabel": "$1,500",
+    "ctaLabel": "View training — Register"
+  },
+  "meta": {
+    "title": "Fascia & 2TLS Treatment of the Lower Limb — LINK Pro",
+    "description": "Lower limb fascial chain assessment and treatment. Hands-on seminar in Newport Beach with Dr. Jason Amstutz."
+  },
+  "hero": {
+    "eyebrow": "In-person seminar",
+    "titleHtml": "Fascia &amp; 2TLS Treatment of the <em>Lower Limb</em>",
+    "tagline": "Lower limb fascial chain assessment and treatment.",
+    "metaHtml": "September 25–27<br><strong>Newport Beach, CA</strong>"
+  },
+  "details": {
+    "label": "The training",
+    "heading": "Hands-on intensive",
+    "intro": "Lower limb fascial chain assessment and treatment. Osteoarticular pumping for the hip, knee, and ankle complex.",
+    "logisticsLabel": "Logistics",
+    "logistics": ["Newport Beach, CA", "$1,500"]
+  },
+  "instructor": {
+    "name": "Dr. Jason Amstutz",
+    "role": "Founder & Lead Practitioner",
+    "image": "/assets/about/dr-jason-amstutz-portrait.png",
+    "imageAlt": "Dr. Jason Amstutz",
+    "bio": "Dr. Amstutz has spent his career studying how the body works as a single system, and why treating it in pieces so often fails. Under years of mentorship with osteopath Guy Voyer, DO, he developed a pelvis-first methodology that addresses musculoskeletal, visceral, and neurological function together rather than as separate problems."
+  },
+  "gallery": [],
+  "cta": {
+    "title": "Register for this training",
+    "body": "Intensive, hands-on training in fascial chain treatment and 2TLS technique for the hip, knee, and ankle complex.",
+    "buttonText": "Register — $1,500"
+  }
+}
