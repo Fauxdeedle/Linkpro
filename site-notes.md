@@ -485,6 +485,68 @@ Set `SURVEY_NOTIFY_EMAIL` in Vercel (and in local `.env` when testing). The exam
 
 ---
 
+## Training events
+
+In-person seminars and the Baja retreat each have a page a visitor can open from the courses list. LINK Pro seminars also appear on the homepage. The pages share one layout: hero, gold rule, gallery when photos exist, a cream details block, the instructor, and a register band. Colors match the homepage (charcoal, cream, gold).
+
+Generated pages:
+
+- `/seminar-upper-limb` — June 7–9, Newport Beach, $1,500
+- `/cranial-diaphragm` — August 1–5, Dallas, registration not open
+- `/seminar-lower-limb` — September 25–27, Costa Mesa, $1,500
+- `/seminar-trunk-pelvis` — December 4–6, Newport Beach, $1,500
+
+The Baja retreat stays at `/nicolette-david-retreat`. That page is written by hand. Its card on `/courses#seminars` still comes from the event data.
+
+Catalog cards link to the event page. Register lives on that page and uses the existing Flute product id. After payment, Upper Limb, Lower Limb, and Trunk & Pelvis return to their own page. The three-seminar bundle still checks out from the bundle row and returns to `/courses.html#seminars`.
+
+### Make a new event
+
+1. Copy `content/events/_template.json` to `content/events/{slug}.json`. Use a lowercase hyphenated slug. The filename has to match the slug. `/fascia-intensive` comes from `content/events/fascia-intensive.json`.
+2. Set `pageMode` to `generated`.
+3. Set `status` to `upcoming` when people can register, or `coming-soon` when the page should exist without checkout.
+4. Set `listOn` to `["courses", "home"]` or `["courses"]`. Set `sort` to control order. Lower numbers appear first.
+5. Fill the catalog card, hero, details, instructor, gallery, and the register blurb. Leave `gallery` as `[]` when there are no photos. Leave `schedule` as `[]` when there is no day plan. Empty sections are left off the page.
+6. Set `productId` to an id already listed in `server/config/products.js` when checkout should open. Leave it out for a coming-soon event. Point that product’s `successUrl` at `/{slug}.html`.
+7. Run `npm run build:events`.
+
+The command writes `{slug}.html`, refreshes the cards on `courses.html` and `index.html`, and marks Courses as the current nav item.
+
+### Edit an existing page
+
+Edit `content/events/{slug}.json`, then run `npm run build:events` again. Do not hand-edit the generated `{slug}.html`. The next build replaces those edits.
+
+`hero.titleHtml` and `hero.metaHtml` are inserted as HTML, so an italic word uses `<em>` and a line break uses `<br>`. Every other field is plain text.
+
+### End or remove an event
+
+- Set `status` to `ended` and rebuild. The card leaves the courses page and the homepage. The URL stays up and says “This training has ended.” Checkout is removed.
+- Delete `content/events/{slug}.json` and rebuild to remove a generated page and its card.
+
+The retreat record uses `pageMode: "static"` and `listOn: ["courses"]`. Rebuilding updates its courses card and does not overwrite `nicolette-david-retreat.html`. Deleting that JSON removes the card only.
+
+### Fields
+
+- `status` — `upcoming`, `coming-soon`, or `ended`
+- `pageMode` — `generated` writes the HTML page. `static` only feeds the catalog.
+- `listOn` — `courses`, `home`, or both
+- `sort` — catalog order
+- `catalog` — month, days, title, location, summary, price label, and button text
+- `productId` — Flute checkout id. Omit it when registration is not open.
+- `hero`, `details`, `instructor`, `gallery`, `cta` — the page body
+
+### Files
+
+- `content/events/` — one JSON file per event, plus `_template.json`
+- `lib/event-pages.js` — turns one event into HTML
+- `scripts/build-events.js` — `npm run build:events`
+- `css/event-page.css` — shared page styles
+- `courses.html` and `index.html` — cards sit between `<!-- LINKPRO_EVENTS_START -->` and `<!-- LINKPRO_EVENTS_END -->`
+
+A later system that adds and ends trainings should write or update these JSON files and run the same command.
+
+---
+
 ## (Add more sections below)
 
 Examples you might add later: booking form behavior, Flute checkout flow, who to contact for domain/DNS, etc.

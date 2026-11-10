@@ -41,19 +41,19 @@ const products = {
       'FLUTE_AMOUNT_SEMINAR_UPPER_LIMB',
       'FLUTE_AMOUNT_SEMINAR'
     ),
-    successUrl: '/courses.html#seminars',
+    successUrl: '/seminar-upper-limb.html',
   },
   'seminar-lower-limb': {
     id: 'seminar-lower-limb',
     name: 'Fascia & 2TLS — Lower Limb',
     amount: amountFromEnv(1500, 'FLUTE_AMOUNT_SEMINAR_LOWER_LIMB'),
-    successUrl: '/courses.html#seminars',
+    successUrl: '/seminar-lower-limb.html',
   },
   'seminar-trunk-pelvis': {
     id: 'seminar-trunk-pelvis',
     name: 'Fascia & 2TLS — Trunk & Pelvis',
     amount: amountFromEnv(1500, 'FLUTE_AMOUNT_SEMINAR_TRUNK_PELVIS'),
-    successUrl: '/courses.html#seminars',
+    successUrl: '/seminar-trunk-pelvis.html',
   },
   'seminar-bundle': {
     id: 'seminar-bundle',

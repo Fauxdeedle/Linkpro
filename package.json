@@ -9,6 +9,7 @@
     "vercel:dev": "vercel dev",
     "build:nav": "node scripts/build-nav.js",
     "build:analytics": "node scripts/build-analytics.js",
+    "build:events": "node scripts/build-events.js",
     "test": "node --test && node scripts/test-paywall.js",
     "test:paywall": "node scripts/test-paywall.js"
   },

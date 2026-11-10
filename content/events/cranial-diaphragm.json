@@ -1,0 +1,41 @@
+{
+  "slug": "cranial-diaphragm",
+  "status": "coming-soon",
+  "pageMode": "generated",
+  "listOn": ["courses", "home"],
+  "sort": 30,
+  "catalog": {
+    "month": "AUG",
+    "days": "1–5",
+    "title": "Cranial Diaphragm feat. Scott Herrara",
+    "location": "Dallas, TX",
+    "summary": "Advanced cranial techniques exploring the cranial diaphragm, fascial continuity, and neurological function."
+  },
+  "meta": {
+    "title": "Cranial Diaphragm feat. Scott Herrara — LINK Pro",
+    "description": "Advanced cranial techniques exploring the cranial diaphragm, fascial continuity, and neurological function. Dallas, TX."
+  },
+  "hero": {
+    "eyebrow": "In-person seminar",
+    "titleHtml": "Cranial Diaphragm feat. <em>Scott Herrara</em>",
+    "tagline": "Advanced cranial techniques exploring the cranial diaphragm, fascial continuity, and neurological function.",
+    "metaHtml": "August 1–5<br><strong>Dallas, TX</strong>"
+  },
+  "details": {
+    "label": "The training",
+    "heading": "Hands-on intensive",
+    "intro": "Advanced cranial techniques exploring the cranial diaphragm, fascial continuity, and neurological function.",
+    "logisticsLabel": "Logistics",
+    "logistics": ["Dallas, TX"]
+  },
+  "instructor": {
+    "name": "Scott Herrara",
+    "role": "Featured faculty",
+    "bio": "Advanced cranial techniques exploring the cranial diaphragm, fascial continuity, and neurological function."
+  },
+  "gallery": [],
+  "cta": {
+    "title": "Registration opens soon",
+    "body": "Advanced cranial techniques exploring the cranial diaphragm, fascial continuity, and neurological function."
+  }
+}

@@ -81,6 +81,17 @@ function injectNav(fileRel, activeId) {
   console.log('updated:', fileRel, activeId ? `(active: ${activeId})` : '');
 }
 
+const eventsDir = path.join(root, 'content/events');
+if (fs.existsSync(eventsDir)) {
+  for (const name of fs.readdirSync(eventsDir)) {
+    if (!name.endsWith('.json') || name.startsWith('_')) continue;
+    const event = JSON.parse(fs.readFileSync(path.join(eventsDir, name), 'utf8'));
+    if (event.pageMode === 'generated' && event.slug) {
+      activeByFile[`${event.slug}.html`] = 'courses';
+    }
+  }
+}
+
 const template = fs.readFileSync(templatePath, 'utf8');
 if (!template.includes('data-nav-id')) {
   console.error('Invalid site-nav template');

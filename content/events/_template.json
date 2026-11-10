@@ -1,0 +1,53 @@
+{
+  "_comment": "Copy to content/events/{slug}.json. The filename must match slug. Then run npm run build:events. Do not hand-edit the generated HTML. hero.titleHtml and hero.metaHtml are inserted as HTML; every other string is escaped.",
+  "slug": "event-slug",
+  "status": "upcoming",
+  "pageMode": "generated",
+  "listOn": ["courses", "home"],
+  "sort": 100,
+  "catalog": {
+    "month": "JUN",
+    "days": "7–9",
+    "title": "Training title",
+    "location": "City, Region",
+    "summary": "One or two sentences for the courses and homepage cards.",
+    "priceLabel": "$1,500",
+    "ctaLabel": "View training — Register"
+  },
+  "productId": "",
+  "meta": {
+    "title": "Training title — LINK Pro",
+    "description": "One or two sentences for search results."
+  },
+  "hero": {
+    "eyebrow": "In-person seminar",
+    "titleHtml": "Training <em>title</em>",
+    "tagline": "One-line promise.",
+    "metaHtml": "June 7–9<br><strong>City, Region</strong>"
+  },
+  "details": {
+    "label": "The training",
+    "heading": "Hands-on intensive",
+    "intro": "What the participant learns. Leave empty to hide this paragraph.",
+    "scheduleLabel": "Schedule",
+    "scheduleHeading": "",
+    "schedule": [],
+    "logisticsLabel": "Logistics",
+    "logisticsHeading": "",
+    "logistics": ["City, Region", "$1,500"]
+  },
+  "instructor": {
+    "label": "Your instructor",
+    "name": "Dr. Jason Amstutz",
+    "role": "Founder & Lead Practitioner",
+    "image": "/assets/about/dr-jason-amstutz-portrait.png",
+    "imageAlt": "Dr. Jason Amstutz",
+    "bio": "Short bio. Omit name to hide this section. Omit image when there is no portrait."
+  },
+  "gallery": [],
+  "cta": {
+    "title": "Register for this training",
+    "body": "Who it is for and how to register.",
+    "buttonText": "Register — $1,500"
+  }
+}
