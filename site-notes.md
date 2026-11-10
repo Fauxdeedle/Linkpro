@@ -494,7 +494,7 @@ Generated pages:
 - `/seminar-upper-limb` — June 7–9, Newport Beach, $1,500
 - `/cranial-diaphragm` — August 1–5, Dallas, registration not open
 - `/seminar-lower-limb` — September 25–27, Costa Mesa, $1,500
-- `/seminar-trunk-pelvis` — December 4–6, Newport Beach, $1,500
+- `/seminar-trunk-pelvis` — December 4, 5, and 6, Costa Mesa, $1,500
 
 The Baja retreat stays at `/nicolette-david-retreat`. That page is written by hand. Its card on `/courses#seminars` still comes from the event data.
 
@@ -534,6 +534,9 @@ The retreat record uses `pageMode: "static"` and `listOn: ["courses"]`. Rebuildi
 - `catalog` — month, days, title, location, summary, price label, and button text
 - `productId` — Flute checkout id. Omit it when registration is not open.
 - `hero`, `details`, `instructor`, `gallery`, `cta` — the page body
+- `details.intro` — opening paragraphs. An array is several paragraphs.
+- `details.registerLink` — optional text that links to the register band, such as `Register here.`
+- `details.sections` — optional blocks for a longer page. Each section can include `heading`, `paragraphs`, `bullets`, `closing`, nested `blocks` (same fields), and `facts` (`label` and `text`). Set `details.label` and `details.heading` to `""` when those default titles should not appear. Leave `sections` out when a schedule list and logistics column are enough.
 
 ### Files
 

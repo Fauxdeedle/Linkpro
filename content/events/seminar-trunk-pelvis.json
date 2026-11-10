@@ -8,28 +8,97 @@
   "catalog": {
     "month": "DEC",
     "days": "4–6",
-    "title": "Fascia & 2TLS Treatment of the Trunk & Pelvis",
-    "location": "Newport Beach, CA",
-    "summary": "The culmination — integrating trunk and pelvic fascial systems for complete body treatment mastery.",
+    "title": "Fascia Normalization and 2TLS: Trunk and Pelvis",
+    "location": "Costa Mesa, CA · 9:00 AM to 5:00 PM",
+    "summary": "Most trunk and pelvic treatment starts with the lumbar spine, the hip flexors, or the abdominal wall. This course treats the trunk and pelvis as one integrated fascial system.",
     "priceLabel": "$1,500",
     "ctaLabel": "View training — Register"
   },
   "meta": {
-    "title": "Fascia & 2TLS Treatment of the Trunk & Pelvis — LINK Pro",
-    "description": "Integrating trunk and pelvic fascial systems. Hands-on seminar in Newport Beach with Dr. Jason Amstutz."
+    "title": "Fascia Normalization and 2TLS: Trunk and Pelvis — LINK Pro",
+    "description": "Assess and treat the trunk and pelvis as one integrated fascial system. December 4, 5, and 6 in Costa Mesa. Tuition $1,500."
   },
   "hero": {
     "eyebrow": "In-person seminar",
-    "titleHtml": "Fascia &amp; 2TLS Treatment of the <em>Trunk &amp; Pelvis</em>",
-    "tagline": "Integrating trunk and pelvic fascial systems for complete body treatment mastery.",
-    "metaHtml": "December 4–6<br><strong>Newport Beach, CA</strong>"
+    "titleHtml": "Fascia Normalization and 2TLS: <em>Trunk and Pelvis</em>",
+    "metaHtml": "December 4, 5, and 6<br><strong>Costa Mesa, CA</strong>"
   },
   "details": {
-    "label": "The training",
-    "heading": "Hands-on intensive",
-    "intro": "The culmination — integrating trunk and pelvic fascial systems for complete body treatment mastery.",
-    "logisticsLabel": "Logistics",
-    "logistics": ["Newport Beach, CA", "$1,500"]
+    "label": "",
+    "heading": "",
+    "intro": [
+      "Most trunk and pelvic treatment starts with the lumbar spine, the hip flexors, or the abdominal wall. It assumes the problem is local, and the treatment follows that assumption.",
+      "This course starts at the pelvis, the body's central hub. The thoracolumbar fascia, the diaphragm, and the pelvic floor form one continuous fascial network. Structure dictates function, and the load this network carries moves through the whole kinetic chain above and below it.",
+      "Treat the lumbar erectors without restoring their link to the thoracolumbar fascia and the sacroiliac joint, and the load shifts to the lumbosacral junction. Mobilize the hip without restoring fascial continuity to the diaphragm and pelvic floor, and you have moved the structure without restoring its function.",
+      "This course teaches you to assess and treat the trunk and pelvis as one integrated fascial system."
+    ],
+    "registerLink": "Register here.",
+    "sections": [
+      {
+        "heading": "What you'll learn",
+        "blocks": [
+          {
+            "heading": "Fascia normalization",
+            "paragraphs": [
+              "The sacroiliac joints, the lumbosacral junction, and the diaphragm regulate fluid movement and load distribution for the whole body. In this framework, normalization is not soft tissue work. It is osteoarticular pumping combined with chain-specific fascial integration, organized around the pelvis."
+            ],
+            "bullets": [
+              "How to identify the true fascial chains of the trunk and pelvis: fluid and pressure pathways, not muscle chains",
+              "The role of the sacroiliac joint and pelvic floor in regulating fluidity and elasticity throughout the body",
+              "Osteoarticular pumping techniques for the lumbar spine, sacroiliac joints, and hip",
+              "How fascial dysfunction at the pelvis creates the compensatory tension patterns you see in the upper and lower limbs"
+            ]
+          },
+          {
+            "heading": "2TLS (Transverse Tendon and Ligament Stretching)",
+            "paragraphs": [
+              "2TLS is not a stretching protocol. It is a precise manual technique that restores the independence of tendon and ligament fibers and improves the quality of afferent input coming from those tissues."
+            ],
+            "bullets": [
+              "How to separate tendon fibers from one another",
+              "How to separate ligament fibers from one another",
+              "How to change the thixotropy (fluid viscosity) within the fibers and the extracellular matrix",
+              "How to apply 2TLS to the sacroiliac and lumbosacral ligaments to change afferent input and release the nervous system's protective tension patterns"
+            ],
+            "closing": [
+              "The sacrotuberous ligament and the thoracolumbar fascia are linked. If that link is not free and elastic, the lumbar spine compensates for it. In a tensegrity model, the connection is part of the structure itself."
+            ]
+          }
+        ]
+      },
+      {
+        "heading": "Why this course matters",
+        "paragraphs": [
+          "Movement and therapy share one goal: to give the brain the highest quality of proprioceptive input, so the body can move efficiently, produce force, and adapt faster than the demands placed on it.",
+          "That input starts in the fascia, in the ligaments, tendons, periosteum, and capsules. Neurological rehabilitation therefore involves more than balance drills and visual training. If those tissues are not mechanically sound and responsive to sensation, movement training alone will not correct the deficit.",
+          "Those with the best fascia win.",
+          "This course gives you the assessment framework and the manual skills to address the root cause of trunk and pelvic dysfunction. You treat the structure, not the symptom."
+        ]
+      },
+      {
+        "heading": "Who this course is for",
+        "paragraphs": ["This course is designed for practitioners who:"],
+        "bullets": [
+          "Want one cohesive system for trunk and pelvic treatment, not a collection of techniques",
+          "Work with athletes or active populations, where pelvic mechanics determine performance and durability",
+          "Already know osteopathic principles or the Guy Voyer lineage (SomaTherapy, ELDOA, Pumping)"
+        ],
+        "closing": [
+          "If you are looking for generic core stability protocols or low back mobilizations, this course is not the right fit."
+        ]
+      },
+      {
+        "heading": "Details",
+        "facts": [
+          { "label": "Dates", "text": "December 4, 5, and 6" },
+          { "label": "Time", "text": "9:00 AM to 5:00 PM" },
+          { "label": "Location", "text": "3134 Airway Ave, Costa Mesa, CA 92626" },
+          { "label": "Tuition", "text": "$1,500" },
+          { "label": "First-time SomaTherapy students", "text": "Day One only, $417" },
+          { "label": "Prerequisites", "text": "Familiarity with osteopathic principles, fascial anatomy, and manual therapy is recommended but not required." }
+        ]
+      }
+    ]
   },
   "instructor": {
     "name": "Dr. Jason Amstutz",
@@ -41,7 +110,7 @@
   "gallery": [],
   "cta": {
     "title": "Register for this training",
-    "body": "Intensive, hands-on training that brings trunk and pelvic fascial systems into one treatment approach.",
+    "body": "December 4, 5, and 6 in Costa Mesa. Tuition is $1,500. First-time SomaTherapy students may attend Day One only for $417.",
     "buttonText": "Register — $1,500"
   }
 }
