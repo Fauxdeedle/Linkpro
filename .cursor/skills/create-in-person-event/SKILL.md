@@ -41,6 +41,8 @@ Do not hand-edit `{slug}.html`. The next build replaces it.
 
 Change `content/events/{slug}.json` and run `npm run build:events` again.
 
+For a longer page, put the opening copy in `details.intro` and the rest in `details.sections`. A section can include `heading`, `paragraphs`, `bullets`, `closing`, nested `blocks`, and `facts` (`label` plus `text`). Set `details.registerLink` to link that line to the register band. Set `details.label` and `details.heading` to `""` when the default “The training” titles should not show. Leave `sections` out for the short schedule-and-logistics layout.
+
 ## End or remove an event
 
 - `status: "ended"` drops the card from both catalogs and keeps the page, with the note “This training has ended.”

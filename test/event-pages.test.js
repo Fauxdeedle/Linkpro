@@ -85,6 +85,63 @@ test('ended events stay on a page and leave the catalog', () => {
   assert.doesNotMatch(cards, /checkout\.html/);
 });
 
+test('sections render headings, bullets, facts, and an in-page register link', () => {
+  const html = renderEventPage(
+    event({
+      details: {
+        label: '',
+        heading: '',
+        intro: ['Most treatment starts local.'],
+        registerLink: 'Register here.',
+        sections: [
+          {
+            heading: "What you'll learn",
+            blocks: [
+              {
+                heading: 'Fascia normalization',
+                paragraphs: ['Normalization is not soft tissue work.'],
+                bullets: ['How to identify the true fascial chains'],
+                closing: ['The sacrotuberous ligament and the thoracolumbar fascia are linked.'],
+              },
+            ],
+          },
+          {
+            heading: 'Details',
+            facts: [{ label: 'Location', text: '3134 Airway Ave, Costa Mesa, CA 92626' }],
+          },
+        ],
+      },
+    })
+  );
+  assert.match(html, /What you'll learn/);
+  assert.match(html, /<h3>Fascia normalization<\/h3>/);
+  assert.match(html, /<li>How to identify the true fascial chains<\/li>/);
+  assert.match(html, /<dt>Location<\/dt><dd>3134 Airway Ave, Costa Mesa, CA 92626<\/dd>/);
+  assert.match(html, /<a href="#register">Register here\.<\/a>/);
+  assert.doesNotMatch(html, /Hands-on intensive/);
+});
+
+test('section text is escaped', () => {
+  const html = renderEventPage(
+    event({
+      details: {
+        sections: [
+          {
+            heading: '<script>',
+            bullets: ['<b>fiber</b>'],
+            facts: [{ label: 'Tuition', text: '$1,500 & day one' }],
+          },
+        ],
+      },
+    })
+  );
+  assert.match(html, /&lt;script&gt;/);
+  assert.match(html, /&lt;b&gt;fiber&lt;\/b&gt;/);
+  assert.match(html, /\$1,500 &amp; day one/);
+  assert.doesNotMatch(html, /<h2><script>/);
+  assert.doesNotMatch(html, /<b>fiber<\/b>/);
+});
+
 test('coming-soon catalog card links the title and does not sell a seat', () => {
   const card = renderCatalog(
     [event({ slug: 'cranial-diaphragm', status: 'coming-soon', productId: undefined, sort: 30 })],

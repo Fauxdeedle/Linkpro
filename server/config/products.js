@@ -51,7 +51,7 @@ const products = {
   },
   'seminar-trunk-pelvis': {
     id: 'seminar-trunk-pelvis',
-    name: 'Fascia & 2TLS — Trunk & Pelvis',
+    name: 'Fascia Normalization and 2TLS: Trunk and Pelvis',
     amount: amountFromEnv(1500, 'FLUTE_AMOUNT_SEMINAR_TRUNK_PELVIS'),
     successUrl: '/seminar-trunk-pelvis.html',
   },

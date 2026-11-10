@@ -22,7 +22,7 @@ the Flute dashboard.
 | Lower Limb Injury Prevention | $199 | `llip` | `/llip-course.html` |
 | Upper Limb seminar | $1,500 | `seminar-upper-limb` | `/seminar-upper-limb.html` |
 | Lower Limb seminar | $1,500 | `seminar-lower-limb` | `/seminar-lower-limb.html` |
-| Trunk & Pelvis seminar | $1,500 | `seminar-trunk-pelvis` | `/seminar-trunk-pelvis.html` |
+| Fascia Normalization and 2TLS: Trunk and Pelvis | $1,500 | `seminar-trunk-pelvis` | `/seminar-trunk-pelvis.html` |
 | Three-seminar bundle | $3,750 | `seminar-bundle` | `/courses.html#seminars` |
 | Retreat — shared bunk | $1,350 | `retreat-shared-bunk` | `/nicolette-david-retreat.html` |
 | Retreat — one-person king | $2,350 | `retreat-king-single` | `/nicolette-david-retreat.html` |
