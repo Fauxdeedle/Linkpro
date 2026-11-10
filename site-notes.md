@@ -493,7 +493,7 @@ Generated pages:
 
 - `/seminar-upper-limb` — June 7–9, Newport Beach, $1,500
 - `/cranial-diaphragm` — August 1–5, Dallas, registration not open
-- `/seminar-lower-limb` — September 25–27, Newport Beach, $1,500
+- `/seminar-lower-limb` — September 25–27, Costa Mesa, $1,500
 - `/seminar-trunk-pelvis` — December 4–6, Newport Beach, $1,500
 
 The Baja retreat stays at `/nicolette-david-retreat`. That page is written by hand. Its card on `/courses#seminars` still comes from the event data.

@@ -9,27 +9,79 @@
     "month": "SEP",
     "days": "25–27",
     "title": "Fascia & 2TLS Treatment of the Lower Limb",
-    "location": "Newport Beach, CA",
-    "summary": "Lower limb fascial chain assessment and treatment. Osteoarticular pumping for the hip, knee, and ankle complex.",
+    "location": "Costa Mesa, CA · 9:00 AM – 5:00 PM",
+    "summary": "Most lower limb treatment focuses on the hip flexors, the knee ligaments, or the plantar fascia. This course treats the lower limb as an integrated fascial system, traced back to the pelvis.",
     "priceLabel": "$1,500",
     "ctaLabel": "View training — Register"
   },
   "meta": {
     "title": "Fascia & 2TLS Treatment of the Lower Limb — LINK Pro",
-    "description": "Lower limb fascial chain assessment and treatment. Hands-on seminar in Newport Beach with Dr. Jason Amstutz."
+    "description": "Treat the lower limb as an integrated fascial system anchored at the pelvis. September 25–27 in Costa Mesa with Dr. Jason Amstutz. $1,500."
   },
   "hero": {
     "eyebrow": "In-person seminar",
     "titleHtml": "Fascia &amp; 2TLS Treatment of the <em>Lower Limb</em>",
-    "tagline": "Lower limb fascial chain assessment and treatment.",
-    "metaHtml": "September 25–27<br><strong>Newport Beach, CA</strong>"
+    "tagline": "The lower limb does not operate in isolation. It is part of a continuous fascial network anchored at the pelvis.",
+    "metaHtml": "September 25, 26, and 27 · 9:00 AM – 5:00 PM<br><strong>Costa Mesa, CA</strong>"
   },
   "details": {
     "label": "The training",
-    "heading": "Hands-on intensive",
-    "intro": "Lower limb fascial chain assessment and treatment. Osteoarticular pumping for the hip, knee, and ankle complex.",
-    "logisticsLabel": "Logistics",
-    "logistics": ["Newport Beach, CA", "$1,500"]
+    "heading": "Not a collection of isolated injuries",
+    "intro": [
+      "Most lower limb treatment focuses on the hip flexors, the knee ligaments, or the plantar fascia. The assumption is that the problem is local. The treatment reflects that assumption.",
+      "This course starts elsewhere. The lower limb does not operate in isolation. It is part of a continuous fascial network anchored at the pelvis, the body's central hub, where the hip, knee, ankle, and foot serve as way stations for load transfer and fluid movement, and the ligaments and tendons function as afferent highways to the nervous system.",
+      "If you treat the patellar tendon without addressing its link to the quadriceps and the iliotibial band, you overload the tibial tuberosity. If you mobilize the ankle without addressing fascial chain continuity back to the pelvis, you are moving structure without restoring function.",
+      "This course teaches you to treat the lower limb as an integrated fascial system, not a collection of isolated injuries.",
+      "The goal of movement and therapy is this: create the highest level of proprioceptive input to the brain so the body can move efficiently, powerfully, and adapt faster than the demands placed on it. Neurological rehabilitation is not limited to balance drills, visual training, or juggling exercises. It depends on the quality of the receptors in the fascia: the ligaments, tendons, periosteum, and capsules. If those structures are not mechanically sound and sensorially responsive, no amount of movement training will correct the underlying deficit.",
+      "Those with the best fascia win. This course gives you the assessment framework and manual skills to address the root cause of lower limb dysfunction, starting at the pelvis. Not the symptom, the structure."
+    ],
+    "scheduleLabel": "What you'll learn",
+    "schedule": [
+      {
+        "strong": "Fascial chain treatment",
+        "text": "The fascial chains of the lower limb include the hip, knee, ankle, and foot as the primary regulators of load transfer and fluid movement. Normalization is not soft tissue work. It is osteoarticular pumping combined with chain-specific fascial integration, traced back to the pelvis at every step."
+      },
+      { "text": "How to identify the true fascial chains of the lower limb (not muscle chains: load and fluid pathways)" },
+      { "text": "The role of the hip joint capsule as the primary link between the pelvis and lower limb mechanics" },
+      { "text": "Osteoarticular pumping techniques for the hip, knee, ankle, and foot" },
+      { "text": "How fascial chain dysfunction in the lower limb creates compensatory tension patterns that appear at the pelvis and spine" },
+      {
+        "strong": "2TLS (transverse tendon and ligament stretching)",
+        "text": "2TLS is not a general stretching protocol. It is a specific manual technique designed to improve the individuality of tendon and ligament structures while upgrading the quality of afferent input from those tissues."
+      },
+      { "text": "How to free the fibers of tendon from each other" },
+      { "text": "How to free the fibers of ligament from each other" },
+      { "text": "How to alter the thixotropy (fluid viscosity) of water within the fibers and extracellular matrix" },
+      { "text": "How to use 2TLS on the Achilles tendon, patellar tendon, and collateral ligaments to influence afferent input and release protective tension patterns" },
+      { "text": "If the fascial link between the plantar fascia and the Achilles tendon is not free and flexible, the posterior chain compensates all the way to the pelvis. In the biotensegrity model, these links are structural." },
+      {
+        "strong": "Who this course is for",
+        "text": "Practitioners who want a cohesive system for lower limb treatment, not a collection of techniques."
+      },
+      { "text": "Practitioners who work with running, jumping, or cutting athletes where lower limb durability and load tolerance are critical" },
+      { "text": "Practitioners familiar with osteopathic principles or the Guy Voyer lineage (SomaTherapy, ELDOA, Pumping)" },
+      { "text": "If you are looking for generic hip flexor releases or IT band protocols, this is not the course for you." },
+      {
+        "strong": "Questions",
+        "text": "Traditional courses teach you how to treat the hip flexors or release the IT band. This course teaches you to treat the lower limb as part of a continuous fascial system where the joints regulate fluid movement and the ligaments and tendons regulate neurological input."
+      },
+      { "text": "Tendons and ligaments have a higher proportion of collagen fibers to cells than other fasciae. 2TLS addresses fiber-to-fiber freedom and sensory cell function, the mechanical and neurological demands of these tissues." },
+      { "text": "You do not need to be ELDOA-trained. Familiarity with ELDOA or the Guy Voyer lineage is helpful but not required. The course introduces osteoarticular pumping as it applies to the lower limb." },
+      { "text": "Yes, it is hands-on. You will practice fascial chain treatment and 2TLS techniques throughout the day." },
+      { "text": "Bring comfortable clothing that allows access to the hip, knee, and ankle. No special equipment is required." },
+      { "text": "You can take this course without the Upper Limb or Trunk and Pelvis courses. Each course stands alone. The full system is best understood when all three are completed." },
+      { "text": "The bundle price is $3,750 for all three courses (Upper Limb, Lower Limb, Trunk and Pelvis), a savings of $750." }
+    ],
+    "logisticsLabel": "Details",
+    "logistics": [
+      "September 25, 26, and 27",
+      "9:00 AM – 5:00 PM",
+      "3134 Airway Ave, Costa Mesa, CA 92626",
+      "$1,500",
+      "First-time SomaTherapy student: Day One, $417",
+      "Prerequisites: familiarity with osteopathic principles, fascial anatomy, and manual therapy is recommended but not required.",
+      "Questions: concierge@linkmedicalcenter.com or 949-465-0770"
+    ]
   },
   "instructor": {
     "name": "Dr. Jason Amstutz",
@@ -41,7 +93,7 @@
   "gallery": [],
   "cta": {
     "title": "Register for this training",
-    "body": "Intensive, hands-on training in fascial chain treatment and 2TLS technique for the hip, knee, and ankle complex.",
+    "body": "September 25–27 in Costa Mesa. $1,500 for the three days. If you are ready, register below, or write concierge@linkmedicalcenter.com or call 949-465-0770.",
     "buttonText": "Register — $1,500"
   }
 }
