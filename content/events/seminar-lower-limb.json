@@ -4,6 +4,8 @@
   "pageMode": "generated",
   "listOn": ["courses", "home"],
   "sort": 40,
+  "dateLabel": "September 25–27",
+  "price": 1500,
   "productId": "seminar-lower-limb",
   "catalog": {
     "month": "SEP",

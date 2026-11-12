@@ -25,11 +25,23 @@ const expectedProducts = {
 };
 
 test('catalog contains every displayed checkout item at its advertised price', () => {
-  assert.equal(Object.keys(products).length, 10);
+  assert.deepEqual(Object.keys(products).sort(), [
+    'llip',
+    'pelvis-1',
+    'pelvis-3',
+    'retreat-king-double',
+    'retreat-king-single',
+    'retreat-shared-bunk',
+    'seminar-bundle',
+  ]);
 
   for (const [id, amount] of Object.entries(expectedProducts)) {
     assert.equal(getProduct(id)?.amount, amount, id);
   }
+  assert.equal(
+    getProduct('seminar-upper-limb')?.name,
+    'Fascia & 2TLS Treatment of the Upper Limb'
+  );
 });
 
 test('hosted session payload uses a trusted product and documented fields', () => {

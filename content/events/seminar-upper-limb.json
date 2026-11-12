@@ -4,6 +4,8 @@
   "pageMode": "generated",
   "listOn": ["courses", "home"],
   "sort": 20,
+  "dateLabel": "June 7–9",
+  "price": 1500,
   "productId": "seminar-upper-limb",
   "catalog": {
     "month": "JUN",

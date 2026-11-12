@@ -14,6 +14,7 @@ const endMarker = '<!-- LINKPRO_NAV_END -->';
 
 const activeByFile = {
   'index.html': null,
+  'admin.html': null,
   'about.html': 'about',
   'services.html': 'services',
   'somatherapy.html': 'services',

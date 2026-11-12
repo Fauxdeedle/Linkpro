@@ -12,7 +12,10 @@ Payment handling for LINK Pro courses and seminars using [Flute Checkout](https:
 Card details stay on Flute's hosted page and never touch this application.
 Checkout currently requests card payments explicitly. Flute uses one merchant
 API configuration for every item; there are no per-item products to create in
-the Flute dashboard.
+the Flute dashboard. Generated live events take their charged price from
+`price` on `content/events/{slug}.json`. Change those prices in the admin hub
+at `/admin`, which also updates the public page. Courses, the seminar bundle,
+and retreat rooms still use `server/config/products.js`.
 
 ## Products
 
@@ -141,13 +144,17 @@ Parallel: Flute → POST /api/webhooks/flute → payment_session.completed
 
 ## Adding a product
 
-1. Add an entry to `server/config/products.js` with `amount` in whole USD dollars.
+A new live event is added in `/admin`. The hub writes the event file, sets `price` and `productId`, rebuilds the page and catalog cards, and on the deployed site commits that change.
+
+A course, the seminar bundle, or a retreat room still needs an entry in `server/config/products.js`:
+
+1. Add an entry with `amount` in whole USD dollars.
 2. Give it a stable ID, display name, and post-purchase `successUrl`.
 3. Optionally add a dedicated amount override to `.env.example`.
-4. Add a link to `/checkout.html?product=your-product-id` for a seminar or retreat. An online course card links to `/{slug}-course`. The `data-flute-product` attribute is supported for non-link controls.
+4. Add a checkout link. An online course card links to `/{slug}-course`.
 
-Each item needs this trusted server-side catalog entry so a customer cannot
-choose their own price. It does **not** need a separate Flute dashboard setup,
+Each item needs this trusted server-side price so a customer cannot choose
+their own amount. It does **not** need a separate Flute dashboard setup,
 API credential, or Flute product ID. Every purchase creates a new payment
 session under the same merchant account.
 

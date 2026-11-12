@@ -4,6 +4,7 @@
   "pageMode": "generated",
   "listOn": ["courses", "home"],
   "sort": 30,
+  "dateLabel": "August 1–5",
   "catalog": {
     "month": "AUG",
     "days": "1–5",

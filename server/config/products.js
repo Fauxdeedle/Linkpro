@@ -1,3 +1,5 @@
+const { getEventProduct } = require('../../lib/event-store');
+
 function amountFromEnv(defaultAmount, ...keys) {
   for (const key of keys) {
     if (process.env[key] === undefined || process.env[key] === '') {
@@ -33,28 +35,6 @@ const products = {
     amount: amountFromEnv(199, 'FLUTE_AMOUNT_LLIP'),
     successUrl: '/llip-course.html',
   },
-  'seminar-upper-limb': {
-    id: 'seminar-upper-limb',
-    name: 'Fascia & 2TLS — Upper Limb',
-    amount: amountFromEnv(
-      1500,
-      'FLUTE_AMOUNT_SEMINAR_UPPER_LIMB',
-      'FLUTE_AMOUNT_SEMINAR'
-    ),
-    successUrl: '/seminar-upper-limb.html',
-  },
-  'seminar-lower-limb': {
-    id: 'seminar-lower-limb',
-    name: 'Fascia & 2TLS — Lower Limb',
-    amount: amountFromEnv(1500, 'FLUTE_AMOUNT_SEMINAR_LOWER_LIMB'),
-    successUrl: '/seminar-lower-limb.html',
-  },
-  'seminar-trunk-pelvis': {
-    id: 'seminar-trunk-pelvis',
-    name: 'Fascia & 2TLS — Trunk & Pelvis',
-    amount: amountFromEnv(1500, 'FLUTE_AMOUNT_SEMINAR_TRUNK_PELVIS'),
-    successUrl: '/seminar-trunk-pelvis.html',
-  },
   'seminar-bundle': {
     id: 'seminar-bundle',
     name: 'Fascia & 2TLS — Three-Seminar Bundle',
@@ -82,6 +62,9 @@ const products = {
 };
 
 function getProduct(id) {
+  const fromEvent = getEventProduct(id);
+  if (fromEvent) return fromEvent;
+
   const product = products[id];
   if (!product || !product.amount || Number.isNaN(product.amount)) {
     return null;

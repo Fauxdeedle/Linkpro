@@ -4,6 +4,8 @@
   "pageMode": "generated",
   "listOn": ["courses", "home"],
   "sort": 50,
+  "dateLabel": "December 4–6",
+  "price": 1500,
   "productId": "seminar-trunk-pelvis",
   "catalog": {
     "month": "DEC",

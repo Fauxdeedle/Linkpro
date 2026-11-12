@@ -1,0 +1,235 @@
+:root {
+  --charcoal: #1a1a1a;
+  --charcoal-light: #222222;
+  --charcoal-mid: #2a2a2a;
+  --cream: #f5f0eb;
+  --cream-dark: #ede7e0;
+  --gold: #c4a265;
+  --gold-light: #d4b87a;
+  --gold-dark: #a8894f;
+  --white: #ffffff;
+  --muted: #8a8a8a;
+  --text-light: #ffffff;
+  --side-pad: clamp(24px, 5vw, 80px);
+  --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--charcoal);
+  color: var(--text-light);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+}
+
+button,
+input,
+textarea { font-family: inherit; }
+
+.admin {
+  padding: 128px var(--side-pad) 80px;
+  max-width: 1100px;
+}
+
+.admin__kicker {
+  margin: 0 0 12px;
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.admin__heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.admin h1 {
+  margin: 0;
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: clamp(3.2rem, 7vw, 5.5rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 0.9;
+}
+
+.admin__sections {
+  display: flex;
+  gap: 28px;
+  margin: 0 0 36px;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid rgba(245, 240, 235, 0.16);
+}
+
+.admin__sections button {
+  margin: 0;
+  padding: 0 0 14px;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.admin__sections button[aria-current="true"] {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 28px;
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--charcoal);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.btn-primary:hover { background: var(--gold-light); }
+
+.btn-text,
+.btn-back {
+  border: 0;
+  background: none;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.btn-text:hover,
+.btn-back:hover { color: var(--gold); }
+
+.admin__error,
+.admin__note {
+  margin: 0 0 20px;
+  color: var(--gold-light);
+}
+
+.event-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(120px, 0.8fr) 120px auto;
+  gap: 18px;
+  align-items: center;
+  padding: 22px 0;
+  border-top: 1px solid rgba(245, 240, 235, 0.16);
+}
+
+.event-row:last-child { border-bottom: 1px solid rgba(245, 240, 235, 0.16); }
+
+.event-row strong {
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.event-row span { color: rgba(255, 255, 255, 0.78); }
+
+.event-row__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 22px;
+}
+
+.event-detail__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.event-detail h2 {
+  margin: 0 0 8px;
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+}
+
+.event-detail__meta {
+  margin: 0 0 28px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.event-copy {
+  padding: clamp(24px, 4vw, 48px);
+  background: var(--cream);
+  color: var(--charcoal);
+  white-space: pre-wrap;
+}
+
+.event-form {
+  display: grid;
+  gap: 18px;
+}
+
+.event-form label {
+  display: grid;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.event-form input,
+.event-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 0;
+  background: var(--cream);
+  color: var(--charcoal);
+  font-size: 1rem;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 400;
+}
+
+.event-form textarea {
+  min-height: 320px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.event-form__actions {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+
+.gate {
+  max-width: 460px;
+}
+
+.gate p { color: rgba(255, 255, 255, 0.72); }
+
+@media (max-width: 760px) {
+  .admin { padding-top: 112px; }
+  .admin__heading,
+  .event-detail__bar,
+  .event-row { display: block; }
+  .event-row__actions { justify-content: flex-start; margin-top: 12px; }
+  .btn-primary { margin-top: 16px; }
+}

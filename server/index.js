@@ -4,6 +4,7 @@ const express = require('express');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const checkoutRouter = require('./routes/checkout');
+const adminRouter = require('./routes/admin');
 const webhooksRouter = require('./routes/webhooks');
 const accessRouter = require('./routes/access');
 const coursesRouter = require('./routes/courses');
@@ -23,6 +24,7 @@ app.use((err, _req, res, next) => {
   }
   return next(err);
 });
+app.use('/api/admin', adminRouter);
 app.use('/api', checkoutRouter);
 app.use('/api/access', accessRouter);
 app.use('/api/courses', coursesRouter);

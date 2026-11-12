@@ -79,14 +79,15 @@ Never put an amount in the browser request or trust the return URL by itself.
 
 Flute does **not** need a separate dashboard product, API client, or webhook for
 each offering. All offerings share one merchant configuration. Each item does
-need a catalog entry in `server/config/products.js` with an ID, name, amount,
-and success URL, plus a matching checkout link on the site.
+need a trusted price. Online courses, the seminar bundle, and retreat rooms
+keep that price in `server/config/products.js`. A generated live event keeps
+its name, date, page copy, and charged price on `content/events/{slug}.json`.
+Checkout reads that event price. The admin hub at `/admin` is how those event
+fields change.
 
-Current IDs are `pelvis-1`, `llip`, `seminar-upper-limb`,
-`seminar-lower-limb`, `seminar-trunk-pelvis`, `seminar-bundle`,
-`retreat-shared-bunk`, `retreat-king-single`, and
-`retreat-king-double`. Optional environment-based price overrides are listed
-in `.env.example`.
+Current `products.js` IDs are `pelvis-1`, `pelvis-3`, `llip`, `seminar-bundle`,
+`retreat-shared-bunk`, `retreat-king-single`, and `retreat-king-double`.
+Optional amount overrides for those IDs are listed in `.env.example`.
 
 ### Configuration and maintenance
 
@@ -418,9 +419,9 @@ The `Purchases` tab, row 1, must stay exactly:
 |--------|------------|
 | Timestamp | When the site recorded the row, ISO 8601 UTC |
 | Email | Buyer email, lowercased |
-| Product | Name from `server/config/products.js` |
-| Product ID | Catalog id, such as `pelvis-1` or `seminar-bundle` |
-| Amount | Whole dollars from that catalog entry for a payment. Blank for a manual grant |
+| Product | Name from the event file for a generated training, otherwise from `server/config/products.js` |
+| Product ID | Catalog id, such as `pelvis-1`, `seminar-upper-limb`, or `seminar-bundle` |
+| Amount | Whole dollars from that same catalog lookup for a payment. Blank for a manual grant |
 | Session ID | Flute payment session id, or `manual:{email}:{courseId}` for a grant from `scripts/grant-access.js`. This is the key for updates |
 
 ### How to update the sheet
@@ -498,7 +499,17 @@ Generated pages:
 
 The Baja retreat stays at `/nicolette-david-retreat`. That page is written by hand. Its card on `/courses#seminars` still comes from the event data.
 
-Catalog cards link to the event page. Register lives on that page and uses the existing Flute product id. After payment, Upper Limb, Lower Limb, and Trunk & Pelvis return to their own page. The three-seminar bundle still checks out from the bundle row and returns to `/courses.html#seminars`.
+Catalog cards link to the event page. Register lives on that page. After payment, Upper Limb, Lower Limb, and Trunk & Pelvis return to their own page. The three-seminar bundle still checks out from the bundle row and returns to `/courses.html#seminars`.
+
+### Admin hub
+
+`/admin` is the private Live Events screen. It is not in the public nav. `ADMIN_HUB_PASSWORD` gates it. The list shows each generated event’s name, date, and price. “See more info” opens the event. “Edit event” turns the name, date, price, and page copy into fields. “Add new event” opens that same form empty. Delete removes the generated page, the catalog card, and checkout for that event. Past rows on the Purchases sheet stay.
+
+The page is a shell with a section list. Live Events is the first section. Another tool later is another section, not a new page.
+
+On the deployed site, Save commits the event file, the generated page, and the catalog cards through GitHub (`ADMIN_GITHUB_TOKEN`, `ADMIN_GITHUB_REPO`, optional `ADMIN_GITHUB_BRANCH`) onto the branch Vercel deploys. The live site updates when that deploy finishes. A local save writes those files in the repo and does not commit them.
+
+The header price is the amount Flute charges. A student rate typed in the page copy is text on the page. Checkout stays one product per event. The Nicolette David retreat, the online courses, and the seminar bundle are not edited here.
 
 ### Make a new event
 
@@ -507,8 +518,8 @@ Catalog cards link to the event page. Register lives on that page and uses the e
 3. Set `status` to `upcoming` when people can register, or `coming-soon` when the page should exist without checkout.
 4. Set `listOn` to `["courses", "home"]` or `["courses"]`. Set `sort` to control order. Lower numbers appear first.
 5. Fill the catalog card, hero, details, instructor, gallery, and the register blurb. Leave `gallery` as `[]` when there are no photos. Leave `schedule` as `[]` when there is no day plan. Empty sections are left off the page.
-6. Set `productId` to an id already listed in `server/config/products.js` when checkout should open. Leave it out for a coming-soon event. Point that product’s `successUrl` at `/{slug}.html`.
-7. Run `npm run build:events`.
+6. Set `price` to the whole-dollar amount checkout should charge, and set `productId` to the slug. Leave both out when registration is not open. The success URL is `/{slug}.html`.
+7. Run `npm run build:events`. The admin hub does these steps itself.
 
 The command writes `{slug}.html`, refreshes the cards on `courses.html` and `index.html`, and marks Courses as the current nav item.
 
@@ -532,7 +543,10 @@ The retreat record uses `pageMode: "static"` and `listOn: ["courses"]`. Rebuildi
 - `listOn` — `courses`, `home`, or both
 - `sort` — catalog order
 - `catalog` — month, days, title, location, summary, price label, and button text
-- `productId` — Flute checkout id. Omit it when registration is not open.
+- `price` — whole dollars charged at checkout. Omit it when registration is not open.
+- `dateLabel` — the date shown in the admin hub and used for the catalog month and days.
+- `body` — page copy edited in the hub. When it is set, it replaces the structured details on the public page. Instructor, gallery, and schedule stay in the file.
+- `productId` — checkout id. The hub sets this to the slug when a price is saved. Omit it when registration is not open.
 - `hero`, `details`, `instructor`, `gallery`, `cta` — the page body
 
 ### Files
@@ -543,7 +557,7 @@ The retreat record uses `pageMode: "static"` and `listOn: ["courses"]`. Rebuildi
 - `css/event-page.css` — shared page styles
 - `courses.html` and `index.html` — cards sit between `<!-- LINKPRO_EVENTS_START -->` and `<!-- LINKPRO_EVENTS_END -->`
 
-A later system that adds and ends trainings should write or update these JSON files and run the same command.
+The admin hub writes these JSON files and rebuilds the pages. On the deployed site it commits that result instead of editing the running server’s files.
 
 ---
 
