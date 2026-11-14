@@ -3,14 +3,14 @@
   "slug": "event-slug",
   "status": "upcoming",
   "pageMode": "generated",
-  "listOn": ["courses", "home"],
+  "listOn": ["events", "home"],
   "sort": 100,
   "catalog": {
     "month": "JUN",
     "days": "7–9",
     "title": "Training title",
     "location": "City, Region",
-    "summary": "One or two sentences for the courses and homepage cards.",
+    "summary": "One or two sentences for the live events and homepage cards.",
     "priceLabel": "$1,500",
     "ctaLabel": "View training — Register"
   },

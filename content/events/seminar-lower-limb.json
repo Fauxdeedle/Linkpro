@@ -2,7 +2,7 @@
   "slug": "seminar-lower-limb",
   "status": "upcoming",
   "pageMode": "generated",
-  "listOn": ["courses", "home"],
+  "listOn": ["events", "home"],
   "sort": 40,
   "productId": "seminar-lower-limb",
   "catalog": {

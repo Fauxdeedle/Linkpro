@@ -23,7 +23,7 @@ the Flute dashboard.
 | Upper Limb seminar | $1,500 | `seminar-upper-limb` | `/seminar-upper-limb.html` |
 | Lower Limb seminar | $1,500 | `seminar-lower-limb` | `/seminar-lower-limb.html` |
 | Fascia Normalization and 2TLS: Trunk and Pelvis | $1,500 | `seminar-trunk-pelvis` | `/seminar-trunk-pelvis.html` |
-| Three-seminar bundle | $3,750 | `seminar-bundle` | `/courses.html#seminars` |
+| Three-seminar bundle | $3,750 | `seminar-bundle` | `/live-events` |
 | Retreat — shared bunk | $1,350 | `retreat-shared-bunk` | `/nicolette-david-retreat.html` |
 | Retreat — one-person king | $2,350 | `retreat-king-single` | `/nicolette-david-retreat.html` |
 | Retreat — two-person king | $3,150 | `retreat-king-double` | `/nicolette-david-retreat.html` |

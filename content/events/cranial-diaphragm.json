@@ -2,7 +2,7 @@
   "slug": "cranial-diaphragm",
   "status": "coming-soon",
   "pageMode": "generated",
-  "listOn": ["courses", "home"],
+  "listOn": ["events", "home"],
   "sort": 30,
   "catalog": {
     "month": "AUG",
