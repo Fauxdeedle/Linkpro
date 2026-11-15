@@ -319,16 +319,21 @@
     gate.appendChild(submit);
     gate.addEventListener('submit', async function (event) {
       event.preventDefault();
-      setMessage('');
+      submit.disabled = true;
+      setMessage('Checking password...');
       try {
         await api('/api/admin/session', {
           method: 'POST',
           body: JSON.stringify({ password: new FormData(gate).get('password') }),
         });
-        sectionsEl.hidden = false;
-        await boot();
+        const failed = await boot();
+        if (failed && failed.status === 401) {
+          setMessage('That password was accepted, but the browser did not keep the sign-in. Refresh and try again.');
+        }
       } catch (err) {
         setMessage(err.message);
+      } finally {
+        submit.disabled = false;
       }
     });
     panel.appendChild(gate);
@@ -340,15 +345,23 @@
       if (Array.isArray(session.sections) && session.sections.length) {
         state.sections = session.sections;
       }
-      state.events = (await api('/api/admin/events')).events;
+      const listed = await api('/api/admin/events');
+      state.events = Array.isArray(listed.events) ? listed.events : [];
       sectionsEl.hidden = false;
+      setMessage('');
       render();
+      return null;
     } catch (err) {
       if (err.status === 503) {
         renderGate(false);
-        return;
+        return err;
       }
-      renderGate(true);
+      if (err.status === 401) {
+        renderGate(true);
+        return err;
+      }
+      setMessage(err.message);
+      return err;
     }
   }
 

@@ -5,6 +5,7 @@ const os = require('os');
 const path = require('path');
 
 const { loginResult, verifySession } = require('../lib/admin-auth');
+const { readJsonBody } = require('../lib/body');
 const { handleAdminEvents, handleAdminSession } = require('../lib/admin-http');
 const {
   createLiveEvent,
@@ -320,6 +321,13 @@ test('admin routes reject a signed-out request and an unset password', async () 
   assert.equal(listing.status, 503);
 });
 
+test('a buffered login body still yields the password', () => {
+  const parsed = readJsonBody({
+    body: Buffer.from(JSON.stringify({ password: 'secret' })),
+  });
+  assert.equal(parsed.password, 'secret');
+});
+
 test('the admin password sets a session cookie', () => {
   const settings = { ADMIN_HUB_PASSWORD: 'secret', BASE_URL: 'http://localhost:8080' };
   assert.equal(loginResult('nope', settings).status, 401);
@@ -327,6 +335,10 @@ test('the admin password sets a session cookie', () => {
   const result = loginResult('secret', settings);
   assert.equal(result.status, 200);
   assert.equal(verifySession(result.cookie, settings), true);
+  const padded = { ADMIN_HUB_PASSWORD: 'secret\n' };
+  const trimmed = loginResult('secret', padded);
+  assert.equal(trimmed.status, 200);
+  assert.equal(verifySession(trimmed.cookie, padded), true);
 });
 
 test('publishSiteFiles deletes a removed event in the same commit', async () => {
