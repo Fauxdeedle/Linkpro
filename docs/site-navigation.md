@@ -1,6 +1,6 @@
 # LINK Pro site navigation map
 
-All public pages use the **same global nav** (from `components/site-nav.html`): About, Services, Classes, Peak, Courses, Blog, Reviews, and Book Now → `/#contact`. Rams is linked from footers, not the main nav.
+All public pages use the **same global nav** (from `components/site-nav.html`): About, Services, Classes, Peak, Courses, Live Events, Blog, Reviews, and Book Now → `/#contact`. Rams is linked from footers, not the main nav.
 
 ```mermaid
 flowchart TB
@@ -11,6 +11,7 @@ flowchart TB
     NAV --> CLASSES["/classes"]
     NAV --> PEAK["/peak-athleticism"]
     NAV --> COURSES["/courses"]
+    NAV --> EVENTS["/live-events"]
     NAV --> BLOG["/blog"]
     NAV --> REVIEWS["/reviews"]
     NAV --> BOOK["/#contact"]
@@ -23,6 +24,7 @@ flowchart TB
     SOMA["somatherapy.html"]
     CLASSES_P["classes.html"]
     COURSES_P["courses.html"]
+    EVENTS_P["live-events.html"]
     BLOG_P["blog.html"]
     REVIEWS_P["reviews.html"]
     RAMS["rams.html"]
@@ -41,6 +43,9 @@ flowchart TB
 
   subgraph coursesAnchors [courses.html sections]
     ONLINE["#online"]
+  end
+
+  subgraph eventAnchors [live-events.html sections]
     SEMINARS["#seminars"]
     UPCOMING["#upcoming"]
   end
@@ -57,6 +62,7 @@ flowchart TB
   SOMA --- globalNav
   CLASSES_P --- globalNav
   COURSES_P --- globalNav
+  EVENTS_P --- globalNav
   BLOG_P --- globalNav
   REVIEWS_P --- globalNav
   RAMS --- globalNav
@@ -74,8 +80,8 @@ flowchart TB
   POST2 --> BLOG_P
 
   COURSES_P --> ONLINE
-  COURSES_P --> SEMINARS
-  COURSES_P --> UPCOMING
+  EVENTS_P --> SEMINARS
+  EVENTS_P --> UPCOMING
   COURSES_P --> PELVIS
   COURSES_P --> PELVIS3
   COURSES_P --> LLIP

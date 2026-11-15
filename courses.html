@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Courses & Certifications — LINK Pro</title>
-<meta name="description" content="Professional education from LINK Pro: online courses (Pelvis 1.0, 3.0, LLIP) and in-person Fascia & 2TLS seminars with Dr. Jason Amstutz.">
+<meta name="description" content="Self-paced professional education from LINK Pro: Pelvis 1.0, Pelvis 3.0, and Lower Limb Injury Prevention.">
+<script>
+  if (location.hash === '#seminars' || location.hash === '#upcoming') {
+    location.replace('/live-events' + location.hash);
+  }
+</script>
 <link rel="stylesheet" href="/css/site-fonts.css">
 <link rel="stylesheet" href="/css/site-nav.css">
 <style>
@@ -29,39 +34,10 @@
 .course-cta.is-loading{opacity:.7;cursor:wait}
 .course-cta-secondary{display:block;text-align:center;margin-top:10px;font-size:.68rem;color:var(--gold-dark);text-decoration:underline;text-underline-offset:3px}
 .course-cta-secondary:hover{color:var(--charcoal)}
-.seminar-cta{border:0;cursor:pointer;font-family:inherit}
-.seminar-cta.is-loading{opacity:.7;cursor:wait}
-
-/* SEMINARS */
-.seminar-section{background:var(--charcoal);padding:80px 0}
-.seminars{display:flex;flex-direction:column;gap:16px;margin-top:36px}
-.seminar{display:flex;align-items:center;gap:32px;padding:32px 36px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);transition:all .4s var(--transition)}
-.seminar:hover{border-color:rgba(196,162,101,0.3)}
-.seminar-date{display:flex;flex-direction:column;align-items:center;min-width:72px;padding:12px 8px;border:1px solid rgba(196,162,101,0.3)}
-.seminar-month{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
-.seminar-days{font-family:var(--serif);font-weight:500;font-size:1.4rem;color:#fff;margin-top:2px}
-.seminar-content{flex:1}
-.seminar-content h4{font-family:var(--serif);font-weight:500;font-size:1.1rem;color:#fff;margin-bottom:4px}
-.seminar-location{font-size:.75rem;font-weight:500;color:var(--gold);letter-spacing:.05em;margin-bottom:8px}
-.seminar-text{font-size:.85rem;color:rgba(255,255,255,0.45);line-height:1.65}
-.seminar-price-block{display:flex;flex-direction:column;align-items:center;gap:12px;min-width:120px}
-.seminar-price{font-family:var(--serif);font-weight:500;font-size:1.5rem;color:#fff}
-.seminar-cta{display:inline-block;padding:10px 24px;background:var(--gold);color:var(--charcoal);font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;transition:all .3s}
-.seminar-cta:hover{background:#fff}
-.seminar-soon{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
-
-/* BUNDLE */
-.bundle{margin-top:36px;display:flex;align-items:center;justify-content:space-between;padding:36px 48px;background:rgba(196,162,101,0.08);border:1px solid rgba(196,162,101,0.2);gap:32px}
-.bundle h4{font-family:var(--serif);font-weight:500;font-size:1.3rem;color:var(--gold);margin-bottom:6px}
-.bundle-desc{font-size:.9rem;color:rgba(255,255,255,0.5)}
-.bundle-pricing{display:flex;flex-direction:column;align-items:flex-end}
-.bundle-was{font-size:.85rem;color:var(--muted);text-decoration:line-through}
-.bundle-now{font-family:var(--serif);font-size:2.2rem;font-weight:700;color:var(--gold)}
-.bundle-pricing .seminar-cta{margin-top:12px}
 
 .footer{background:var(--black);border-top:1px solid rgba(255,255,255,0.05);padding:48px 0 24px}.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}.footer-logo{font-size:.9rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:#fff}.footer-logo span{color:var(--gold)}.footer p{font-size:.75rem;color:var(--muted)}.footer-links{display:flex;gap:24px}.footer-links a{font-size:.7rem;color:var(--muted);transition:color .3s}.footer-links a:hover{color:var(--gold)}
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--transition),transform .8s var(--transition)}.reveal.visible{opacity:1;transform:translateY(0)}
-@media(max-width:768px){.online-grid{grid-template-columns:1fr}.seminar{flex-direction:column;text-align:center;gap:20px}.seminar-date{flex-direction:row;gap:8px}.bundle{flex-direction:column;text-align:center}.bundle-pricing{align-items:center}}
+@media(max-width:768px){.online-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -85,6 +61,7 @@
       <a href="/classes" data-nav-id="classes">Classes</a>
       <a href="/peak-athleticism" data-nav-id="peak">Peak</a>
       <a href="/courses" data-nav-id="courses" aria-current="page">Courses</a>
+      <a href="/live-events" data-nav-id="events">Live Events</a>
       <a href="/blog" data-nav-id="blog">Blog</a>
       <a href="/reviews" data-nav-id="reviews">Reviews</a>
       <a href="/#contact" class="nav__cta">Book Now</a>
@@ -101,6 +78,7 @@
   <a href="/classes" class="mobile-nav__link" data-nav-id="classes">Classes</a>
   <a href="/peak-athleticism" class="mobile-nav__link" data-nav-id="peak">Peak</a>
   <a href="/courses" class="mobile-nav__link" data-nav-id="courses" aria-current="page">Courses</a>
+  <a href="/live-events" class="mobile-nav__link" data-nav-id="events">Live Events</a>
   <a href="/blog" class="mobile-nav__link" data-nav-id="blog">Blog</a>
   <a href="/reviews" class="mobile-nav__link" data-nav-id="reviews">Reviews</a>
   <a href="/#contact" class="mobile-nav__link">Contact</a>
@@ -112,7 +90,7 @@
   <div class="container">
     <p class="label" style="justify-content:center;margin-bottom:24px;color:var(--gold)">Professional Education</p>
     <h1>Courses & <em>Certifications</em></h1>
-    <p>Elevate your practice with comprehensive course offerings — from self-paced online programs to intensive hands-on seminars led by Dr. Amstutz.</p>
+    <p>Study on your own schedule with unlimited lifetime access to video-based courses led by Dr. Amstutz.</p>
     <p id="access-notice" hidden style="margin-top:24px;color:var(--gold)">That login link is invalid or already used. Open the course and request a new one with your email.</p>
   </div>
 </section>
@@ -151,91 +129,7 @@
   </div>
 </section>
 
-<section class="seminar-section" id="seminars">
-  <div class="container">
-    <div class="label" style="color:var(--gold)">In-Person Seminars</div>
-    <h2 style="font-family:var(--serif);font-weight:700;font-size:clamp(1.6rem,3vw,2.2rem);color:#fff;margin-bottom:8px">Hands-On <em style="font-style:italic;color:var(--gold)">Intensive Training</em></h2>
-    <p style="font-size:.95rem;color:rgba(255,255,255,0.45);max-width:600px">For practitioners ready to transform their approach to fascial chain treatment and 2TLS technique.</p>
-
-    <div class="seminars" id="upcoming">
-<!-- LINKPRO_EVENTS_START -->
-<div class="seminar reveal">
-        <div class="seminar-date"><span class="seminar-month">NOV</span><span class="seminar-days">11–15</span></div>
-        <div class="seminar-content">
-          <h4>Live By The Sun, Love By The Moon — Hatha Yoga Retreat</h4>
-          <p class="seminar-location">El Pescadero, Baja · with Nicolette David</p>
-          <p class="seminar-text">Five days at Soluna Estate — sun and moon hatha practices, meditation, chef-prepared meals, and time to explore the Baja coast. Intimate eight-room retreat.</p>
-        </div>
-        <div class="seminar-price-block">
-          <span class="seminar-price">From $1,350</span>
-<a href="/nicolette-david-retreat" class="seminar-cta">View retreat — Register</a>
-        </div>
-      </div>
-<div class="seminar reveal">
-        <div class="seminar-date"><span class="seminar-month">JUN</span><span class="seminar-days">7–9</span></div>
-        <div class="seminar-content">
-          <h4>Fascia &amp; 2TLS Treatment of the Upper Limb</h4>
-          <p class="seminar-location">Newport Beach, CA · 9 AM – 5 PM</p>
-          <p class="seminar-text">Treat the upper limb as an integrated fascial system. Learn osteoarticular pumping, fascial chain identification, and transverse tendon &amp; ligament stretching techniques.</p>
-        </div>
-        <div class="seminar-price-block">
-          <span class="seminar-price">$1,500</span>
-<a href="/seminar-upper-limb" class="seminar-cta">View training — Register</a>
-        </div>
-      </div>
-<div class="seminar reveal">
-        <div class="seminar-date"><span class="seminar-month">AUG</span><span class="seminar-days">1–5</span></div>
-        <div class="seminar-content">
-          <h4><a href="/cranial-diaphragm">Cranial Diaphragm feat. Scott Herrara</a></h4>
-          <p class="seminar-location">Dallas, TX</p>
-          <p class="seminar-text">Advanced cranial techniques exploring the cranial diaphragm, fascial continuity, and neurological function.</p>
-        </div>
-        <div class="seminar-price-block">
-          <span class="seminar-soon">Coming Soon</span>
-        </div>
-      </div>
-<div class="seminar reveal">
-        <div class="seminar-date"><span class="seminar-month">SEP</span><span class="seminar-days">25–27</span></div>
-        <div class="seminar-content">
-          <h4>Fascia &amp; 2TLS Treatment of the Lower Limb</h4>
-          <p class="seminar-location">Costa Mesa, CA · 9:00 AM – 5:00 PM</p>
-          <p class="seminar-text">Most lower limb treatment focuses on the hip flexors, the knee ligaments, or the plantar fascia. This course treats the lower limb as an integrated fascial system, traced back to the pelvis.</p>
-        </div>
-        <div class="seminar-price-block">
-          <span class="seminar-price">$1,500</span>
-<a href="/seminar-lower-limb" class="seminar-cta">View training — Register</a>
-        </div>
-      </div>
-<div class="seminar reveal">
-        <div class="seminar-date"><span class="seminar-month">DEC</span><span class="seminar-days">4–6</span></div>
-        <div class="seminar-content">
-          <h4>Fascia Normalization and 2TLS: Trunk and Pelvis</h4>
-          <p class="seminar-location">Costa Mesa, CA · 9:00 AM to 5:00 PM</p>
-          <p class="seminar-text">Most trunk and pelvic treatment starts with the lumbar spine, the hip flexors, or the abdominal wall. This course treats the trunk and pelvis as one integrated fascial system.</p>
-        </div>
-        <div class="seminar-price-block">
-          <span class="seminar-price">$1,500</span>
-<a href="/seminar-trunk-pelvis" class="seminar-cta">View training — Register</a>
-        </div>
-      </div>
-<!-- LINKPRO_EVENTS_END -->
-    </div>
-
-    <div class="bundle reveal">
-      <div>
-        <h4>Bundle & Save</h4>
-        <p class="bundle-desc">Enroll in all three in-person courses (Upper Limb, Lower Limb, Trunk & Pelvis) and save $750.</p>
-      </div>
-      <div class="bundle-pricing">
-        <span class="bundle-was">$4,500</span>
-        <span class="bundle-now">$3,750</span>
-        <a href="/checkout.html?product=seminar-bundle" class="seminar-cta" data-flute-product="seminar-bundle">Enroll in bundle</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer class="footer"><div class="container"><div class="footer-inner"><a href="index.html" class="footer-logo">LINK <span>PRO</span></a><p>&copy; 2026 LINK Pro. All rights reserved.</p><div class="footer-links"><a href="blog.html">Blog</a><a href="rams.html">Rams</a><a href="/media-kit">Media Kit</a><a href="/sharks-proposal">Client pitch (sample)</a><a href="index.html#contact">Contact</a><a href="https://www.instagram.com/linkprosport/" target="_blank">Instagram</a></div></div></div></footer>
+<footer class="footer"><div class="container"><div class="footer-inner"><a href="index.html" class="footer-logo">LINK <span>PRO</span></a><p>&copy; 2026 LINK Pro. All rights reserved.</p><div class="footer-links"><a href="/live-events">Live Events</a><a href="blog.html">Blog</a><a href="rams.html">Rams</a><a href="/media-kit">Media Kit</a><a href="/sharks-proposal">Client pitch (sample)</a><a href="index.html#contact">Contact</a><a href="https://www.instagram.com/linkprosport/" target="_blank">Instagram</a></div></div></div></footer>
 <script src="js/flute-checkout.js"></script>
 <script>
   if (new URLSearchParams(location.search).get('access') === 'invalid') {

@@ -19,6 +19,7 @@ const activeByFile = {
   'somatherapy.html': 'services',
   'classes.html': 'classes',
   'courses.html': 'courses',
+  'live-events.html': 'events',
   'blog.html': 'blog',
   'reviews.html': 'reviews',
   'rams.html': null,
@@ -28,8 +29,8 @@ const activeByFile = {
   'pelvis-1-course.html': 'courses',
   'pelvis-3-course.html': 'courses',
   'llip-course.html': 'courses',
-  'nicolette-david-retreat.html': 'courses',
-  'events/event-template.html': 'courses',
+  'nicolette-david-retreat.html': 'events',
+  'events/event-template.html': 'events',
   'checkout-success.html': null,
   'access-link-sent.html': null,
   'checkout-cancel.html': null,
@@ -87,7 +88,7 @@ if (fs.existsSync(eventsDir)) {
     if (!name.endsWith('.json') || name.startsWith('_')) continue;
     const event = JSON.parse(fs.readFileSync(path.join(eventsDir, name), 'utf8'));
     if (event.pageMode === 'generated' && event.slug) {
-      activeByFile[`${event.slug}.html`] = 'courses';
+      activeByFile[`${event.slug}.html`] = 'events';
     }
   }
 }

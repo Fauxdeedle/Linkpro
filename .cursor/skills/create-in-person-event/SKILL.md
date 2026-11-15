@@ -1,6 +1,6 @@
 ---
 name: create-in-person-event
-description: "Create a LINK Pro in-person event landing page (retreat, seminar, intensive) and list it on the courses and homepage catalogs. Use when adding retreats, workshops, or hosted events that need a detail page plus a catalog card."
+description: "Create a LINK Pro in-person event landing page (retreat, seminar, intensive) and list it on the live events and homepage catalogs. Use when adding retreats, workshops, or hosted events that need a detail page plus a catalog card."
 ---
 
 # Create a LINK Pro in-person event page
@@ -12,7 +12,7 @@ The generated layout follows the Nicolette David retreat (hero, rule, optional g
 ## When to use
 
 - New retreat, workshop, or hosted intensive
-- User asks for an in-person event page, retreat landing URL, or courses listing for an event
+- User asks for an in-person event page, retreat landing URL, or live events listing for an event
 
 ## Reference files
 
@@ -28,12 +28,12 @@ The generated layout follows the Nicolette David retreat (hero, rule, optional g
 ## Add an event
 
 1. Copy `content/events/_template.json` to `content/events/{slug}.json`. The filename must match `slug`.
-2. Set `pageMode` to `generated`, `status` to `upcoming` or `coming-soon`, and `listOn` to the catalogs that should show a card (`courses`, `home`).
+2. Set `pageMode` to `generated`, `status` to `upcoming` or `coming-soon`, and `listOn` to the catalogs that should show a card (`events`, `home`). `courses` is still accepted as an alias for the live events page.
 3. Fill `catalog`, `hero`, `details`, `instructor`, `gallery`, and `cta`. Leave `gallery` as `[]` and `schedule` as `[]` when there are no photos or a day plan. Empty sections are omitted.
 4. Set `productId` to an existing id in `server/config/products.js` when registration is open. Leave it out for coming soon.
 5. Run `npm run build:events`.
 
-That writes `{slug}.html`, refreshes the cards between `LINKPRO_EVENTS_START` / `LINKPRO_EVENTS_END` on `courses.html` and `index.html`, and registers the page so Courses is the active nav item.
+That writes `{slug}.html`, refreshes the cards between `LINKPRO_EVENTS_START` / `LINKPRO_EVENTS_END` on `live-events.html` and `index.html`, and registers the page so Live Events is the active nav item.
 
 Do not hand-edit `{slug}.html`. The next build replaces it.
 
@@ -51,7 +51,7 @@ For a longer page, put the opening copy in `details.intro` and the rest in `deta
 
 ## Static exception
 
-Use `pageMode: "static"` only when the page is maintained by hand. The retreat record is `listOn: ["courses"]` so it does not appear on the homepage.
+Use `pageMode: "static"` only when the page is maintained by hand. The retreat record is `listOn: ["events"]` so it does not appear on the homepage.
 
 ## Checkout
 
@@ -66,8 +66,8 @@ npm start
 Check:
 
 1. `http://localhost:8080/{slug}` — hero, any gallery, details, register or coming soon, mobile ~400px
-2. `http://localhost:8080/courses#seminars` and the homepage courses section — card order follows `sort`
-3. Nav highlights Courses on the event page
+2. `http://localhost:8080/live-events` and the homepage courses section — card order follows `sort`
+3. Nav highlights Live Events on the event page and on `/live-events`. Courses stays highlighted on `/courses`.
 
 ```text
 Local:      http://localhost:8080/{slug}

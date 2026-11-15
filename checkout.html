@@ -70,12 +70,17 @@
     </form>
     <p id="checkout-message" class="message" role="status" aria-live="polite" hidden></p>
     <button id="retry-button" type="button" hidden>Try again</button>
-    <a class="back" href="/courses.html">Back to courses</a>
+    <a class="back" href="/courses">Back to courses</a>
   </main>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('product');
+    const backLink = document.querySelector('.back');
+    if (backLink && productId && /^(seminar|retreat)/.test(productId)) {
+      backLink.href = '/live-events';
+      backLink.textContent = 'Back to live events';
+    }
     const productName = document.getElementById('product-name');
     const message = document.getElementById('checkout-message');
     const retryButton = document.getElementById('retry-button');

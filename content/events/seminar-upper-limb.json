@@ -2,7 +2,7 @@
   "slug": "seminar-upper-limb",
   "status": "upcoming",
   "pageMode": "generated",
-  "listOn": ["courses", "home"],
+  "listOn": ["events", "home"],
   "sort": 20,
   "productId": "seminar-upper-limb",
   "catalog": {

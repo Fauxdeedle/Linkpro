@@ -40,6 +40,7 @@ p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:2rem}
       <a href="/classes" data-nav-id="classes">Classes</a>
       <a href="/peak-athleticism" data-nav-id="peak">Peak</a>
       <a href="/courses" data-nav-id="courses">Courses</a>
+      <a href="/live-events" data-nav-id="events">Live Events</a>
       <a href="/blog" data-nav-id="blog">Blog</a>
       <a href="/reviews" data-nav-id="reviews">Reviews</a>
       <a href="/#contact" class="nav__cta">Book Now</a>
@@ -56,6 +57,7 @@ p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:2rem}
   <a href="/classes" class="mobile-nav__link" data-nav-id="classes">Classes</a>
   <a href="/peak-athleticism" class="mobile-nav__link" data-nav-id="peak">Peak</a>
   <a href="/courses" class="mobile-nav__link" data-nav-id="courses">Courses</a>
+  <a href="/live-events" class="mobile-nav__link" data-nav-id="events">Live Events</a>
   <a href="/blog" class="mobile-nav__link" data-nav-id="blog">Blog</a>
   <a href="/reviews" class="mobile-nav__link" data-nav-id="reviews">Reviews</a>
   <a href="/#contact" class="mobile-nav__link">Contact</a>
@@ -65,16 +67,22 @@ p{color:rgba(26,26,26,.6);line-height:1.7;margin-bottom:2rem}
 
 <div class="card">
   <h1>Checkout cancelled</h1>
-  <p>No charge was made. You can return to courses and try again whenever you’re ready.</p>
-  <a href="courses.html">Back to courses</a>
-  <a class="secondary" id="retry-link" href="courses.html">Try again</a>
+  <p id="cancel-copy">No charge was made. You can return to courses and try again whenever you’re ready.</p>
+  <a id="back-link" href="/courses">Back to courses</a>
+  <a class="secondary" id="retry-link" href="/courses">Try again</a>
 </div>
 <script>
 (function () {
   var product = new URLSearchParams(window.location.search).get('product');
-  if (product) {
-    document.getElementById('retry-link').href = 'courses.html#' + (product === 'seminar-upper-limb' ? 'seminars' : 'online');
+  if (!product) return;
+  if (/^(seminar|retreat)/.test(product)) {
+    document.getElementById('cancel-copy').textContent = 'No charge was made. You can return to live events and try again whenever you’re ready.';
+    document.getElementById('back-link').href = '/live-events';
+    document.getElementById('back-link').textContent = 'Back to live events';
+    document.getElementById('retry-link').href = '/live-events';
+    return;
   }
+  document.getElementById('retry-link').href = '/courses#online';
 })();
 </script>
 <script src="/js/site-nav.js" defer></script>

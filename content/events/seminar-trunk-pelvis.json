@@ -2,7 +2,7 @@
   "slug": "seminar-trunk-pelvis",
   "status": "upcoming",
   "pageMode": "generated",
-  "listOn": ["courses", "home"],
+  "listOn": ["events", "home"],
   "sort": 50,
   "productId": "seminar-trunk-pelvis",
   "catalog": {

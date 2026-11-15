@@ -246,6 +246,10 @@ body.nav-surface-light .nav {
   transition-delay: 0.4s;
 }
 
+.mobile-nav.open a:nth-child(8) {
+  transition-delay: 0.45s;
+}
+
 .mobile-nav a:hover {
   color: var(--nav-gold);
 }
@@ -267,7 +271,7 @@ body.nav-surface-light .nav {
 .mobile-nav.open .mobile-nav__cta {
   transform: translateY(0);
   opacity: 1;
-  transition: transform 0.5s var(--nav-transition) 0.45s, opacity 0.5s var(--nav-transition) 0.45s,
+  transition: transform 0.5s var(--nav-transition) 0.5s, opacity 0.5s var(--nav-transition) 0.5s,
     background 0.3s ease, color 0.3s ease;
 }
 
@@ -279,7 +283,22 @@ body.nav-surface-light .nav {
   max-width: 100%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1280px) {
+  .nav__links {
+    gap: 22px;
+  }
+
+  .nav__links a {
+    letter-spacing: 0.08em;
+  }
+
+  .nav__cta {
+    padding: 12px 18px;
+    letter-spacing: 0.12em;
+  }
+}
+
+@media (max-width: 1080px) {
   .nav__links {
     display: none;
   }

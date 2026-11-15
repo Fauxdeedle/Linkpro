@@ -59,7 +59,7 @@ const products = {
     id: 'seminar-bundle',
     name: 'Fascia & 2TLS — Three-Seminar Bundle',
     amount: amountFromEnv(3750, 'FLUTE_AMOUNT_SEMINAR_BUNDLE'),
-    successUrl: '/courses.html#seminars',
+    successUrl: '/live-events',
   },
   'retreat-shared-bunk': {
     id: 'retreat-shared-bunk',
