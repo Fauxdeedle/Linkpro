@@ -29,11 +29,11 @@ Writers:
 - `grantPaidCheckout` in `lib/checkout.js` for every paid session, including seminars and retreats. A sheet error is logged and must not block the access cookie.
 - `scripts/grant-access.js` after each successful online-course grant (`pelvis-1`, `pelvis-3`, `llip`). A repeat grant updates that row. Seminars and retreats are skipped. When the store is Redis and the sheet is skipped or the write throws, the script exits non-zero after access has been saved. A file-store run with no sheet config still exits 0.
 
-Amount and product name for a payment come from `server/config/products.js`. An unknown product id is still written, with that id in both Product and Product ID. A manual grant uses the catalog name and leaves Amount blank. Emails are normalized.
+Amount and product name for a payment come from `getProduct`. Courses, the seminar bundle, and retreat rooms resolve from `server/config/products.js`. A generated live event resolves from `content/events/{slug}.json`: the catalog title, the whole-dollar price, and success URL `/{slug}.html`. An unknown product id is still written, with that id in both Product and Product ID. A manual grant uses the catalog name and leaves Amount blank. Emails are normalized.
 
 ## Changing the sheet
 
-A new catalog product needs a `server/config/products.js` entry and a checkout link. Do not change the sheet or `lib/purchase-sheet.js` for that.
+A new course, seminar bundle, or retreat room needs a `server/config/products.js` entry and a checkout link. A generated live event is priced from its event file instead. Do not change the sheet or `lib/purchase-sheet.js` for either.
 
 Changing columns means all of these in the same change:
 

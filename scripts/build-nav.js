@@ -38,6 +38,7 @@ const activeByFile = {
   'blog/what-pro-teams-know-about-the-pelvis.html': 'blog',
   'courses/course-template.html': 'courses',
   'sales/sales-page-template.html': null,
+  'admin.html': null,
 };
 
 function renderNav(activeId) {

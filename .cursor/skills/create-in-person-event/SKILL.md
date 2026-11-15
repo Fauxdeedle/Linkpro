@@ -30,8 +30,8 @@ The generated layout follows the Nicolette David retreat (hero, rule, optional g
 1. Copy `content/events/_template.json` to `content/events/{slug}.json`. The filename must match `slug`.
 2. Set `pageMode` to `generated`, `status` to `upcoming` or `coming-soon`, and `listOn` to the catalogs that should show a card (`events`, `home`). `courses` is still accepted as an alias for the live events page.
 3. Fill `catalog`, `hero`, `details`, `instructor`, `gallery`, and `cta`. Leave `gallery` as `[]` and `schedule` as `[]` when there are no photos or a day plan. Empty sections are omitted.
-4. Set `productId` to an existing id in `server/config/products.js` when registration is open. Leave it out for coming soon.
-5. Run `npm run build:events`.
+4. Set `price` to the whole-dollar amount Flute should charge when registration is open. `productId` becomes the slug. Leave the price out for coming soon. Do not add a generated event to `server/config/products.js`. Courses, the seminar bundle, and retreat rooms stay there.
+5. Run `npm run build:events`. Saving the event in `/admin` writes the same JSON and rebuilds the page and catalogs.
 
 That writes `{slug}.html`, refreshes the cards between `LINKPRO_EVENTS_START` / `LINKPRO_EVENTS_END` on `live-events.html`, refreshes the first three upcoming events between `LINKPRO_FEATURED_EVENTS_START` / `LINKPRO_FEATURED_EVENTS_END` on the homepage, and registers the page so Live Events is the active nav item. The homepage courses seminar list is commented out and is not refreshed.
 
@@ -55,7 +55,7 @@ Use `pageMode: "static"` only when the page is maintained by hand. The retreat r
 
 ## Checkout
 
-Register buttons on generated pages use `data-flute-product` and `/checkout.html?product={productId}`. Catalog cards link to `/{slug}`, not to checkout. Point that product’s `successUrl` in `server/config/products.js` at `/{slug}.html`.
+Register buttons on generated pages use `data-flute-product` and `/checkout.html?product={productId}`. Catalog cards link to `/{slug}`, not to checkout. `getProduct` reads the event name, whole-dollar amount, and success URL `/{slug}.html` from the event file. The header price is the charged price. A student rate in the copy is page text only.
 
 ## Verify
 
