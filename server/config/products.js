@@ -1,3 +1,5 @@
+const { loadEvents, productFromEvents } = require('../../lib/event-store');
+
 function amountFromEnv(defaultAmount, ...keys) {
   for (const key of keys) {
     if (process.env[key] === undefined || process.env[key] === '') {
@@ -81,7 +83,16 @@ const products = {
   },
 };
 
-function getProduct(id) {
+// These ids stay in this file so the current names are not removed. Checkout for
+// them comes from content/events/{slug}.json. A generated event with no price
+// does not fall back to the amount below.
+const eventCatalogIds = new Set([
+  'seminar-upper-limb',
+  'seminar-lower-limb',
+  'seminar-trunk-pelvis',
+]);
+
+function catalogProduct(id) {
   const product = products[id];
   if (!product || !product.amount || Number.isNaN(product.amount)) {
     return null;
@@ -89,4 +100,19 @@ function getProduct(id) {
   return product;
 }
 
-module.exports = { amountFromEnv, products, getProduct };
+function checkoutProduct(id, events) {
+  const found = productFromEvents(id, events);
+  if (found.owned || eventCatalogIds.has(id)) return found.product;
+  return catalogProduct(id);
+}
+
+function getProduct(id) {
+  try {
+    return checkoutProduct(id, loadEvents());
+  } catch (err) {
+    console.error('Event catalog could not be read:', err.message);
+    return catalogProduct(id);
+  }
+}
+
+module.exports = { amountFromEnv, checkoutProduct, eventCatalogIds, products, getProduct };

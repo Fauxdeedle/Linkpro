@@ -30,6 +30,14 @@ test('catalog contains every displayed checkout item at its advertised price', (
   for (const [id, amount] of Object.entries(expectedProducts)) {
     assert.equal(getProduct(id)?.amount, amount, id);
   }
+
+  assert.equal(
+    getProduct('seminar-trunk-pelvis').name,
+    'Fascia Normalization and 2TLS: Trunk and Pelvis'
+  );
+  assert.equal(getProduct('seminar-trunk-pelvis').successUrl, '/seminar-trunk-pelvis.html');
+  assert.equal(products['seminar-bundle'].successUrl, '/live-events');
+  assert.equal(getProduct('seminar-bundle').successUrl, '/live-events');
 });
 
 test('hosted session payload uses a trusted product and documented fields', () => {

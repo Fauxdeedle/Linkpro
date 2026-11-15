@@ -498,7 +498,28 @@ Generated pages:
 
 The Baja retreat stays at `/nicolette-david-retreat`. That page is written by hand. Its card on `/live-events` still comes from the event data.
 
-Catalog cards link to the event page. Register lives on that page and uses the existing Flute product id. After payment, Upper Limb, Lower Limb, and Trunk & Pelvis return to their own page. The three-seminar bundle still checks out from the bundle row and returns to `/live-events`.
+Catalog cards link to the event page. Register lives on that page. The header price on that page is what Flute charges. A student rate written in the page copy is text only. After payment, Upper Limb, Lower Limb, and Trunk & Pelvis return to their own page. The three-seminar bundle still checks out from the bundle row and returns to `/live-events`.
+
+### Admin hub
+
+`/admin` is a private page for adding and changing live events. It is not in the public nav. The page uses the homepage colors: charcoal `#1A1A1A`, cream `#F5F0EB`, gold `#C4A265`, Bebas Neue titles, and Inter body text. Gold buttons are the primary actions.
+
+The page is a section shell. Live Events is the first section. Later tools can be added beside it.
+
+Set `ADMIN_HUB_PASSWORD` before anyone can sign in. If that variable is unset, `/admin` still loads, and sign-in, listing, editing, and deleting all fail.
+
+Screens, in order:
+
+1. **List.** Each generated event shows its name, date, and price, with **See more info** and **Delete**. **Add new event** is the gold button. The hand-built Nicolette David retreat is not in this list.
+2. **Detail.** Back, the event name, date, and price, an **Edit event** button, and a cream panel of the copy visitors see.
+3. **Edit.** **Edit event** turns the name, date, price, and cream-panel copy into fields. **Add new event** opens that same screen empty. **Save** writes. **Cancel** returns without writing.
+4. **Delete.** The button asks for confirmation, then removes the generated page, the card on `/live-events`, the homepage feature card when that event is one of the first three, and checkout for that event. Rows already on the Purchases sheet stay. Payments already taken stay in Flute.
+
+A new event is listed on the live events page and the homepage (`listOn` is `["events", "home"]`). The URL and `productId` stay fixed when the name later changes. Once a price is set, `productId` is the slug and Flute charges that whole-dollar amount. No price means no checkout, the same as Cranial Diaphragm. One product per event.
+
+Instructor, gallery, and schedule already stored on an event stay in the file. A new event uses the instructor from `content/events/_template.json`. Saving a different event does not rewrite the December Trunk & Pelvis page. A record with `pageMode` `static` cannot be edited or deleted.
+
+On a local server, Save writes `content/events/{slug}.json` and rebuilds that page plus the two catalogs. On Vercel, Save commits those files through the GitHub API so the next deploy updates the live site. That commit needs `ADMIN_GITHUB_TOKEN` and `ADMIN_GITHUB_REPO`. `ADMIN_GITHUB_BRANCH` is optional and defaults to `main`. If the token is missing on Vercel, Save fails and does not pretend the change was published. Leave the password and token unset until they are provided.
 
 ### Make a new event
 
@@ -507,8 +528,8 @@ Catalog cards link to the event page. Register lives on that page and uses the e
 3. Set `status` to `upcoming` when people can register, or `coming-soon` when the page should exist without checkout.
 4. Set `listOn` to `["events", "home"]` or `["events"]`. Set `sort` to control order. Lower numbers appear first. `courses` is still accepted as an alias for `events`.
 5. Fill the catalog card, hero, details, instructor, gallery, and the register blurb. Leave `gallery` as `[]` when there are no photos. Leave `schedule` as `[]` when there is no day plan. Empty sections are left off the page.
-6. Set `productId` to an id already listed in `server/config/products.js` when checkout should open. Leave it out for a coming-soon event. Point that product’s `successUrl` at `/{slug}.html`.
-7. Run `npm run build:events`.
+6. Set a whole-dollar `price` when checkout should open. The build uses that amount, the event name, and `/{slug}.html` as the Flute product. `productId` is the slug. Leave the price out for a coming-soon event. Courses, the seminar bundle, and retreat rooms stay in `server/config/products.js`.
+7. Run `npm run build:events`. The same write happens from `/admin` when you save there.
 
 The command writes `{slug}.html`, refreshes the cards on `live-events.html` and the homepage featured row, and marks Live Events as the current nav item. It does not rewrite the commented-out seminar list in the homepage courses section.
 
@@ -532,7 +553,8 @@ The retreat record uses `pageMode: "static"` and `listOn: ["events"]`. Rebuildin
 - `listOn` — `events`, `home`, or both. `courses` still lists the event on `/live-events`.
 - `sort` — catalog order
 - `catalog` — month, days, title, location, summary, price label, and button text
-- `productId` — Flute checkout id. Omit it when registration is not open.
+- `price` — whole dollars Flute charges. Omit it, and `productId`, when registration is not open.
+- `productId` — Flute checkout id. For a generated event this is the slug once a price is set.
 - `hero`, `details`, `instructor`, `gallery`, `cta` — the page body
 - `details.intro` — opening paragraphs. An array is several paragraphs.
 - `details.registerLink` — optional text that links to the register band, such as `Register here.`
@@ -547,8 +569,9 @@ The retreat record uses `pageMode: "static"` and `listOn: ["events"]`. Rebuildin
 - `live-events.html` — full catalog cards sit between `<!-- LINKPRO_EVENTS_START -->` and `<!-- LINKPRO_EVENTS_END -->`
 - `index.html` — the courses-section seminar list is commented out. Those same markers are plain labels inside that comment until the section is shown again.
 - `index.html` — the first three upcoming events sit between `<!-- LINKPRO_FEATURED_EVENTS_START -->` and `<!-- LINKPRO_FEATURED_EVENTS_END -->`
+- `/admin` — private hub that writes these JSON files and rebuilds the page and both catalogs
 
-A later system that adds and ends trainings should write or update these JSON files and run the same command.
+The homepage seminar block stays commented out. Do not add `LINKPRO_EVENTS` markers back to `index.html` or `courses.html`.
 
 ---
 

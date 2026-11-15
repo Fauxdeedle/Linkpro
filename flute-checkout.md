@@ -28,7 +28,11 @@ the Flute dashboard.
 | Retreat — one-person king | $2,350 | `retreat-king-single` | `/nicolette-david-retreat.html` |
 | Retreat — two-person king | $3,150 | `retreat-king-double` | `/nicolette-david-retreat.html` |
 
-Seminar catalog cards link to the training page. The Register button on that page carries `data-flute-product`. The Lower Limb Injury Prevention card on `courses.html` is not using `data-flute-product` right now. It opens `/llip-course.html` directly so the lessons can be reviewed. Pelvis 3.0 (`/pelvis-3-course.html`) is also open and is not in this catalog yet.
+Seminar catalog cards link to the training page. The full list is `/live-events`. The homepage shows the first three of those events. The Register button on a generated page carries `data-flute-product`. The Lower Limb Injury Prevention card on `courses.html` is not using `data-flute-product` right now. It opens `/llip-course.html` directly so the lessons can be reviewed. Pelvis 3.0 (`/pelvis-3-course.html`) is also open and is not in this catalog yet.
+
+Generated live events take their Flute name, whole-dollar amount, and success URL `/{slug}.html` from `content/events/{slug}.json`. The price shown in the page header is the charged price. A student rate typed into the page copy is not a second product. Courses, the three-seminar bundle, and the retreat rooms stay in `server/config/products.js`. The bundle still returns to `/live-events`. Clearing an event price removes checkout for that event, including Upper Limb, Lower Limb, and Trunk & Pelvis. Their names remain in `products.js`.
+
+Create, edit, and delete those events at `/admin`. See **Admin hub** in `site-notes.md`. A local save writes the JSON and rebuilds the page, the `/live-events` cards, and the homepage feature row. On Vercel, Save commits that change with `ADMIN_GITHUB_TOKEN`, `ADMIN_GITHUB_REPO`, and optional `ADMIN_GITHUB_BRANCH`. A missing token fails the save. `ADMIN_HUB_PASSWORD` gates the page. Leave it unset until a password is chosen. Deleting an event does not remove Purchases-sheet rows or payments already taken in Flute.
 
 ## Project layout
 
@@ -67,6 +71,10 @@ Copy `.env.example` to `.env`:
 | `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Service account that can edit the sheet |
 | `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` | PEM private key. Escaped `\n` sequences are accepted |
 | `GOOGLE_SHEETS_TAB` | Optional tab name. Defaults to `Purchases` |
+| `ADMIN_HUB_PASSWORD` | Password for `/admin`. Unset means the page loads and every admin action fails |
+| `ADMIN_GITHUB_TOKEN` | GitHub token used when `/admin` commits event files on Vercel |
+| `ADMIN_GITHUB_REPO` | `owner/name` repository those commits update |
+| `ADMIN_GITHUB_BRANCH` | Optional branch. Defaults to `main` |
 
 ### Run locally
 
@@ -115,6 +123,13 @@ The success page writes the same row when the buyer returns. A sheet error there
 | `GET` | `/api/checkout-session/:sessionId` | Verify payment status after redirect |
 | `GET` | `/api/flute-config` | Returns `{ "configured": true }` when credentials are set |
 | `POST` | `/api/webhooks/flute` | Flute webhook receiver (HMAC verified) |
+| `GET` | `/api/admin/session` | Admin hub session. `503` when `ADMIN_HUB_PASSWORD` is unset |
+| `POST` | `/api/admin/session` | Body: `{ "password": "..." }` sets the admin cookie |
+| `GET` | `/api/admin/events` | Generated live events for the hub |
+| `POST` | `/api/admin/events` | Create a live event from name, date, price, and copy |
+| `GET` | `/api/admin/events/:slug` | One generated event |
+| `PUT` | `/api/admin/events/:slug` | Save name, date, price, and copy. The slug stays fixed |
+| `DELETE` | `/api/admin/events/:slug` | Remove the generated page, both catalog cards, and checkout |
 
 ## Flow
 
@@ -141,10 +156,14 @@ Parallel: Flute → POST /api/webhooks/flute → payment_session.completed
 
 ## Adding a product
 
+Online courses, the seminar bundle, and retreat rooms:
+
 1. Add an entry to `server/config/products.js` with `amount` in whole USD dollars.
 2. Give it a stable ID, display name, and post-purchase `successUrl`.
 3. Optionally add a dedicated amount override to `.env.example`.
-4. Add a link to `/checkout.html?product=your-product-id` for a seminar or retreat. An online course card links to `/{slug}-course`. The `data-flute-product` attribute is supported for non-link controls.
+4. Add a link to `/checkout.html?product=your-product-id` for a retreat room. An online course card links to `/{slug}-course`. The `data-flute-product` attribute is supported for non-link controls.
+
+A new live event does not get a `products.js` entry. Save it in `/admin`, or add `content/events/{slug}.json` and run `npm run build:events`. The event file supplies the charged price.
 
 Each item needs this trusted server-side catalog entry so a customer cannot
 choose their own price. It does **not** need a separate Flute dashboard setup,

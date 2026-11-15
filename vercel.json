@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/admin/**/*.js": {
+      "includeFiles": "{content/events/**,components/site-nav.html,components/site-analytics.html,index.html,live-events.html}"
+    }
+  },
   "env": {
     "NODE_OPTIONS": "--disable-warning=DEP0169"
   },
