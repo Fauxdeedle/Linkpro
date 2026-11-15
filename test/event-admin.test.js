@@ -9,7 +9,9 @@ const { readJsonBody } = require('../lib/body');
 const { handleAdminEvents, handleAdminSession } = require('../lib/admin-http');
 const {
   createLiveEvent,
-  deleteLiveEvent,
+  listArchivedEvents,
+  listLiveEvents,
+  setEventArchived,
   readLiveEvent,
   updateLiveEvent,
 } = require('../lib/event-admin');
@@ -61,7 +63,7 @@ function fixture() {
   return root;
 }
 
-test('create, update, and delete a live event keep the page and checkout price together', async () => {
+test('create, update, and archive a live event keep the page and checkout price together', async () => {
   const root = fixture();
   const created = await createLiveEvent(
     {
@@ -155,16 +157,28 @@ test('create, update, and delete a live event keep the page and checkout price t
   assert.match(updatedHtml, /Day one/);
   assert.match(updatedHtml, /\/images\/a\.webp/);
 
-  const removed = await deleteLiveEvent('coastal-intensive', { root, env: {} });
-  assert.equal(removed.body.deleted, 'coastal-intensive');
-  assert.equal(fs.existsSync(path.join(root, 'content', 'events', 'coastal-intensive.json')), false);
-  assert.equal(fs.existsSync(path.join(root, 'coastal-intensive.html')), false);
-  assert.equal(readLiveEvent('coastal-intensive', root), null);
-  assert.equal(eventProduct('coastal-intensive', loadEvents(root)), null);
+  const archived = await setEventArchived('coastal-intensive', true, { root, env: {} });
+  assert.equal(archived.body.event.archived, true);
+  assert.equal(fs.existsSync(path.join(root, 'content', 'events', 'coastal-intensive.json')), true);
+  assert.equal(fs.existsSync(path.join(root, 'coastal-intensive.html')), true);
+  assert.equal(readLiveEvent('coastal-intensive', root).archived, true);
+  assert.equal(eventProduct('coastal-intensive', loadEvents(root)).amount, 1400);
+  assert.equal(listLiveEvents(root).some((event) => event.slug === 'coastal-intensive'), false);
+  assert.equal(listArchivedEvents(root).some((event) => event.slug === 'coastal-intensive'), true);
   assert.doesNotMatch(fs.readFileSync(path.join(root, 'live-events.html'), 'utf8'), /Coastal Intensive/);
   assert.match(fs.readFileSync(path.join(root, 'live-events.html'), 'utf8'), /Retreat/);
   assert.doesNotMatch(fs.readFileSync(path.join(root, 'index.html'), 'utf8'), /Coastal Intensive/);
   assert.equal(fs.readFileSync(path.join(root, 'courses.html'), 'utf8'), 'COURSES PAGE\n');
+
+  const restored = await setEventArchived('coastal-intensive', false, { root, env: {} });
+  assert.equal(restored.body.event.archived, false);
+  assert.match(fs.readFileSync(path.join(root, 'live-events.html'), 'utf8'), /Coastal Intensive/);
+  assert.equal(listLiveEvents(root).some((event) => event.slug === 'coastal-intensive'), true);
+  assert.equal(listArchivedEvents(root).some((event) => event.slug === 'coastal-intensive'), false);
+  const restoredFile = JSON.parse(
+    fs.readFileSync(path.join(root, 'content', 'events', 'coastal-intensive.json'), 'utf8')
+  );
+  assert.equal(restoredFile.archived, undefined);
 });
 
 test('an event with no price has no checkout', async () => {
@@ -187,9 +201,9 @@ test('an event with no price has no checkout', async () => {
   assert.equal(eventProduct('open-lab', loadEvents(root)), null);
 });
 
-test('a hand-built retreat cannot be edited or deleted from the hub', async () => {
+test('a hand-built retreat cannot be edited or archived from the hub', async () => {
   const root = fixture();
-  const denied = await deleteLiveEvent('nicolette-david-retreat', { root, env: {} });
+  const denied = await setEventArchived('nicolette-david-retreat', true, { root, env: {} });
   assert.equal(denied.status, 400);
   const edited = await updateLiveEvent(
     'nicolette-david-retreat',
