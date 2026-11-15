@@ -259,25 +259,84 @@ test('generated event checkout comes from the event file and leaves the bundle a
   assert.equal(checkoutProduct('pelvis-1', []).amount, 100);
 });
 
-test('the deployed hub publishes the changed files and does not write them locally', async () => {
-  const root = fixture();
+function githubMock(root) {
   const calls = [];
+  let reviewSha = null;
+  let pull = null;
   const fetchImpl = async (url, options = {}) => {
+    const method = options.method || 'GET';
     const body = options.body ? JSON.parse(options.body) : null;
-    calls.push({ url, method: options.method || 'GET', body });
-    const payload = url.endsWith('/git/blobs')
-      ? { sha: `blob-${calls.length}` }
-      : url.endsWith('/git/trees')
-        ? { sha: 'tree1' }
-        : url.endsWith('/git/commits')
-          ? { sha: 'commit1', tree: { sha: 'tree0' } }
-          : { object: { sha: 'parent' }, tree: { sha: 'tree0' } };
+    calls.push({ url, method, body });
+    const fileUrl = new URL(url, 'https://api.github.com');
+    const pathname = fileUrl.pathname;
+
+    if (pathname.endsWith('/git/blobs')) {
+      return json({ sha: `blob-${calls.length}` });
+    }
+    if (pathname.endsWith('/git/trees') && method === 'POST') {
+      return json({ sha: 'tree1' });
+    }
+    if (pathname.endsWith('/git/commits') && method === 'POST') {
+      reviewSha = 'commit1';
+      return json({ sha: 'commit1', tree: { sha: 'tree0' } });
+    }
+    if (pathname.includes('/git/commits/')) {
+      return json({ sha: 'parent', tree: { sha: 'tree0' } });
+    }
+    if (pathname.includes('/git/ref/heads/')) {
+      const encoded = pathname.split('/git/ref/heads/')[1];
+      const branch = decodeURIComponent(encoded);
+      if (branch === 'admin/live-events') {
+        if (!reviewSha) return json({ message: 'Not Found' }, 404);
+        return json({ object: { sha: reviewSha } });
+      }
+      return json({ object: { sha: 'parent' } });
+    }
+    if (pathname.endsWith('/git/refs') && method === 'POST') {
+      reviewSha = body.sha;
+      return json({ ref: body.ref, object: { sha: body.sha } });
+    }
+    if (pathname.endsWith('/pulls') && method === 'GET') {
+      return json(pull ? [pull] : []);
+    }
+    if (pathname.endsWith('/pulls') && method === 'POST') {
+      pull = { html_url: 'https://github.com/linkpro/linkpro/pull/7', number: 7 };
+      return json(pull);
+    }
+    if (pathname.includes('/contents/')) {
+      const repoPath = decodeURIComponent(pathname.split('/contents/')[1]);
+      if (repoPath === 'content/events') {
+        const dir = path.join(root, 'content', 'events');
+        const entries = fs.readdirSync(dir).map((name) => ({
+          type: 'file',
+          path: `content/events/${name}`,
+        }));
+        return json(entries);
+      }
+      const filePath = path.join(root, repoPath);
+      if (!fs.existsSync(filePath)) return json({ message: 'Not Found' }, 404);
+      return json({
+        encoding: 'utf-8',
+        content: fs.readFileSync(filePath, 'utf8'),
+      });
+    }
+    return json({ message: 'Not Found' }, 404);
+  };
+
+  function json(payload, status = 200) {
     return {
-      ok: true,
-      status: 200,
+      ok: status >= 200 && status < 300,
+      status,
       text: async () => JSON.stringify(payload),
     };
-  };
+  }
+
+  return { calls, fetchImpl };
+}
+
+test('the deployed hub publishes the changed files to a review branch', async () => {
+  const root = fixture();
+  const { calls, fetchImpl } = githubMock(root);
 
   const created = await createLiveEvent(
     { name: 'Harbor Lab', date: 'March 2', price: 900, copy: 'A one-day lab.' },
@@ -295,6 +354,7 @@ test('the deployed hub publishes the changed files and does not write them local
 
   assert.equal(created.status, 201);
   assert.equal(created.body.published, true);
+  assert.equal(created.body.pullRequestUrl, 'https://github.com/linkpro/linkpro/pull/7');
   assert.equal(fs.existsSync(path.join(root, 'content', 'events', 'harbor-lab.json')), false);
   const published = calls
     .filter((call) => call.url.endsWith('/git/blobs'))
@@ -307,6 +367,12 @@ test('the deployed hub publishes the changed files and does not write them local
   const commit = calls.find((call) => call.method === 'POST' && call.url.endsWith('/git/commits'));
   assert.equal(commit.body.message, 'Add live event Harbor Lab');
   assert.equal(commit.body.parents[0], 'parent');
+  const branch = calls.find((call) => call.method === 'POST' && call.url.endsWith('/git/refs'));
+  assert.equal(branch.body.ref, 'refs/heads/admin/live-events');
+  assert.equal(
+    calls.some((call) => call.url.includes('/git/ref/heads/main') && call.method === 'PATCH'),
+    false
+  );
   const paths = calls
     .filter((call) => call.url.endsWith('/git/blobs'))
     .map((call) => call.body.content);
@@ -359,15 +425,23 @@ test('publishSiteFiles deletes a removed event in the same commit', async () => 
   let tree = null;
   const fetchImpl = async (url, options = {}) => {
     const body = options.body ? JSON.parse(options.body) : null;
-    if (url.endsWith('/git/trees') && options.method === 'POST') tree = body;
+    const method = options.method || 'GET';
+    if (url.endsWith('/git/trees') && method === 'POST') tree = body;
+    if (url.includes('/pulls')) {
+      return {
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify([{ html_url: 'https://github.com/linkpro/linkpro/pull/7' }]),
+      };
+    }
     const payload = url.endsWith('/git/blobs')
       ? { sha: 'blob1' }
       : url.endsWith('/git/trees')
         ? { sha: 'tree1' }
-        : url.endsWith('/git/commits') && options.method === 'POST'
+        : url.endsWith('/git/commits') && method === 'POST'
           ? { sha: 'commit1' }
           : { object: { sha: 'parent' }, tree: { sha: 'base' } };
-    return { ok: true, text: async () => JSON.stringify(payload) };
+    return { ok: true, status: 200, text: async () => JSON.stringify(payload) };
   };
 
   await publishSiteFiles({

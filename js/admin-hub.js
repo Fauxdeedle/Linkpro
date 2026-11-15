@@ -17,9 +17,25 @@
   const sectionsEl = document.getElementById('sections');
   const primary = document.getElementById('primary-action');
 
-  function setMessage(text) {
+  function setMessage(text, href) {
     message.hidden = !text;
     message.textContent = text || '';
+    if (!text || !href) return;
+    message.append(' ');
+    const link = document.createElement('a');
+    link.href = href;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = 'Open the pull request';
+    message.appendChild(link);
+  }
+
+  function reviewNote(done, data) {
+    if (!data || !data.published) {
+      setMessage(done);
+      return;
+    }
+    setMessage(done + ' Review the branch, then merge it into main.', data.pullRequestUrl);
   }
 
   async function api(path, options) {
@@ -269,7 +285,7 @@
       state.event = data.event;
       state.mode = 'edit';
       state.view = 'detail';
-      setMessage(data.published ? 'Saved. The live site updates when the deploy finishes.' : 'Saved.');
+      reviewNote('Saved.', data);
       applyLists(await api('/api/admin/events'));
       render();
     } catch (err) {
@@ -286,14 +302,14 @@
     if (!confirmed) return;
     setMessage('');
     try {
-      await api('/api/admin/events/' + encodeURIComponent(event.slug), {
+      const data = await api('/api/admin/events/' + encodeURIComponent(event.slug), {
         method: 'PATCH',
         body: JSON.stringify({ archived: archived }),
       });
       applyLists(await api('/api/admin/events'));
       state.view = 'list';
       state.section = archived ? 'archive' : 'events';
-      setMessage(archived ? 'Event archived.' : 'Event restored.');
+      reviewNote(archived ? 'Event archived.' : 'Event restored.', data);
       render();
     } catch (err) {
       setMessage(err.message);
