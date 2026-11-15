@@ -576,15 +576,14 @@ ul { list-style: none; }
 }
 .live-event-card__head {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 18px;
   margin-bottom: 28px;
 }
 .live-event-card__date {
   flex: 0 0 104px;
   width: 104px;
-  height: 104px;
-  aspect-ratio: 1 / 1;
+  align-self: stretch;
   border: 1px solid var(--gold);
   display: flex;
   flex-direction: column;
@@ -620,7 +619,7 @@ ul { list-style: none; }
 .live-event-card__title a { color: inherit; }
 .live-event-card__title a:hover { color: var(--gold); }
 .live-event-card__meta {
-  margin: 0 0 16px;
+  margin: 10px 0 0;
   font-size: 1.02rem;
   font-weight: 500;
   line-height: 1.35;
@@ -635,10 +634,11 @@ ul { list-style: none; }
   margin-bottom: 28px;
 }
 .live-event-card__cta {
-  align-self: flex-start;
+  align-self: stretch;
   margin-top: auto;
-  display: inline-block;
+  display: block;
   padding: 14px 28px;
+  text-align: center;
   background: transparent;
   color: var(--white);
   font-size: 0.68rem;
@@ -2329,9 +2329,9 @@ ul { list-style: none; }
             </div>
             <div class="live-event-card__intro">
               <h3 class="live-event-card__title"><a href="/nicolette-david-retreat">Live By The Sun, Love By The Moon — Hatha Yoga Retreat</a></h3>
+              <p class="live-event-card__meta">El Pescadero, Baja · with Nicolette David</p>
             </div>
           </div>
-          <p class="live-event-card__meta">El Pescadero, Baja · with Nicolette David</p>
           <p class="live-event-card__text">Five days at Soluna Estate — sun and moon hatha practices, meditation, chef-prepared meals, and time to explore the Baja coast. Intimate eight-room retreat.</p>
           <a href="/nicolette-david-retreat" class="live-event-card__cta">Learn more</a>
         </article>
@@ -2343,9 +2343,9 @@ ul { list-style: none; }
             </div>
             <div class="live-event-card__intro">
               <h3 class="live-event-card__title"><a href="/seminar-upper-limb">Fascia &amp; 2TLS Treatment of the Upper Limb</a></h3>
+              <p class="live-event-card__meta">Newport Beach, CA · 9 AM – 5 PM</p>
             </div>
           </div>
-          <p class="live-event-card__meta">Newport Beach, CA · 9 AM – 5 PM</p>
           <p class="live-event-card__text">Treat the upper limb as an integrated fascial system. Learn osteoarticular pumping, fascial chain identification, and transverse tendon &amp; ligament stretching techniques.</p>
           <a href="/seminar-upper-limb" class="live-event-card__cta">Learn more</a>
         </article>
@@ -2357,9 +2357,9 @@ ul { list-style: none; }
             </div>
             <div class="live-event-card__intro">
               <h3 class="live-event-card__title"><a href="/cranial-diaphragm">Cranial Diaphragm feat. Scott Herrara</a></h3>
+              <p class="live-event-card__meta">Dallas, TX</p>
             </div>
           </div>
-          <p class="live-event-card__meta">Dallas, TX</p>
           <p class="live-event-card__text">Advanced cranial techniques exploring the cranial diaphragm, fascial continuity, and neurological function.</p>
           <a href="/cranial-diaphragm" class="live-event-card__cta">Learn more</a>
         </article>

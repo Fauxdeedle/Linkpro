@@ -181,7 +181,7 @@ test('homepage feature row shows the first three live events', () => {
   assert.match(cards, /href="\/cranial-diaphragm"/);
   assert.match(cards, /Learn more/);
   assert.match(cards, /El Pescadero, Baja/);
-  assert.match(cards, /<\/h3>\s*<\/div>\s*<\/div>\s*<p class="live-event-card__meta">El Pescadero, Baja/);
+  assert.match(cards, /<\/h3>\s*<p class="live-event-card__meta">El Pescadero, Baja/);
   assert.doesNotMatch(cards, /seminar-lower-limb/);
   assert.doesNotMatch(cards, /old-seminar/);
   assert.doesNotMatch(cards, /checkout\.html/);
