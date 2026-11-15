@@ -487,7 +487,7 @@ Set `SURVEY_NOTIFY_EMAIL` in Vercel (and in local `.env` when testing). The exam
 
 ## Training events
 
-In-person seminars and the Baja retreat each have a page a visitor can open from the live events list at `/live-events`. LINK Pro seminars also appear on the homepage. The pages share one layout: hero, gold rule, gallery when photos exist, a cream details block, the instructor, and a register band. Colors match the homepage (charcoal, cream, gold). Online courses stay on `/courses`.
+In-person seminars and the Baja retreat each have a page a visitor can open from the live events list at `/live-events`. The homepage leads with the first three events from that same calendar. LINK Pro seminars also appear again in the homepage courses section. The pages share one layout: hero, gold rule, gallery when photos exist, a cream details block, the instructor, and a register band. Colors match the homepage (charcoal, cream, gold). Online courses stay on `/courses`.
 
 Generated pages:
 
@@ -544,7 +544,8 @@ The retreat record uses `pageMode: "static"` and `listOn: ["events"]`. Rebuildin
 - `lib/event-pages.js` — turns one event into HTML
 - `scripts/build-events.js` — `npm run build:events`
 - `css/event-page.css` — shared page styles
-- `live-events.html` and `index.html` — cards sit between `<!-- LINKPRO_EVENTS_START -->` and `<!-- LINKPRO_EVENTS_END -->`
+- `live-events.html` and `index.html` — full catalog cards sit between `<!-- LINKPRO_EVENTS_START -->` and `<!-- LINKPRO_EVENTS_END -->`
+- `index.html` — the first three upcoming events sit between `<!-- LINKPRO_FEATURED_EVENTS_START -->` and `<!-- LINKPRO_FEATURED_EVENTS_END -->`
 
 A later system that adds and ends trainings should write or update these JSON files and run the same command.
 
