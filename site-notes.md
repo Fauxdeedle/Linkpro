@@ -487,7 +487,7 @@ Set `SURVEY_NOTIFY_EMAIL` in Vercel (and in local `.env` when testing). The exam
 
 ## Training events
 
-In-person seminars and the Baja retreat each have a page a visitor can open from the live events list at `/live-events`. The homepage leads with the first three events from that same calendar. LINK Pro seminars also appear again in the homepage courses section. The pages share one layout: hero, gold rule, gallery when photos exist, a cream details block, the instructor, and a register band. Colors match the homepage (charcoal, cream, gold). Online courses stay on `/courses`.
+In-person seminars and the Baja retreat each have a page a visitor can open from the live events list at `/live-events`. The homepage leads with the first three events from that same calendar. The in-person seminar list in the homepage courses section is commented out, so those cards do not show there. The pages share one layout: hero, gold rule, gallery when photos exist, a cream details block, the instructor, and a register band. Colors match the homepage (charcoal, cream, gold). Online courses stay on `/courses`.
 
 Generated pages:
 
@@ -510,7 +510,7 @@ Catalog cards link to the event page. Register lives on that page and uses the e
 6. Set `productId` to an id already listed in `server/config/products.js` when checkout should open. Leave it out for a coming-soon event. Point that product’s `successUrl` at `/{slug}.html`.
 7. Run `npm run build:events`.
 
-The command writes `{slug}.html`, refreshes the cards on `live-events.html` and `index.html`, and marks Live Events as the current nav item.
+The command writes `{slug}.html`, refreshes the cards on `live-events.html` and the homepage featured row, and marks Live Events as the current nav item. It does not rewrite the commented-out seminar list in the homepage courses section.
 
 ### Edit an existing page
 
@@ -544,7 +544,8 @@ The retreat record uses `pageMode: "static"` and `listOn: ["events"]`. Rebuildin
 - `lib/event-pages.js` — turns one event into HTML
 - `scripts/build-events.js` — `npm run build:events`
 - `css/event-page.css` — shared page styles
-- `live-events.html` and `index.html` — full catalog cards sit between `<!-- LINKPRO_EVENTS_START -->` and `<!-- LINKPRO_EVENTS_END -->`
+- `live-events.html` — full catalog cards sit between `<!-- LINKPRO_EVENTS_START -->` and `<!-- LINKPRO_EVENTS_END -->`
+- `index.html` — the courses-section seminar list is commented out. Those same markers are plain labels inside that comment until the section is shown again.
 - `index.html` — the first three upcoming events sit between `<!-- LINKPRO_FEATURED_EVENTS_START -->` and `<!-- LINKPRO_FEATURED_EVENTS_END -->`
 
 A later system that adds and ends trainings should write or update these JSON files and run the same command.
