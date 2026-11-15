@@ -29,6 +29,8 @@ Writers:
 - `grantPaidCheckout` in `lib/checkout.js` for every paid session, including seminars and retreats. A sheet error is logged and must not block the access cookie.
 - `scripts/grant-access.js` after each successful online-course grant (`pelvis-1`, `pelvis-3`, `llip`). A repeat grant updates that row. Seminars and retreats are skipped. When the store is Redis and the sheet is skipped or the write throws, the script exits non-zero after access has been saved. A file-store run with no sheet config still exits 0.
 
+A new live-event row also emails `EVENT_NOTIFY_EMAIL`, or `SURVEY_NOTIFY_EMAIL` when that is empty. An update does not email. Online courses do not. When the sheet is not configured, only the webhook sends that email. A mail failure is logged and does not change the webhook status or the access cookie.
+
 Amount and product name for a payment come from `getProduct`. Courses, the seminar bundle, and retreat rooms resolve from `server/config/products.js`. A generated live event resolves from `content/events/{slug}.json`: the catalog title, the whole-dollar price, and success URL `/{slug}.html`. An unknown product id is still written, with that id in both Product and Product ID. A manual grant uses the catalog name and leaves Amount blank. Emails are normalized.
 
 ## Changing the sheet
