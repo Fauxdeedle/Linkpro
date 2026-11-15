@@ -114,6 +114,8 @@ The success page writes the same row when the buyer returns. A sheet error there
 
 `scripts/grant-access.js` writes the same columns for a comped online course. The Session ID is `manual:{email}:{courseId}`, and Amount is blank. A repeat of that grant updates the row.
 
+A new live-event row also emails `EVENT_NOTIFY_EMAIL`, or `SURVEY_NOTIFY_EMAIL` when that is unset. The From address is `ACCESS_EMAIL_FROM`. Reply-To is the buyer. The message names the event, the buyer email, the whole-dollar amount, and the Flute session id. An update for the same session does not send again. Online courses are not emailed. If the sheet is not configured, only the webhook sends that email. A mail failure is logged and does not change the payment or the sheet. Missing `RESEND_API_KEY`, `ACCESS_EMAIL_FROM`, or a notify address logs the registration and skips the email.
+
 ## API routes
 
 | Method | Path | Description |

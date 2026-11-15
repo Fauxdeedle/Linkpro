@@ -652,6 +652,152 @@ test('a sheet error during checkout still returns the course access cookie', asy
   }
 });
 
+const MAIL_KEYS = [
+  'RESEND_API_KEY',
+  'ACCESS_EMAIL_FROM',
+  'EVENT_NOTIFY_EMAIL',
+  'SURVEY_NOTIFY_EMAIL',
+];
+
+function saveMailEnv() {
+  return Object.fromEntries(MAIL_KEYS.map((key) => [key, process.env[key]]));
+}
+
+function restoreMailEnv(saved) {
+  for (const [key, value] of Object.entries(saved)) {
+    if (value === undefined) delete process.env[key];
+    else process.env[key] = value;
+  }
+}
+
+function useMailEnv() {
+  process.env.RESEND_API_KEY = 're_test_key';
+  process.env.ACCESS_EMAIL_FROM = 'LINK Pro <access@example.com>';
+  process.env.EVENT_NOTIFY_EMAIL = 'events@example.com';
+  delete process.env.SURVEY_NOTIFY_EMAIL;
+}
+
+function clearMailEnv() {
+  for (const key of MAIL_KEYS) delete process.env[key];
+}
+
+function fetchWithMail(sheetFetch, emails) {
+  return async (url, options = {}) => {
+    if (String(url).includes('api.resend.com')) {
+      emails.push(JSON.parse(options.body));
+      return { ok: true, status: 200, text: async () => '{}' };
+    }
+    return sheetFetch(url, options);
+  };
+}
+
+function paidSession(productId, email, sessionId) {
+  return {
+    id: sessionId,
+    status: 'Completed',
+    metadata: { productId, customerEmail: email },
+    transactionDetails: { status: 'Captured' },
+  };
+}
+
+test('the success page emails a new live-event registration once', async () => {
+  const saved = saveMailEnv();
+  const originalFetch = globalThis.fetch;
+  const emails = [];
+  const sheet = createMemorySheet();
+  useSheetEnv();
+  useMailEnv();
+  globalThis.fetch = fetchWithMail(sheet.fetchImpl, emails);
+
+  try {
+    const first = await grantPaidCheckout(
+      paidSession('seminar-upper-limb', 'Buyer@Example.com', 'ps_success')
+    );
+    assert.equal(first.status, 'paid');
+    assert.equal(first.accessGranted, false);
+    assert.equal(emails.length, 1);
+    assert.equal(emails[0].to, 'events@example.com');
+    assert.equal(emails[0].reply_to, 'buyer@example.com');
+    assert.match(emails[0].subject, /Fascia & 2TLS Treatment of the Upper Limb/);
+    assert.match(emails[0].text, /Amount: \$1,500/);
+    assert.match(emails[0].text, /Session ID: ps_success/);
+
+    await grantPaidCheckout(paidSession('seminar-upper-limb', 'buyer@example.com', 'ps_success'));
+    assert.equal(emails.length, 1);
+    assert.equal(sheet.rows.length, 2);
+  } finally {
+    globalThis.fetch = originalFetch;
+    clearSheetEnv();
+    restoreMailEnv(saved);
+  }
+});
+
+test('the success page does not email an online course', async () => {
+  const saved = saveMailEnv();
+  const originalFetch = globalThis.fetch;
+  const emails = [];
+  const sheet = createMemorySheet();
+  useSheetEnv();
+  useMailEnv();
+  globalThis.fetch = fetchWithMail(sheet.fetchImpl, emails);
+
+  try {
+    const result = await grantPaidCheckout(paidSession('pelvis-1', 'buyer@example.com', 'ps_course_page'));
+    assert.equal(result.accessGranted, true);
+    assert.equal(emails.length, 0);
+    assert.equal(sheet.rows[1][3], 'pelvis-1');
+  } finally {
+    globalThis.fetch = originalFetch;
+    clearSheetEnv();
+    restoreMailEnv(saved);
+  }
+});
+
+test('the success page still confirms payment when registration email is not configured', async () => {
+  const saved = saveMailEnv();
+  const originalFetch = globalThis.fetch;
+  const sheet = createMemorySheet();
+  useSheetEnv();
+  clearMailEnv();
+  globalThis.fetch = async (url, options = {}) => {
+    assert.equal(String(url).includes('api.resend.com'), false);
+    return sheet.fetchImpl(url, options);
+  };
+
+  try {
+    const result = await grantPaidCheckout(
+      paidSession('seminar-upper-limb', 'buyer@example.com', 'ps_quiet')
+    );
+    assert.equal(result.status, 'paid');
+    assert.equal(sheet.rows[1][5], 'ps_quiet');
+  } finally {
+    globalThis.fetch = originalFetch;
+    clearSheetEnv();
+    restoreMailEnv(saved);
+  }
+});
+
+test('the success page does not email a live event when the sheet is unset', async () => {
+  const saved = saveMailEnv();
+  const originalFetch = globalThis.fetch;
+  clearSheetEnv();
+  useMailEnv();
+  globalThis.fetch = async () => {
+    throw new Error('email and sheet should stay quiet');
+  };
+
+  try {
+    const result = await grantPaidCheckout(
+      paidSession('seminar-upper-limb', 'buyer@example.com', 'ps_nosheet')
+    );
+    assert.equal(result.status, 'paid');
+    assert.equal(result.accessGranted, false);
+  } finally {
+    globalThis.fetch = originalFetch;
+    restoreMailEnv(saved);
+  }
+});
+
 test('course pages do not publish lesson videos', () => {
   for (const file of [
     'pelvis-1-course.html',

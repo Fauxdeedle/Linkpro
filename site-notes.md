@@ -408,6 +408,14 @@ This sheet is the purchase log. Online course access still lives in the entitlem
 
 A sheet failure on the success page does not block the buyer. A sheet failure on the webhook makes Flute retry. Both payment writes use the Flute session id, so they stay one row. A Redis grant whose sheet write does not happen exits with an error after access has been saved. Running the same CSV again updates the manual row.
 
+### Inbox copy
+
+A paid live event also sends one email when that Purchases row is first added. Seminars, retreats, the seminar bundle, and generated events are included. Online courses stay on the sheet only.
+
+The email goes to `EVENT_NOTIFY_EMAIL`, or to `SURVEY_NOTIFY_EMAIL` when that is unset. The From address is `ACCESS_EMAIL_FROM`. Reply-To is the buyer. The message names the event, the buyer email, the whole-dollar amount, and the Flute session id.
+
+The success page and the webhook share that send. Whichever write adds the row sends the email. A later write for the same session updates the row and does not send again. If the sheet is not configured, only the webhook sends the email. A mail failure is logged and does not change the payment or the sheet. If `RESEND_API_KEY`, `ACCESS_EMAIL_FROM`, or a notify address is missing, the registration is logged and no email is sent.
+
 ### The columns
 
 The `Purchases` tab, row 1, must stay exactly:
