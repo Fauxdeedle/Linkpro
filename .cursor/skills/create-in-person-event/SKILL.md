@@ -33,7 +33,7 @@ The generated layout follows the Nicolette David retreat (hero, rule, optional g
 4. Set `productId` to an existing id in `server/config/products.js` when registration is open. Leave it out for coming soon.
 5. Run `npm run build:events`.
 
-That writes `{slug}.html`, refreshes the cards between `LINKPRO_EVENTS_START` / `LINKPRO_EVENTS_END` on `live-events.html` and `index.html`, and registers the page so Live Events is the active nav item.
+That writes `{slug}.html`, refreshes the cards between `LINKPRO_EVENTS_START` / `LINKPRO_EVENTS_END` on `live-events.html` and `index.html`, refreshes the first three upcoming events between `LINKPRO_FEATURED_EVENTS_START` / `LINKPRO_FEATURED_EVENTS_END` on the homepage, and registers the page so Live Events is the active nav item.
 
 Do not hand-edit `{slug}.html`. The next build replaces it.
 
@@ -66,7 +66,7 @@ npm start
 Check:
 
 1. `http://localhost:8080/{slug}` — hero, any gallery, details, register or coming soon, mobile ~400px
-2. `http://localhost:8080/live-events` and the homepage courses section — card order follows `sort`
+2. `http://localhost:8080/live-events` and the homepage — the featured row shows the first three live events, and the courses section lists events with `home` in `listOn`. Card order follows `sort`
 3. Nav highlights Live Events on the event page and on `/live-events`. Courses stays highlighted on `/courses`.
 
 ```text

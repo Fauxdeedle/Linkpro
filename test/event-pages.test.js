@@ -142,6 +142,51 @@ test('section text is escaped', () => {
   assert.doesNotMatch(html, /<b>fiber<\/b>/);
 });
 
+test('homepage feature row shows the first three live events', () => {
+  const retreat = event({
+    slug: 'nicolette-david-retreat',
+    listOn: ['events'],
+    sort: 10,
+    productId: undefined,
+    catalog: {
+      month: 'NOV',
+      days: '11–15',
+      title: 'Live By The Sun, Love By The Moon — Hatha Yoga Retreat',
+      location: 'El Pescadero, Baja · with Nicolette David',
+      summary: 'Five days at Soluna Estate.',
+      priceLabel: 'From $1,350',
+      ctaLabel: 'View retreat — Register',
+    },
+  });
+  const cranial = event({
+    slug: 'cranial-diaphragm',
+    status: 'coming-soon',
+    productId: undefined,
+    sort: 30,
+    catalog: {
+      month: 'AUG',
+      days: '1–5',
+      title: 'Cranial Diaphragm feat. Scott Herrara',
+      location: 'Dallas, TX',
+      summary: 'Advanced cranial techniques.',
+    },
+  });
+  const lower = event({ slug: 'seminar-lower-limb', sort: 40 });
+  const ended = event({ slug: 'old-seminar', status: 'ended', sort: 1 });
+  const cards = renderCatalog([ended, lower, cranial, event(), retreat], 'events', 'feature', { limit: 3 });
+
+  assert.match(cards, /live-event-card/);
+  assert.match(cards, /href="\/nicolette-david-retreat"/);
+  assert.match(cards, /href="\/seminar-upper-limb"/);
+  assert.match(cards, /href="\/cranial-diaphragm"/);
+  assert.match(cards, /Learn more/);
+  assert.match(cards, /El Pescadero, Baja/);
+  assert.doesNotMatch(cards, /seminar-lower-limb/);
+  assert.doesNotMatch(cards, /old-seminar/);
+  assert.doesNotMatch(cards, /checkout\.html/);
+  assert.doesNotMatch(cards, /\$1,500/);
+});
+
 test('coming-soon catalog card links the title and does not sell a seat', () => {
   const card = renderCatalog(
     [event({ slug: 'cranial-diaphragm', status: 'coming-soon', productId: undefined, sort: 30 })],

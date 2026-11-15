@@ -531,6 +531,127 @@ ul { list-style: none; }
 .service-card:hover .service-card__link { gap: 14px; }
 
 /* ═══════════════════════════════════════════════
+   UPCOMING LIVE EVENTS
+   ═══════════════════════════════════════════════ */
+.live-events {
+  padding: var(--section-pad) 0;
+  background: var(--charcoal);
+}
+.live-events__header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+.live-events__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+.live-events__subtitle {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--muted);
+  max-width: 560px;
+  margin: 0 auto;
+}
+.live-events__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.live-event-card {
+  display: flex;
+  flex-direction: column;
+  padding: 36px 32px 32px;
+  background: var(--charcoal-light);
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: transform 0.5s var(--transition), border-color 0.5s var(--transition), box-shadow 0.5s var(--transition);
+}
+.live-event-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(196, 162, 101, 0.2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(196, 162, 101, 0.05);
+}
+.live-event-card__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.live-event-card__date {
+  flex: 0 0 auto;
+  padding: 14px 12px 12px;
+  border: 1px solid var(--gold);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.live-event-card__month {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.live-event-card__days {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.7rem;
+  line-height: 1;
+  color: var(--white);
+  margin-top: 6px;
+  white-space: nowrap;
+}
+.live-event-card__intro { min-width: 0; }
+.live-event-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 1.8vw, 2rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+  color: var(--white);
+}
+.live-event-card__title a { color: inherit; }
+.live-event-card__title a:hover { color: var(--gold); }
+.live-event-card__meta {
+  margin-top: 10px;
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: rgba(255,255,255,0.88);
+}
+.live-event-card__text {
+  flex: 1;
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--muted-light);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.live-event-card__cta {
+  align-self: flex-start;
+  margin-top: auto;
+  display: inline-block;
+  padding: 14px 28px;
+  background: var(--gold);
+  color: var(--charcoal);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition: background 0.3s ease;
+}
+.live-event-card__cta:hover { background: var(--gold-light); }
+.live-events__more {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+/* ═══════════════════════════════════════════════
    THE LINK DIFFERENCE
    ═══════════════════════════════════════════════ */
 .difference {
@@ -1185,7 +1306,8 @@ ul { list-style: none; }
    RESPONSIVE
    ═══════════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .services__grid { grid-template-columns: repeat(2, 1fr); }
+  .services__grid,
+  .live-events__grid { grid-template-columns: repeat(2, 1fr); }
   .stats-bar__inner { grid-template-columns: repeat(2, 1fr); gap: 32px; }
 }
 
@@ -1212,7 +1334,9 @@ ul { list-style: none; }
   .testimonials__grid,
   .drj__grid,
   .booking__grid { grid-template-columns: 1fr; }
-  .services__grid { grid-template-columns: 1fr; }
+  .services__grid,
+  .live-events__grid { grid-template-columns: 1fr; }
+  .live-event-card { padding: 28px 24px; }
   .stats-bar__inner { grid-template-columns: repeat(2, 1fr); }
   .teams-marquee { padding: 36px 0 40px; }
   .org-logo { padding: 0 36px; }
@@ -2110,15 +2234,16 @@ ul { list-style: none; }
 <!-- ═══════════════════════════════════════════════
      SERVICES
      ═══════════════════════════════════════════════ -->
+<!-- Treatment modalities (Precision Care, Elevated) is turned off.
+     To turn it back on, delete this note and the closing marker after the section.
 <section class="services section-dark" id="services">
-  <div class="container container--wide">
+  <div class="container container&#45;&#45;wide">
     <div class="services__header reveal">
       <div class="label" style="justify-content: center;">Treatment Modalities</div>
       <h2 class="services__title">Precision Care, Elevated</h2>
       <p class="services__subtitle">A comprehensive suite of treatments designed for those who refuse to accept anything less than extraordinary.</p>
     </div>
     <div class="services__grid">
-      <!-- Card 1 -->
       <div class="service-card reveal">
         <div class="service-card__icon">
           <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.5"/><path d="M16 8V16L22 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -2127,7 +2252,6 @@ ul { list-style: none; }
         <p class="service-card__text">Unlock your body's full potential through targeted biomechanical optimization and personalized performance protocols.</p>
         <span class="service-card__link">Learn More <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
-      <!-- Card 2 -->
       <div class="service-card reveal reveal-delay-1">
         <div class="service-card__icon">
           <svg viewBox="0 0 32 32" fill="none"><path d="M16 4C16 4 6 12 6 18C6 24 10 28 16 28C22 28 26 24 26 18C26 12 16 4 16 4Z" stroke="currentColor" stroke-width="1.5"/><path d="M16 14V22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M12 18H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -2136,7 +2260,6 @@ ul { list-style: none; }
         <p class="service-card__text">Evidence-based neurological recovery protocols that address the full spectrum of post-concussion challenges.</p>
         <span class="service-card__link">Learn More <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
-      <!-- Card 3 -->
       <div class="service-card reveal reveal-delay-2">
         <div class="service-card__icon">
           <svg viewBox="0 0 32 32" fill="none"><rect x="6" y="4" width="20" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M11 10H21M11 15H21M11 20H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -2145,7 +2268,6 @@ ul { list-style: none; }
         <p class="service-card__text">Comprehensive assessment and treatment of the body's structural foundation — bones, joints, muscles, and connective tissue.</p>
         <span class="service-card__link">Learn More <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
-      <!-- Card 4 -->
       <div class="service-card reveal reveal-delay-1">
         <div class="service-card__icon">
           <svg viewBox="0 0 32 32" fill="none"><path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="currentColor" stroke-width="1.5"/><path d="M16 16L28 10" stroke="currentColor" stroke-width="1" opacity="0.5"/><path d="M16 16L4 10" stroke="currentColor" stroke-width="1" opacity="0.5"/><path d="M16 16V28" stroke="currentColor" stroke-width="1" opacity="0.5"/></svg>
@@ -2154,7 +2276,6 @@ ul { list-style: none; }
         <p class="service-card__text">Visceral manipulation and organ-specific therapies that restore optimal internal function and systemic balance.</p>
         <span class="service-card__link">Learn More <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
-      <!-- Card 5 -->
       <div class="service-card reveal reveal-delay-2">
         <div class="service-card__icon">
           <svg viewBox="0 0 32 32" fill="none"><path d="M16 4V28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8 8L16 16L24 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 16L16 24L24 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/></svg>
@@ -2163,7 +2284,6 @@ ul { list-style: none; }
         <p class="service-card__text">Proprietary postural exercises that create space between joints, decompress the spine, and enhance tissue quality.</p>
         <span class="service-card__link">Learn More <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
-      <!-- Card 6 -->
       <div class="service-card reveal reveal-delay-3">
         <div class="service-card__icon">
           <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/></svg>
@@ -2175,6 +2295,67 @@ ul { list-style: none; }
     </div>
   </div>
 </section>
+-->
+
+<section class="live-events section-dark" id="live-events">
+  <div class="container container--wide">
+    <div class="live-events__header reveal">
+      <div class="label" style="justify-content: center;">Upcoming Live Events</div>
+      <h2 class="live-events__title">Hands-On Intensive Training</h2>
+      <p class="live-events__subtitle">Retreats and in-person seminars from the current calendar.</p>
+    </div>
+    <div class="live-events__grid">
+<!-- LINKPRO_FEATURED_EVENTS_START -->
+<article class="live-event-card reveal">
+          <div class="live-event-card__head">
+            <div class="live-event-card__date">
+              <span class="live-event-card__month">NOV</span>
+              <span class="live-event-card__days">11–15</span>
+            </div>
+            <div class="live-event-card__intro">
+              <h3 class="live-event-card__title"><a href="/nicolette-david-retreat">Live By The Sun, Love By The Moon — Hatha Yoga Retreat</a></h3>
+              <p class="live-event-card__meta">El Pescadero, Baja · with Nicolette David</p>
+            </div>
+          </div>
+          <p class="live-event-card__text">Five days at Soluna Estate — sun and moon hatha practices, meditation, chef-prepared meals, and time to explore the Baja coast. Intimate eight-room retreat.</p>
+          <a href="/nicolette-david-retreat" class="live-event-card__cta">Learn more</a>
+        </article>
+<article class="live-event-card reveal reveal-delay-1">
+          <div class="live-event-card__head">
+            <div class="live-event-card__date">
+              <span class="live-event-card__month">JUN</span>
+              <span class="live-event-card__days">7–9</span>
+            </div>
+            <div class="live-event-card__intro">
+              <h3 class="live-event-card__title"><a href="/seminar-upper-limb">Fascia &amp; 2TLS Treatment of the Upper Limb</a></h3>
+              <p class="live-event-card__meta">Newport Beach, CA · 9 AM – 5 PM</p>
+            </div>
+          </div>
+          <p class="live-event-card__text">Treat the upper limb as an integrated fascial system. Learn osteoarticular pumping, fascial chain identification, and transverse tendon &amp; ligament stretching techniques.</p>
+          <a href="/seminar-upper-limb" class="live-event-card__cta">Learn more</a>
+        </article>
+<article class="live-event-card reveal reveal-delay-2">
+          <div class="live-event-card__head">
+            <div class="live-event-card__date">
+              <span class="live-event-card__month">AUG</span>
+              <span class="live-event-card__days">1–5</span>
+            </div>
+            <div class="live-event-card__intro">
+              <h3 class="live-event-card__title"><a href="/cranial-diaphragm">Cranial Diaphragm feat. Scott Herrara</a></h3>
+              <p class="live-event-card__meta">Dallas, TX</p>
+            </div>
+          </div>
+          <p class="live-event-card__text">Advanced cranial techniques exploring the cranial diaphragm, fascial continuity, and neurological function.</p>
+          <a href="/cranial-diaphragm" class="live-event-card__cta">Learn more</a>
+        </article>
+<!-- LINKPRO_FEATURED_EVENTS_END -->
+    </div>
+    <div class="live-events__more reveal">
+      <a href="/live-events" class="btn-primary"><span>See all</span></a>
+    </div>
+  </div>
+</section>
+
 
 <aside class="quote-strip" data-quote-rotate aria-live="polite">
   <p class="quote-strip__text" data-quote-text></p>
