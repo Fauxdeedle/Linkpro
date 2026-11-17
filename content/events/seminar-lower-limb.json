@@ -2,7 +2,10 @@
   "slug": "seminar-lower-limb",
   "status": "upcoming",
   "pageMode": "generated",
-  "listOn": ["events", "home"],
+  "listOn": [
+    "events",
+    "home"
+  ],
   "sort": 40,
   "productId": "seminar-lower-limb",
   "catalog": {
@@ -41,36 +44,72 @@
         "strong": "Fascial chain treatment",
         "text": "The fascial chains of the lower limb include the hip, knee, ankle, and foot as the primary regulators of load transfer and fluid movement. Normalization is not soft tissue work. It is osteoarticular pumping combined with chain-specific fascial integration, traced back to the pelvis at every step."
       },
-      { "text": "How to identify the true fascial chains of the lower limb (not muscle chains: load and fluid pathways)" },
-      { "text": "The role of the hip joint capsule as the primary link between the pelvis and lower limb mechanics" },
-      { "text": "Osteoarticular pumping techniques for the hip, knee, ankle, and foot" },
-      { "text": "How fascial chain dysfunction in the lower limb creates compensatory tension patterns that appear at the pelvis and spine" },
+      {
+        "text": "How to identify the true fascial chains of the lower limb (not muscle chains: load and fluid pathways)"
+      },
+      {
+        "text": "The role of the hip joint capsule as the primary link between the pelvis and lower limb mechanics"
+      },
+      {
+        "text": "Osteoarticular pumping techniques for the hip, knee, ankle, and foot"
+      },
+      {
+        "text": "How fascial chain dysfunction in the lower limb creates compensatory tension patterns that appear at the pelvis and spine"
+      },
       {
         "strong": "2TLS (transverse tendon and ligament stretching)",
         "text": "2TLS is not a general stretching protocol. It is a specific manual technique designed to improve the individuality of tendon and ligament structures while upgrading the quality of afferent input from those tissues."
       },
-      { "text": "How to free the fibers of tendon from each other" },
-      { "text": "How to free the fibers of ligament from each other" },
-      { "text": "How to alter the thixotropy (fluid viscosity) of water within the fibers and extracellular matrix" },
-      { "text": "How to use 2TLS on the Achilles tendon, patellar tendon, and collateral ligaments to influence afferent input and release protective tension patterns" },
-      { "text": "If the fascial link between the plantar fascia and the Achilles tendon is not free and flexible, the posterior chain compensates all the way to the pelvis. In the biotensegrity model, these links are structural." },
+      {
+        "text": "How to free the fibers of tendon from each other"
+      },
+      {
+        "text": "How to free the fibers of ligament from each other"
+      },
+      {
+        "text": "How to alter the thixotropy (fluid viscosity) of water within the fibers and extracellular matrix"
+      },
+      {
+        "text": "How to use 2TLS on the Achilles tendon, patellar tendon, and collateral ligaments to influence afferent input and release protective tension patterns"
+      },
+      {
+        "text": "If the fascial link between the plantar fascia and the Achilles tendon is not free and flexible, the posterior chain compensates all the way to the pelvis. In the biotensegrity model, these links are structural."
+      },
       {
         "strong": "Who this course is for",
         "text": "Practitioners who want a cohesive system for lower limb treatment, not a collection of techniques."
       },
-      { "text": "Practitioners who work with running, jumping, or cutting athletes where lower limb durability and load tolerance are critical" },
-      { "text": "Practitioners familiar with osteopathic principles or the Guy Voyer lineage (SomaTherapy, ELDOA, Pumping)" },
-      { "text": "If you are looking for generic hip flexor releases or IT band protocols, this is not the course for you." },
+      {
+        "text": "Practitioners who work with running, jumping, or cutting athletes where lower limb durability and load tolerance are critical"
+      },
+      {
+        "text": "Practitioners familiar with osteopathic principles or the Guy Voyer lineage (SomaTherapy, ELDOA, Pumping)"
+      },
+      {
+        "text": "If you are looking for generic hip flexor releases or IT band protocols, this is not the course for you."
+      },
       {
         "strong": "Questions",
         "text": "Traditional courses teach you how to treat the hip flexors or release the IT band. This course teaches you to treat the lower limb as part of a continuous fascial system where the joints regulate fluid movement and the ligaments and tendons regulate neurological input."
       },
-      { "text": "Tendons and ligaments have a higher proportion of collagen fibers to cells than other fasciae. 2TLS addresses fiber-to-fiber freedom and sensory cell function, the mechanical and neurological demands of these tissues." },
-      { "text": "You do not need to be ELDOA-trained. Familiarity with ELDOA or the Guy Voyer lineage is helpful but not required. The course introduces osteoarticular pumping as it applies to the lower limb." },
-      { "text": "Yes, it is hands-on. You will practice fascial chain treatment and 2TLS techniques throughout the day." },
-      { "text": "Bring comfortable clothing that allows access to the hip, knee, and ankle. No special equipment is required." },
-      { "text": "You can take this course without the Upper Limb or Trunk and Pelvis courses. Each course stands alone. The full system is best understood when all three are completed." },
-      { "text": "The bundle price is $3,750 for all three courses (Upper Limb, Lower Limb, Trunk and Pelvis), a savings of $750." }
+      {
+        "text": "Tendons and ligaments have a higher proportion of collagen fibers to cells than other fasciae. 2TLS addresses fiber-to-fiber freedom and sensory cell function, the mechanical and neurological demands of these tissues."
+      },
+      {
+        "text": "You do not need to be ELDOA-trained. Familiarity with ELDOA or the Guy Voyer lineage is helpful but not required. The course introduces osteoarticular pumping as it applies to the lower limb."
+      },
+      {
+        "text": "Yes, it is hands-on. You will practice fascial chain treatment and 2TLS techniques throughout the day."
+      },
+      {
+        "text": "Bring comfortable clothing that allows access to the hip, knee, and ankle. No special equipment is required."
+      },
+      {
+        "text": "You can take this course without the Upper Limb or Trunk and Pelvis courses. Each course stands alone. The full system is best understood when all three are completed."
+      },
+      {
+        "text": "The bundle price is $3,750 for all three courses (Upper Limb, Lower Limb, Trunk and Pelvis), a savings of $750."
+      }
     ],
     "logisticsLabel": "Details",
     "logistics": [
@@ -95,5 +134,6 @@
     "title": "Register for this training",
     "body": "September 25–27 in Costa Mesa. $1,500 for the three days. If you are ready, register below, or write concierge@linkmedicalcenter.com or call 949-465-0770.",
     "buttonText": "Register — $1,500"
-  }
+  },
+  "archived": true
 }
