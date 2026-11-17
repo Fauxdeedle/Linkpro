@@ -450,6 +450,41 @@ test('the admin password sets a session cookie', () => {
   assert.equal(verifySession(trimmed.cookie, padded), true);
 });
 
+test('a saved review branch still counts when the pull request cannot be opened', async () => {
+  const fetchImpl = async (url, options = {}) => {
+    const method = options.method || 'GET';
+    if (url.includes('/pulls')) {
+      return {
+        ok: false,
+        status: 403,
+        text: async () => JSON.stringify({ message: 'Resource not accessible by integration' }),
+      };
+    }
+    const payload = url.endsWith('/git/blobs')
+      ? { sha: 'blob1' }
+      : url.endsWith('/git/trees') && method === 'POST'
+        ? { sha: 'tree1' }
+        : url.endsWith('/git/commits') && method === 'POST'
+          ? { sha: 'commit1' }
+          : { object: { sha: 'parent' }, tree: { sha: 'base' } };
+    return { ok: true, status: 200, text: async () => JSON.stringify(payload) };
+  };
+
+  const result = await publishSiteFiles({
+    env: { ADMIN_GITHUB_TOKEN: 'token', ADMIN_GITHUB_REPO: 'linkpro/linkpro' },
+    fetchImpl,
+    message: 'Archive live event Harbor Lab',
+    files: { writes: { 'live-events.html': '<p>catalog</p>' }, deletes: [] },
+  });
+
+  assert.equal(result.commitSha, 'commit1');
+  assert.equal(result.branch, 'admin/live-events');
+  assert.equal(
+    result.pullRequestUrl,
+    'https://github.com/linkpro/linkpro/compare/main...admin%2Flive-events?expand=1'
+  );
+});
+
 test('publishSiteFiles deletes a removed event in the same commit', async () => {
   let tree = null;
   const fetchImpl = async (url, options = {}) => {
