@@ -1,9 +1,13 @@
 (function () {
   const state = {
-    sections: [{ id: 'events', label: 'Live Events' }],
+    sections: [
+      { id: 'events', label: 'Live Events' },
+      { id: 'archive', label: 'Archive Events' },
+    ],
     section: 'events',
     view: 'list',
     events: [],
+    archived: [],
     event: null,
     mode: 'edit',
   };
@@ -13,9 +17,25 @@
   const sectionsEl = document.getElementById('sections');
   const primary = document.getElementById('primary-action');
 
-  function setMessage(text) {
+  function setMessage(text, href) {
     message.hidden = !text;
     message.textContent = text || '';
+    if (!text || !href) return;
+    message.append(' ');
+    const link = document.createElement('a');
+    link.href = href;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = 'Open the pull request';
+    message.appendChild(link);
+  }
+
+  function reviewNote(done, data) {
+    if (!data || !data.published) {
+      setMessage(done);
+      return;
+    }
+    setMessage(done + ' Review the branch, then merge it into main.', data.pullRequestUrl);
   }
 
   async function api(path, options) {
@@ -69,29 +89,38 @@
     return wrap;
   }
 
+  function applyLists(data) {
+    state.events = Array.isArray(data.events) ? data.events : [];
+    state.archived = Array.isArray(data.archived) ? data.archived : [];
+  }
+
   function renderList() {
+    const archived = state.section === 'archive';
+    const events = archived ? state.archived : state.events;
     primary.innerHTML = '';
-    const add = document.createElement('button');
-    add.type = 'button';
-    add.className = 'btn-primary';
-    add.textContent = 'Add new event';
-    add.addEventListener('click', function () {
-      state.event = { name: '', date: '', price: '', copy: '' };
-      state.mode = 'create';
-      state.view = 'edit';
-      render();
-    });
-    primary.appendChild(add);
+    if (!archived) {
+      const add = document.createElement('button');
+      add.type = 'button';
+      add.className = 'btn-primary';
+      add.textContent = 'Add new event';
+      add.addEventListener('click', function () {
+        state.event = { name: '', date: '', price: '', copy: '' };
+        state.mode = 'create';
+        state.view = 'edit';
+        render();
+      });
+      primary.appendChild(add);
+    }
 
     panel.innerHTML = '';
-    if (!state.events.length) {
+    if (!events.length) {
       const empty = document.createElement('p');
-      empty.textContent = 'No live events yet.';
+      empty.textContent = archived ? 'No archived events.' : 'No live events yet.';
       panel.appendChild(empty);
       return;
     }
 
-    state.events.forEach(function (event) {
+    events.forEach(function (event) {
       const row = document.createElement('div');
       row.className = 'event-row';
       const name = document.createElement('strong');
@@ -111,15 +140,15 @@
         openEvent(event.slug);
       });
 
-      const remove = document.createElement('button');
-      remove.type = 'button';
-      remove.className = 'btn-text';
-      remove.textContent = 'Delete';
-      remove.addEventListener('click', function () {
-        removeEvent(event);
+      const move = document.createElement('button');
+      move.type = 'button';
+      move.className = 'btn-text';
+      move.textContent = archived ? 'Restore' : 'Archive';
+      move.addEventListener('click', function () {
+        moveEvent(event, !archived);
       });
 
-      actions.append(more, remove);
+      actions.append(more, move);
       row.append(name, date, price, actions);
       panel.appendChild(row);
     });
@@ -226,14 +255,6 @@
 
   function render() {
     renderSections();
-    if (state.section !== 'events') {
-      primary.innerHTML = '';
-      panel.innerHTML = '';
-      const waiting = document.createElement('p');
-      waiting.textContent = 'This section is not available yet.';
-      panel.appendChild(waiting);
-      return;
-    }
     if (state.view === 'detail') renderDetail();
     else if (state.view === 'edit') renderEditor();
     else renderList();
@@ -264,29 +285,31 @@
       state.event = data.event;
       state.mode = 'edit';
       state.view = 'detail';
-      setMessage(data.published ? 'Saved. The live site updates when the deploy finishes.' : 'Saved.');
-      state.events = (await api('/api/admin/events')).events;
+      reviewNote('Saved.', data);
+      applyLists(await api('/api/admin/events'));
       render();
     } catch (err) {
       setMessage(err.message);
     }
   }
 
-  async function removeEvent(event) {
+  async function moveEvent(event, archived) {
     const confirmed = window.confirm(
-      'Delete ' +
-        event.name +
-        '? This removes the page, both catalog placements, and checkout for this event. Past purchases stay on the sheet. Payments already taken stay in Flute.'
+      archived
+        ? 'Archive ' + event.name + '? It leaves the live events list. The page stays up.'
+        : 'Restore ' + event.name + ' to the live events list?'
     );
     if (!confirmed) return;
     setMessage('');
     try {
-      await api('/api/admin/events/' + encodeURIComponent(event.slug), { method: 'DELETE' });
-      state.events = state.events.filter(function (item) {
-        return item.slug !== event.slug;
+      const data = await api('/api/admin/events/' + encodeURIComponent(event.slug), {
+        method: 'PATCH',
+        body: JSON.stringify({ archived: archived }),
       });
+      applyLists(await api('/api/admin/events'));
       state.view = 'list';
-      setMessage('Event deleted.');
+      state.section = archived ? 'archive' : 'events';
+      reviewNote(archived ? 'Event archived.' : 'Event restored.', data);
       render();
     } catch (err) {
       setMessage(err.message);
@@ -345,8 +368,7 @@
       if (Array.isArray(session.sections) && session.sections.length) {
         state.sections = session.sections;
       }
-      const listed = await api('/api/admin/events');
-      state.events = Array.isArray(listed.events) ? listed.events : [];
+      applyLists(await api('/api/admin/events'));
       sectionsEl.hidden = false;
       setMessage('');
       render();

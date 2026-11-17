@@ -512,22 +512,22 @@ Catalog cards link to the event page. Register lives on that page. The header pr
 
 `/admin` is a private page for adding and changing live events. It is not in the public nav. The page uses the homepage colors: charcoal `#1A1A1A`, cream `#F5F0EB`, gold `#C4A265`, Bebas Neue titles, and Inter body text. Gold buttons are the primary actions.
 
-The page is a section shell. Live Events is the first section. Later tools can be added beside it.
+The page is a section shell. Live Events and Archive Events sit beside each other. Later tools can be added the same way.
 
-Set `ADMIN_HUB_PASSWORD` before anyone can sign in. If that variable is unset, `/admin` still loads, and sign-in, listing, editing, and deleting all fail.
+Set `ADMIN_HUB_PASSWORD` before anyone can sign in. If that variable is unset, `/admin` still loads, and sign-in, listing, editing, and archiving all fail.
 
 Screens, in order:
 
-1. **List.** Each generated event shows its name, date, and price, with **See more info** and **Delete**. **Add new event** is the gold button. The hand-built Nicolette David retreat is not in this list.
+1. **List.** Each generated event shows its name, date, and price, with **See more info** and **Archive**. **Add new event** is the gold button. The hand-built Nicolette David retreat is not in this list.
 2. **Detail.** Back, the event name, date, and price, an **Edit event** button, and a cream panel of the copy visitors see.
 3. **Edit.** **Edit event** turns the name, date, price, and cream-panel copy into fields. **Add new event** opens that same screen empty. **Save** writes. **Cancel** returns without writing.
-4. **Delete.** The button asks for confirmation, then removes the generated page, the card on `/live-events`, the homepage feature card when that event is one of the first three, and checkout for that event. Rows already on the Purchases sheet stay. Payments already taken stay in Flute.
+4. **Archive.** The button asks for confirmation, then takes the card off `/live-events` and off the homepage feature row. The event page, its price, and checkout stay. The record moves to **Archive Events**, where **Restore** puts it back on the live list. Rows already on the Purchases sheet stay. Payments already taken stay in Flute.
 
 A new event is listed on the live events page and the homepage (`listOn` is `["events", "home"]`). The URL and `productId` stay fixed when the name later changes. Once a price is set, `productId` is the slug and Flute charges that whole-dollar amount. No price means no checkout, the same as Cranial Diaphragm. One product per event.
 
-Instructor, gallery, and schedule already stored on an event stay in the file. A new event uses the instructor from `content/events/_template.json`. Saving a different event does not rewrite the December Trunk & Pelvis page. A record with `pageMode` `static` cannot be edited or deleted.
+Instructor, gallery, and schedule already stored on an event stay in the file. A new event uses the instructor from `content/events/_template.json`. Saving a different event does not rewrite the December Trunk & Pelvis page. A record with `pageMode` `static` cannot be edited or archived. An archived event keeps `archived: true` in its JSON file and is left out of both catalogs.
 
-On a local server, Save writes `content/events/{slug}.json` and rebuilds that page plus the two catalogs. On Vercel, Save commits those files through the GitHub API so the next deploy updates the live site. That commit needs `ADMIN_GITHUB_TOKEN` and `ADMIN_GITHUB_REPO`. `ADMIN_GITHUB_BRANCH` is optional and defaults to `main`. If the token is missing on Vercel, Save fails and does not pretend the change was published. Leave the password and token unset until they are provided.
+On a local server, Save writes `content/events/{slug}.json` and rebuilds that page plus the two catalogs. On Vercel, Save commits those files to the `admin/live-events` branch and opens a pull request into `main`. The live site changes when that pull request is merged. Further saves are added to the same branch, and the hub reads that branch so the next edit includes the earlier ones. The token needs contents access and permission to open pull requests. `ADMIN_GITHUB_BRANCH` can name a different review branch. `ADMIN_GITHUB_BASE` can name a different base, and defaults to `main`. A review branch set to the base branch is treated as `admin/live-events`, so a save does not commit to `main`. If the token is missing on Vercel, Save fails and does not pretend the change was published. Leave the password and token unset until they are provided.
 
 ### Make a new event
 

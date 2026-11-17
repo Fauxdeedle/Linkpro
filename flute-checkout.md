@@ -32,7 +32,7 @@ Seminar catalog cards link to the training page. The full list is `/live-events`
 
 Generated live events take their Flute name, whole-dollar amount, and success URL `/{slug}.html` from `content/events/{slug}.json`. The price shown in the page header is the charged price. A student rate typed into the page copy is not a second product. Courses, the three-seminar bundle, and the retreat rooms stay in `server/config/products.js`. The bundle still returns to `/live-events`. Clearing an event price removes checkout for that event, including Upper Limb, Lower Limb, and Trunk & Pelvis. Their names remain in `products.js`.
 
-Create, edit, and delete those events at `/admin`. See **Admin hub** in `site-notes.md`. A local save writes the JSON and rebuilds the page, the `/live-events` cards, and the homepage feature row. On Vercel, Save commits that change with `ADMIN_GITHUB_TOKEN`, `ADMIN_GITHUB_REPO`, and optional `ADMIN_GITHUB_BRANCH`. A missing token fails the save. `ADMIN_HUB_PASSWORD` gates the page. Leave it unset until a password is chosen. Deleting an event does not remove Purchases-sheet rows or payments already taken in Flute.
+Create, edit, and archive those events at `/admin`. See **Admin hub** in `site-notes.md`. A local save writes the JSON and rebuilds the page, the `/live-events` cards, and the homepage feature row. On Vercel, Save commits that change to `admin/live-events` and opens a pull request into `main`. Merge the pull request when the preview looks right. A missing token fails the save. `ADMIN_HUB_PASSWORD` gates the page. Leave it unset until a password is chosen. Archiving an event does not remove Purchases-sheet rows or payments already taken in Flute.
 
 ## Project layout
 
@@ -74,7 +74,8 @@ Copy `.env.example` to `.env`:
 | `ADMIN_HUB_PASSWORD` | Password for `/admin`. Unset means the page loads and every admin action fails |
 | `ADMIN_GITHUB_TOKEN` | GitHub token used when `/admin` commits event files on Vercel |
 | `ADMIN_GITHUB_REPO` | `owner/name` repository those commits update |
-| `ADMIN_GITHUB_BRANCH` | Optional branch. Defaults to `main` |
+| `ADMIN_GITHUB_BRANCH` | Review branch for admin saves. Defaults to `admin/live-events`. A value equal to the base branch is ignored |
+| `ADMIN_GITHUB_BASE` | Branch the review pull request merges into. Defaults to `main` |
 
 ### Run locally
 

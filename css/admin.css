@@ -126,6 +126,10 @@ textarea { font-family: inherit; }
   color: var(--gold-light);
 }
 
+.admin__error a {
+  color: var(--gold-light);
+}
+
 .event-row {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(120px, 0.8fr) 120px auto;
