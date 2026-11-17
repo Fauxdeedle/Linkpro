@@ -186,6 +186,25 @@ test('homepage feature row shows the first three live events', () => {
   assert.doesNotMatch(cards, /old-seminar/);
   assert.doesNotMatch(cards, /checkout\.html/);
   assert.doesNotMatch(cards, /\$1,500/);
+  assert.doesNotMatch(cards, /More events coming soon/);
+});
+
+test('homepage feature row fills open slots with a coming soon card', () => {
+  const cards = renderCatalog([event(), event({ slug: 'seminar-trunk-pelvis', sort: 30 })], 'events', 'feature', {
+    limit: 3,
+  });
+  const soon = cards.match(/live-event-card--soon/g) || [];
+  assert.equal(soon.length, 1);
+  assert.match(cards, /More events coming soon/);
+  assert.match(cards, /href="\/live-events"/);
+  assert.match(cards, /See all events/);
+
+  const one = renderCatalog([event()], 'events', 'feature', { limit: 3 });
+  assert.equal((one.match(/live-event-card--soon/g) || []).length, 2);
+
+  const none = renderCatalog([], 'events', 'feature', { limit: 3 });
+  assert.equal((none.match(/live-event-card--soon/g) || []).length, 3);
+  assert.doesNotMatch(none, /Learn more/);
 });
 
 test('coming-soon catalog card links the title and does not sell a seat', () => {
