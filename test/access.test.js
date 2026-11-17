@@ -34,6 +34,7 @@ const {
   continueCourseAccess,
 } = require('../lib/checkout');
 const { importGrantCsv } = require('../lib/grant-csv');
+const { createMemoryPurchaseLog, listPurchaseLog } = require('../lib/purchase-log');
 const { HEADERS, recordManualGrant, recordPurchase } = require('../lib/purchase-sheet');
 const { processFluteWebhook } = require('../lib/webhooks');
 
@@ -795,6 +796,68 @@ test('the success page does not email a live event when the sheet is unset', asy
   } finally {
     globalThis.fetch = originalFetch;
     restoreMailEnv(saved);
+  }
+});
+
+test('a sheet error during checkout still saves the hub purchase log', async () => {
+  const originalFetch = globalThis.fetch;
+  const log = createMemoryPurchaseLog();
+  useSheetEnv();
+  globalThis.fetch = async () => ({
+    ok: false,
+    status: 503,
+    statusText: 'unavailable',
+    text: async () => JSON.stringify({ error: { message: 'unavailable' } }),
+  });
+
+  try {
+    const result = await grantPaidCheckout(
+      {
+        id: 'ps_log_only',
+        status: 'Completed',
+        metadata: { productId: 'seminar-trunk-pelvis', customerEmail: 'Buyer@Example.com' },
+        transactionDetails: { status: 'Captured', transactionReceipt: { amount: 1500 } },
+      },
+      { store: log }
+    );
+    assert.equal(result.status, 'paid');
+    assert.equal(result.accessGranted, false);
+    const saved = await log.list();
+    assert.equal(saved.length, 1);
+    assert.equal(saved[0].email, 'buyer@example.com');
+    assert.equal(saved[0].productId, 'seminar-trunk-pelvis');
+    assert.equal(saved[0].amount, 1500);
+    assert.equal(saved[0].sessionId, 'ps_log_only');
+  } finally {
+    globalThis.fetch = originalFetch;
+    clearSheetEnv();
+  }
+});
+
+test('a purchase log error during checkout still returns the course access cookie', async () => {
+  const originalFetch = globalThis.fetch;
+  const sheet = createMemorySheet();
+  useSheetEnv();
+  globalThis.fetch = sheet.fetchImpl;
+
+  try {
+    const result = await grantPaidCheckout(paidSession('pelvis-1', 'buyer@example.com', 'ps_log_down'), {
+      store: {
+        async upsert() {
+          throw new Error('log down');
+        },
+        async list() {
+          return [];
+        },
+      },
+    });
+    assert.equal(result.accessGranted, true);
+    assert.match(result.accessCookie, /^linkpro_access=/);
+    assert.equal(sheet.rows[1][5], 'ps_log_down');
+    assert.equal((await listPurchaseLog()).some((row) => row.sessionId === 'ps_log_down'), false);
+  } finally {
+    globalThis.fetch = originalFetch;
+    clearSheetEnv();
   }
 });
 

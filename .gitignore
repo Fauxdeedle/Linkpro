@@ -3,3 +3,4 @@ node_modules/
 .vercel
 .DS_Store
 data/entitlements.json
+data/purchases.json

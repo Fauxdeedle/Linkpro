@@ -105,13 +105,13 @@ Subscribe to `payment_session.completed`.
 
 ### Purchase sheet
 
-A completed payment appends one row to the Google Sheet named by `GOOGLE_SHEETS_SPREADSHEET_ID`. Courses, seminars, and retreats are all recorded. A repeated webhook for the same Flute session updates that row instead of adding another one. Online course access is unchanged, and older payments are not backfilled.
+A completed payment appends one row to the Google Sheet named by `GOOGLE_SHEETS_SPREADSHEET_ID`, and the same six fields to the admin hub purchase log. Courses, seminars, and retreats are all recorded. A repeated webhook for the same Flute session updates that row instead of adding another one. The sheet and the hub log are written independently. Online course access is unchanged, and older payments are not backfilled. The hub reads both and lists a signup when either one has it.
 
 Share the spreadsheet with `GOOGLE_SERVICE_ACCOUNT_EMAIL` as Editor. The tab (`Purchases`, unless `GOOGLE_SHEETS_TAB` is set) must use this header row:
 
 `Timestamp | Email | Product | Product ID | Amount | Session ID`
 
-The success page writes the same row when the buyer returns. A sheet error there does not block course access. A sheet error on the webhook returns 500 so Flute retries.
+The success page writes the same row when the buyer returns. A sheet or hub-log error there does not block course access. Either error on the webhook returns 500 so Flute retries.
 
 `scripts/grant-access.js` writes the same columns for a comped online course. The Session ID is `manual:{email}:{courseId}`, and Amount is blank. A repeat of that grant updates the row.
 

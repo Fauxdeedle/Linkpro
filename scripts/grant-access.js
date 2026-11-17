@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Grant course access and log each course on the purchase sheet.
+ * Grant course access and log each course on the purchase sheet and the admin hub log.
  *
  * CSV columns: email,courseId
  * Course ids: pelvis-1, pelvis-3, llip
@@ -19,6 +19,7 @@ require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const { entitlementStoreMode } = require('../lib/entitlements');
 const { importGrantCsv } = require('../lib/grant-csv');
+const { recordManualGrantLog } = require('../lib/purchase-log');
 const { recordManualGrant } = require('../lib/purchase-sheet');
 
 async function main() {
@@ -51,6 +52,7 @@ async function main() {
   }
 
   let sheetFailed = false;
+  let logFailed = false;
   for (const row of result.granted) {
     try {
       const recorded = await recordManualGrant({
@@ -67,10 +69,30 @@ async function main() {
       console.error(`  sheet failed: ${row.email} → ${row.courseId}: ${err.message}`);
       sheetFailed = true;
     }
+
+    try {
+      const logged = await recordManualGrantLog({
+        email: row.email,
+        courseId: row.courseId,
+      });
+      if (logged.recorded) {
+        console.log(`  hub ${logged.action}: ${row.email} → ${row.courseId}`);
+      } else {
+        console.error(`  hub skipped: ${row.email} → ${row.courseId}`);
+        logFailed = true;
+      }
+    } catch (err) {
+      console.error(`  hub failed: ${row.email} → ${row.courseId}: ${err.message}`);
+      logFailed = true;
+    }
   }
 
   if (mode === 'redis' && result.granted.length && sheetFailed) {
     console.error('Access was saved, but the purchase sheet was not updated.');
+    process.exit(1);
+  }
+  if (logFailed) {
+    console.error('Access was saved, but the admin hub purchase log was not updated.');
     process.exit(1);
   }
 }

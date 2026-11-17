@@ -393,6 +393,78 @@ test('a rejected registration email still accepts the webhook', async () => {
   }
 });
 
+test('a purchase sheet error still saves the hub log', async () => {
+  const saved = saveEnv(['FLUTE_WEBHOOK_SECRET', ...SHEET_KEYS]);
+  const originalFetch = globalThis.fetch;
+  const { createMemoryPurchaseLog } = require('../lib/purchase-log');
+  const log = createMemoryPurchaseLog();
+  process.env.FLUTE_WEBHOOK_SECRET = 'test-webhook-secret';
+  useSheetEnv();
+  globalThis.fetch = async () => ({
+    ok: false,
+    status: 503,
+    statusText: 'unavailable',
+    text: async () => JSON.stringify({ error: { message: 'unavailable' } }),
+  });
+  const body = completedPayment('seminar-lower-limb', 'Buyer@Example.com', 'ps_sheet_miss');
+
+  try {
+    assert.deepEqual(
+      await processFluteWebhook(Buffer.from(body), signedWebhook(body, process.env.FLUTE_WEBHOOK_SECRET), {
+        store: log,
+      }),
+      { error: 'Purchase sheet update failed', status: 500 }
+    );
+    const savedLog = await log.list();
+    assert.equal(savedLog.length, 1);
+    assert.equal(savedLog[0].email, 'buyer@example.com');
+    assert.equal(savedLog[0].productId, 'seminar-lower-limb');
+    assert.equal(savedLog[0].amount, 1500);
+    assert.equal(savedLog[0].sessionId, 'ps_sheet_miss');
+  } finally {
+    globalThis.fetch = originalFetch;
+    restoreEnv(saved);
+  }
+});
+
+test('a purchase log error still saves the sheet and returns 500', async () => {
+  const saved = saveEnv(['FLUTE_WEBHOOK_SECRET', ...SHEET_KEYS, ...MAIL_KEYS]);
+  const originalFetch = globalThis.fetch;
+  const emails = [];
+  const sheet = createMemorySheet();
+  process.env.FLUTE_WEBHOOK_SECRET = 'test-webhook-secret';
+  useSheetEnv();
+  useMailEnv();
+  globalThis.fetch = async (url, options = {}) => {
+    if (String(url).includes('api.resend.com')) {
+      emails.push(JSON.parse(options.body));
+      return { ok: true, status: 200, text: async () => '{}' };
+    }
+    return sheet.fetchImpl(url, options);
+  };
+  const body = completedPayment('seminar-upper-limb', 'Buyer@Example.com', 'ps_log_miss');
+
+  try {
+    assert.deepEqual(
+      await processFluteWebhook(Buffer.from(body), signedWebhook(body, process.env.FLUTE_WEBHOOK_SECRET), {
+        store: {
+          async upsert() {
+            throw new Error('log down');
+          },
+        },
+      }),
+      { error: 'Purchase log update failed', status: 500 }
+    );
+    assert.equal(sheet.rows[1][1], 'buyer@example.com');
+    assert.equal(sheet.rows[1][3], 'seminar-upper-limb');
+    assert.equal(sheet.rows[1][5], 'ps_log_miss');
+    assert.equal(emails.length, 1);
+  } finally {
+    globalThis.fetch = originalFetch;
+    restoreEnv(saved);
+  }
+});
+
 test('signed malformed JSON is rejected after signature verification', async () => {
   const originalSecret = process.env.FLUTE_WEBHOOK_SECRET;
   process.env.FLUTE_WEBHOOK_SECRET = 'test-webhook-secret';
