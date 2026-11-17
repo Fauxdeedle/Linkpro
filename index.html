@@ -660,6 +660,39 @@ ul { list-style: none; }
 .live-event-card:hover .live-event-card__cta:hover {
   background: var(--gold-light);
 }
+.live-event-card--soon {
+  border-color: rgba(196, 162, 101, 0.28);
+}
+.live-event-card__soon {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 16px;
+  padding: 8px 4px 12px;
+}
+.live-event-card__soon-kicker {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.live-event-card__soon-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 2.1vw, 2.35rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+  color: var(--white);
+  max-width: 10ch;
+}
+.live-event-card--soon .live-event-card__text {
+  margin: 0;
+  max-width: 30ch;
+}
 .live-events__more {
   display: flex;
   justify-content: center;
@@ -1323,6 +1356,7 @@ ul { list-style: none; }
 @media (max-width: 1024px) {
   .services__grid,
   .live-events__grid { grid-template-columns: repeat(2, 1fr); }
+  .live-events__grid > .live-event-card--soon:nth-child(n + 3) { display: none; }
   .stats-bar__inner { grid-template-columns: repeat(2, 1fr); gap: 32px; }
 }
 
@@ -1351,6 +1385,7 @@ ul { list-style: none; }
   .booking__grid { grid-template-columns: 1fr; }
   .services__grid,
   .live-events__grid { grid-template-columns: 1fr; }
+  .live-events__grid > .live-event-card--soon:nth-child(n + 2) { display: none; }
   .live-event-card { padding: 28px 24px; }
   .stats-bar__inner { grid-template-columns: repeat(2, 1fr); }
   .teams-marquee { padding: 36px 0 40px; }
@@ -2348,6 +2383,14 @@ ul { list-style: none; }
           </div>
           <p class="live-event-card__text">Most trunk and pelvic treatment starts with the lumbar spine, the hip flexors, or the abdominal wall. This course treats the trunk and pelvis as one integrated fascial system.</p>
           <a href="/seminar-trunk-pelvis" class="live-event-card__cta">Learn more</a>
+        </article>
+<article class="live-event-card live-event-card--soon reveal reveal-delay-2">
+          <div class="live-event-card__soon">
+            <p class="live-event-card__soon-kicker">Upcoming</p>
+            <h3 class="live-event-card__soon-title">More events coming soon</h3>
+            <p class="live-event-card__text">Retreats and in-person seminars will be posted as dates are set.</p>
+          </div>
+          <a href="/live-events" class="live-event-card__cta">See all events</a>
         </article>
 <!-- LINKPRO_FEATURED_EVENTS_END -->
     </div>
