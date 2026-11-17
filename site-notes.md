@@ -398,15 +398,15 @@ Sheet columns and the `manual:{email}:{courseId}` session id are under **Purchas
 
 Completed course, seminar, and retreat payments are logged in a Google Sheet. One row is one Flute payment session. The same person buying two things gets two rows. A webhook retry updates the existing row instead of adding a second one. A manual course grant from `scripts/grant-access.js` is also one row, keyed by `manual:{email}:{courseId}`.
 
-This sheet is the purchase log. Online course access still lives in the entitlement store. Payments from before this sheet was turned on are not backfilled.
+This sheet is one purchase log. The same six fields are also saved for the admin hub, in Upstash Redis when those variables are set, or in `data/purchases.json` on a local machine. Online course access still lives in the entitlement store. Payments from before this sheet was turned on are not backfilled. A payment already on the sheet still shows in the hub. A payment that reaches only the hub log shows there too.
 
 ### When a row appears
 
-1. Flute sends `payment_session.completed` to `/api/webhooks/flute`. The site grants online course access when the product is an online course, then writes the sheet.
-2. If the buyer lands on the success page, that check writes the same row. Seminars and retreats are included even though they do not unlock a course.
-3. `node scripts/grant-access.js` saves online course access, then writes one row per course. The Session ID is `manual:{email}:{courseId}`. Amount is left blank. Running the same grant again updates that row. Seminars and retreats in the CSV are skipped and are not written. The full steps are under **Grant course access** above.
+1. Flute sends `payment_session.completed` to `/api/webhooks/flute`. The site grants online course access when the product is an online course, then writes the sheet and the hub log.
+2. If the buyer lands on the success page, that check writes the same row to both places. Seminars and retreats are included even though they do not unlock a course.
+3. `node scripts/grant-access.js` saves online course access, then writes one row per course to the sheet and the hub log. The Session ID is `manual:{email}:{courseId}`. Amount is left blank. Running the same grant again updates that row. Seminars and retreats in the CSV are skipped and are not written. The full steps are under **Grant course access** above.
 
-A sheet failure on the success page does not block the buyer. A sheet failure on the webhook makes Flute retry. Both payment writes use the Flute session id, so they stay one row. A Redis grant whose sheet write does not happen exits with an error after access has been saved. Running the same CSV again updates the manual row.
+The sheet write and the hub log do not depend on each other. A failure on the success page does not block the buyer. A failure of either write on the webhook makes Flute retry. Both payment writes use the Flute session id, so they stay one row in each place. A Redis grant whose sheet write does not happen exits with an error after access has been saved. A hub-log failure exits with an error as well. Running the same CSV again updates the manual row.
 
 ### Inbox copy
 
@@ -518,10 +518,12 @@ Set `ADMIN_HUB_PASSWORD` before anyone can sign in. If that variable is unset, `
 
 Screens, in order:
 
-1. **List.** Each generated event shows its name, date, and price, with **See more info** and **Archive**. **Add new event** is the gold button. The hand-built Nicolette David retreat is not in this list.
-2. **Detail.** Back, the event name, date, and price, an **Edit event** button, and a cream panel of the copy visitors see.
+1. **List.** Each generated event shows its name, date, and price, with **See more info** and **Archive**. Under the name is who has paid: email, amount, and paid date, newest first. A three-seminar bundle purchase is listed on Upper Limb, Lower Limb, and Trunk and Pelvis, marked Bundle. An event with no price says registration is not open. **Add new event** is the gold button. The hand-built Nicolette David retreat is not in this list.
+2. **Detail.** Back, the event name, date, and price, the same signup list, an **Edit event** button, and a cream panel of the copy visitors see.
 3. **Edit.** **Edit event** turns the name, date, price, and cream-panel copy into fields. **Add new event** opens that same screen empty. **Save** writes. **Cancel** returns without writing.
-4. **Archive.** The button asks for confirmation, then takes the card off `/live-events` and off the homepage feature row. The event page, its price, and checkout stay. The record moves to **Archive Events**, where **Restore** puts it back on the live list. Rows already on the Purchases sheet stay. Payments already taken stay in Flute.
+4. **Archive.** The button asks for confirmation, then takes the card off `/live-events` and off the homepage feature row. The event page, its price, and checkout stay. The record moves to **Archive Events**, where **Restore** puts it back on the live list. Signup rows stay. Payments already taken stay in Flute.
+
+The signup list is the hub log and the Purchases sheet, merged by Session ID. If one of those cannot be read, the other is still shown and the page says so. If both cannot be read, the events still load. A refund is not removed from either copy. The paid date is shown in Pacific time.
 
 A new event is listed on the live events page and the homepage (`listOn` is `["events", "home"]`). The URL and `productId` stay fixed when the name later changes. Once a price is set, `productId` is the slug and Flute charges that whole-dollar amount. No price means no checkout, the same as Cranial Diaphragm. One product per event.
 

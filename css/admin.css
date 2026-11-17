@@ -134,16 +134,49 @@ textarea { font-family: inherit; }
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(120px, 0.8fr) 120px auto;
   gap: 18px;
-  align-items: center;
+  align-items: start;
   padding: 22px 0;
   border-top: 1px solid rgba(245, 240, 235, 0.16);
 }
 
 .event-row:last-child { border-bottom: 1px solid rgba(245, 240, 235, 0.16); }
 
+.event-row__name {
+  display: grid;
+  gap: 8px;
+}
+
 .event-row strong {
   font-weight: 500;
   letter-spacing: 0.01em;
+}
+
+.event-signups__label {
+  margin: 0;
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.event-signups ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.event-signups li,
+.event-signups__empty {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.92rem;
+  letter-spacing: 0;
+  line-height: 1.45;
+}
+
+.event-detail .event-signups {
+  margin: 0 0 28px;
 }
 
 .event-row span { color: rgba(255, 255, 255, 0.78); }

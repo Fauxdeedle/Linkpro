@@ -10,6 +10,7 @@
     archived: [],
     event: null,
     mode: 'edit',
+    signupsNote: '',
   };
 
   const panel = document.getElementById('panel');
@@ -92,6 +93,50 @@
   function applyLists(data) {
     state.events = Array.isArray(data.events) ? data.events : [];
     state.archived = Array.isArray(data.archived) ? data.archived : [];
+    state.signupsNote = typeof data.signupsNote === 'string' ? data.signupsNote : '';
+  }
+
+  function signupLine(signup) {
+    const parts = [signup.email];
+    if (signup.bundle) parts.push('Bundle');
+    if (signup.amountLabel) parts.push(signup.amountLabel);
+    if (signup.paidLabel) parts.push(signup.paidLabel);
+    return parts.join(' · ');
+  }
+
+  function renderSignups(event) {
+    const block = document.createElement('div');
+    block.className = 'event-signups';
+    const label = document.createElement('p');
+    label.className = 'event-signups__label';
+    label.textContent = 'Signups';
+    block.appendChild(label);
+
+    const signups = Array.isArray(event.signups) ? event.signups : [];
+    if (!signups.length) {
+      const empty = document.createElement('p');
+      empty.className = 'event-signups__empty';
+      empty.textContent = event.checkout ? 'No signups yet.' : 'Registration is not open.';
+      block.appendChild(empty);
+      return block;
+    }
+
+    const list = document.createElement('ul');
+    signups.forEach(function (signup) {
+      const item = document.createElement('li');
+      item.textContent = signupLine(signup);
+      list.appendChild(item);
+    });
+    block.appendChild(list);
+    return block;
+  }
+
+  function appendSignupNote() {
+    if (!state.signupsNote) return;
+    const note = document.createElement('p');
+    note.className = 'admin__note';
+    note.textContent = state.signupsNote;
+    panel.appendChild(note);
   }
 
   function renderList() {
@@ -113,6 +158,7 @@
     }
 
     panel.innerHTML = '';
+    appendSignupNote();
     if (!events.length) {
       const empty = document.createElement('p');
       empty.textContent = archived ? 'No archived events.' : 'No live events yet.';
@@ -123,8 +169,11 @@
     events.forEach(function (event) {
       const row = document.createElement('div');
       row.className = 'event-row';
-      const name = document.createElement('strong');
-      name.textContent = event.name;
+      const name = document.createElement('div');
+      name.className = 'event-row__name';
+      const title = document.createElement('strong');
+      title.textContent = event.name;
+      name.append(title, renderSignups(event));
       const date = document.createElement('span');
       date.textContent = event.date || 'Date not set';
       const price = document.createElement('span');
@@ -168,6 +217,7 @@
     primary.appendChild(edit);
 
     panel.innerHTML = '';
+    appendSignupNote();
     const view = document.createElement('section');
     view.className = 'event-detail';
     const bar = document.createElement('div');
@@ -191,7 +241,7 @@
     copy.className = 'event-copy';
     copy.textContent = state.event.copy || 'No event copy yet.';
 
-    view.append(bar, title, meta, copy);
+    view.append(bar, title, meta, renderSignups(state.event), copy);
     panel.appendChild(view);
   }
 
@@ -265,6 +315,7 @@
     try {
       const data = await api('/api/admin/events/' + encodeURIComponent(slug));
       state.event = data.event;
+      state.signupsNote = typeof data.signupsNote === 'string' ? data.signupsNote : '';
       state.view = 'detail';
       render();
     } catch (err) {
