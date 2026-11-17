@@ -2,7 +2,10 @@
   "slug": "seminar-upper-limb",
   "status": "upcoming",
   "pageMode": "generated",
-  "listOn": ["events", "home"],
+  "listOn": [
+    "events",
+    "home"
+  ],
   "sort": 20,
   "productId": "seminar-upper-limb",
   "catalog": {
@@ -29,7 +32,11 @@
     "heading": "Hands-on intensive",
     "intro": "Treat the upper limb as an integrated fascial system. Learn osteoarticular pumping, fascial chain identification, and transverse tendon and ligament stretching techniques.",
     "logisticsLabel": "Logistics",
-    "logistics": ["Newport Beach, CA", "9 AM – 5 PM", "$1,500"]
+    "logistics": [
+      "Newport Beach, CA",
+      "9 AM – 5 PM",
+      "$1,500"
+    ]
   },
   "instructor": {
     "name": "Dr. Jason Amstutz",
@@ -43,5 +50,6 @@
     "title": "Register for this training",
     "body": "Intensive, hands-on training in fascial chain treatment and 2TLS technique for practitioners ready to change how they treat the upper limb.",
     "buttonText": "Register — $1,500"
-  }
+  },
+  "archived": true
 }
