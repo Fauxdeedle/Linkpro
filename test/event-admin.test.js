@@ -283,9 +283,16 @@ function githubMock(root) {
     if (pathname.includes('/git/commits/')) {
       return json({ sha: 'parent', tree: { sha: 'tree0' } });
     }
+    if (pathname.includes('/git/refs/heads/') && method === 'PATCH') {
+      const branch = decodeURIComponent(pathname.split('/git/refs/heads/')[1]);
+      if (branch !== 'admin/live-events' || !reviewSha) return json({ message: 'Not Found' }, 404);
+      reviewSha = body.sha;
+      return json({ object: { sha: reviewSha } });
+    }
     if (pathname.includes('/git/ref/heads/')) {
       const encoded = pathname.split('/git/ref/heads/')[1];
       const branch = decodeURIComponent(encoded);
+      if (method !== 'GET') return json({ message: 'Not Found' }, 404);
       if (branch === 'admin/live-events') {
         if (!reviewSha) return json({ message: 'Not Found' }, 404);
         return json({ object: { sha: reviewSha } });
@@ -377,6 +384,28 @@ test('the deployed hub publishes the changed files to a review branch', async ()
     .filter((call) => call.url.endsWith('/git/blobs'))
     .map((call) => call.body.content);
   assert.equal(paths.some((content) => content.includes('COURSES PAGE')), false);
+
+  const again = await createLiveEvent(
+    { name: 'Second Lab', date: 'April 4', price: 500, copy: 'Another lab.' },
+    {
+      root,
+      env: {
+        VERCEL: '1',
+        ADMIN_GITHUB_TOKEN: 'token',
+        ADMIN_GITHUB_REPO: 'linkpro/linkpro',
+      },
+      fetchImpl,
+    }
+  );
+  assert.equal(again.status, 201, again.error);
+  const updates = calls.filter(
+    (call) => call.method === 'PATCH' && call.url.includes('/git/refs/heads/admin%2Flive-events')
+  );
+  assert.equal(updates.length, 1);
+  assert.equal(
+    calls.some((call) => call.method === 'PATCH' && call.url.includes('/git/ref/heads/')),
+    false
+  );
 });
 
 test('publishing fails closed when the live site has no GitHub token', async () => {
