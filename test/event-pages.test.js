@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 
 const { catalogEvents, renderCatalog, renderEventPage } = require('../lib/event-pages');
+const { loadEvents } = require('../lib/event-store');
 
 function event(overrides) {
   return {
@@ -187,6 +188,18 @@ test('homepage feature row shows the first three live events', () => {
   assert.doesNotMatch(cards, /checkout\.html/);
   assert.doesNotMatch(cards, /\$1,500/);
   assert.doesNotMatch(cards, /More events coming soon/);
+});
+
+test('the archived retreat leaves both catalogs and keeps its static page', () => {
+  const events = loadEvents();
+  const retreat = events.find((item) => item.slug === 'nicolette-david-retreat');
+  assert.equal(retreat.pageMode, 'static');
+  assert.equal(retreat.archived, true);
+  assert.equal(catalogEvents(events, 'events').some((item) => item.slug === 'nicolette-david-retreat'), false);
+  const live = renderCatalog(events, 'events', 'courses');
+  const home = renderCatalog(events, 'events', 'feature', { limit: 3 });
+  assert.doesNotMatch(live, /nicolette-david-retreat/);
+  assert.doesNotMatch(home, /nicolette-david-retreat/);
 });
 
 test('homepage feature row fills open slots with a coming soon card', () => {
