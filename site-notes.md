@@ -428,7 +428,7 @@ The `Purchases` tab, row 1, must stay exactly:
 | Email | Buyer email, lowercased |
 | Product | Name from `server/config/products.js` |
 | Product ID | Catalog id, such as `pelvis-1` or `seminar-bundle` |
-| Amount | Whole dollars from that catalog entry for a payment. Blank for a manual grant |
+| Amount | Whole dollars from that catalog entry for a payment. A live event on sale records the sale price. Blank for a manual grant |
 | Session ID | Flute payment session id, or `manual:{email}:{courseId}` for a grant from `scripts/grant-access.js`. This is the key for updates |
 
 ### How to update the sheet
@@ -506,7 +506,7 @@ Generated pages:
 
 The Baja retreat stays at `/nicolette-david-retreat`. That page is written by hand. Its card on `/live-events` still comes from the event data.
 
-Catalog cards link to the event page. Register lives on that page. The header price on that page is what Flute charges. A student rate written in the page copy is text only. After payment, Upper Limb, Lower Limb, and Trunk & Pelvis return to their own page. The three-seminar bundle still checks out from the bundle row and returns to `/live-events`.
+Catalog cards link to the event page. Register lives on that page. The list price is what Flute charges. While a sale is on, the catalog and the page header show the percent off, the list price struck through, and the sale price, and Flute charges that sale price. The sale stays on through its end date in Pacific time, then the list price is charged again. A student rate written in the page copy is text only. After payment, Upper Limb, Lower Limb, and Trunk & Pelvis return to their own page. The three-seminar bundle still checks out from the bundle row and returns to `/live-events`.
 
 ### Admin hub
 
@@ -520,12 +520,12 @@ Screens, in order:
 
 1. **List.** Each generated event shows its name, date, and price, with **See more info** and **Archive**. Under the name is who has paid: email, amount, and paid date, newest first. A three-seminar bundle purchase is listed on Upper Limb, Lower Limb, and Trunk and Pelvis, marked Bundle. An event with no price says registration is not open. **Add new event** is the gold button. The hand-built Nicolette David retreat is not in this list.
 2. **Detail.** Back, the event name, date, and price, the same signup list, an **Edit event** button, and a cream panel of the copy visitors see.
-3. **Edit.** **Edit event** turns the name, date, price, and cream-panel copy into fields. **Add new event** opens that same screen empty. **Save** writes. **Cancel** returns without writing.
+3. **Edit.** **Edit event** turns the name, date, price, and cream-panel copy into fields, and adds **On sale**, a whole percent off, and an optional end date. **Add new event** opens that same screen empty. **Save** writes. **Cancel** returns without writing. A sale needs a list price. The list price stays in the file. The sale price is that amount times the remaining percent, rounded to the nearest dollar. An expired sale is shown as off, so the next save clears it.
 4. **Archive.** The button asks for confirmation, then takes the card off `/live-events` and off the homepage feature row. The event page, its price, and checkout stay. The record moves to **Archive Events**, where **Restore** puts it back on the live list. Signup rows stay. Payments already taken stay in Flute.
 
 The signup list is the hub log and the Purchases sheet, merged by Session ID. If one of those cannot be read, the other is still shown and the page says so. If both cannot be read, the events still load. A refund is not removed from either copy. The paid date is shown in Pacific time.
 
-A new event is listed on the live events page and the homepage (`listOn` is `["events", "home"]`). The URL and `productId` stay fixed when the name later changes. Once a price is set, `productId` is the slug and Flute charges that whole-dollar amount. No price means no checkout, the same as Cranial Diaphragm. One product per event.
+A new event is listed on the live events page and the homepage (`listOn` is `["events", "home"]`). The URL and `productId` stay fixed when the name later changes. Once a price is set, `productId` is the slug and Flute charges that whole-dollar amount, or the rounded sale price while a sale is active. No price means no checkout, the same as Cranial Diaphragm. One product per event.
 
 Instructor, gallery, and schedule already stored on an event stay in the file. A new event uses the instructor from `content/events/_template.json`. Saving a different event does not rewrite the December Trunk & Pelvis page. A record with `pageMode` `static` cannot be edited or archived. An archived event keeps `archived: true` in its JSON file and is left out of both catalogs.
 

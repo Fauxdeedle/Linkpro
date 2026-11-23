@@ -132,7 +132,7 @@ textarea { font-family: inherit; }
 
 .event-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(120px, 0.8fr) 120px auto;
+  grid-template-columns: minmax(0, 1.4fr) minmax(120px, 0.8fr) minmax(140px, 0.8fr) auto;
   gap: 18px;
   align-items: start;
   padding: 22px 0;
@@ -248,6 +248,40 @@ textarea { font-family: inherit; }
   min-height: 320px;
   resize: vertical;
   line-height: 1.6;
+}
+
+.event-form label.event-form__check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+}
+
+.event-form label.event-form__check input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--gold);
+}
+
+.event-form__sale {
+  display: grid;
+  gap: 18px;
+}
+
+.event-form__hint {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-transform: none;
+}
+
+.event-form__sale[hidden] {
+  display: none;
 }
 
 .event-form__actions {

@@ -633,6 +633,31 @@ ul { list-style: none; }
   line-height: 1.7;
   margin-bottom: 28px;
 }
+.live-event-card__sale {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 12px;
+  margin: 0 0 20px;
+}
+.live-event-card__off {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.live-event-card__was {
+  color: var(--muted);
+  font-size: 1rem;
+  text-decoration: line-through;
+}
+.live-event-card__now {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--white);
+}
 .live-event-card__cta {
   align-self: stretch;
   margin-top: auto;
@@ -1136,6 +1161,18 @@ ul { list-style: none; }
   font-family: var(--font-display);font-weight:500;
   font-size: 1.5rem; color: var(--charcoal);
 }
+.seminar-card__price--sale {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.seminar-card__off {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gold-dark);
+}
+.seminar-card__price__amounts { display: flex; align-items: baseline; gap: 10px; }
+.seminar-card__was {
+  font-size: 1rem; color: var(--muted); text-decoration: line-through;
+}
+.seminar-card__now { font-size: 1.5rem; color: var(--charcoal); }
 .seminar-card__soon {
   font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em;
   text-transform: uppercase; color: var(--muted);
@@ -3143,6 +3180,7 @@ LINKPRO_EVENTS_END
 <script src="/js/site-quotes.js" defer></script>
 <script src="/js/site-nav.js" defer></script>
 <script src="/js/flute-checkout.js"></script>
+<script src="/js/event-sale.js" defer></script>
 <!-- LINKPRO_ANALYTICS_START -->
 <!-- Vercel Web Analytics for the linkpro project. The script is served at /_vercel/insights/* after Web Analytics is enabled. -->
 <script>

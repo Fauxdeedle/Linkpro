@@ -79,15 +79,30 @@
     wrap.textContent = label;
     const input = document.createElement(multiline ? 'textarea' : 'input');
     input.name = name;
-    if (!multiline) input.type = name === 'price' ? 'number' : 'text';
+    if (!multiline) {
+      if (name === 'price' || name === 'salePercent') input.type = 'number';
+      else if (name === 'saleEnds') input.type = 'date';
+      else input.type = 'text';
+    }
     if (name === 'price') {
       input.min = '1';
+      input.step = '1';
+      input.inputMode = 'numeric';
+    }
+    if (name === 'salePercent') {
+      input.min = '1';
+      input.max = '99';
       input.step = '1';
       input.inputMode = 'numeric';
     }
     input.value = value == null ? '' : value;
     wrap.appendChild(input);
     return wrap;
+  }
+
+  function priceText(event) {
+    if (event.onSale) return event.salePercent + '% off · ' + event.salePriceLabel;
+    return event.priceLabel || 'No price';
   }
 
   function applyLists(data) {
@@ -177,7 +192,7 @@
       const date = document.createElement('span');
       date.textContent = event.date || 'Date not set';
       const price = document.createElement('span');
-      price.textContent = event.priceLabel || 'No price';
+      price.textContent = priceText(event);
       const actions = document.createElement('div');
       actions.className = 'event-row__actions';
 
@@ -236,7 +251,7 @@
     title.textContent = state.event.name;
     const meta = document.createElement('p');
     meta.className = 'event-detail__meta';
-    meta.textContent = [state.event.date, state.event.priceLabel || 'No price'].filter(Boolean).join('  ·  ');
+    meta.textContent = [state.event.date, priceText(state.event)].filter(Boolean).join('  ·  ');
     const copy = document.createElement('div');
     copy.className = 'event-copy';
     copy.textContent = state.event.copy || 'No event copy yet.';
@@ -265,10 +280,37 @@
 
     const form = document.createElement('form');
     form.className = 'event-form';
+    const onSale = document.createElement('label');
+    onSale.className = 'event-form__check';
+    const saleToggle = document.createElement('input');
+    saleToggle.type = 'checkbox';
+    saleToggle.name = 'onSale';
+    saleToggle.checked = Boolean(state.event.onSale);
+    const saleToggleText = document.createElement('span');
+    saleToggleText.textContent = 'On sale';
+    onSale.append(saleToggle, saleToggleText);
+
+    const saleFields = document.createElement('div');
+    saleFields.className = 'event-form__sale';
+    saleFields.hidden = !state.event.onSale;
+    const saleNote = document.createElement('p');
+    saleNote.className = 'event-form__hint';
+    saleNote.textContent = 'Leave the end date blank to keep the sale on. It stays on through that date, Pacific time.';
+    saleFields.append(
+      field('Percent off', state.event.salePercent, 'salePercent'),
+      field('Sale ends', state.event.saleEnds, 'saleEnds'),
+      saleNote
+    );
+    saleToggle.addEventListener('change', function () {
+      saleFields.hidden = !saleToggle.checked;
+    });
+
     form.append(
       field('Event name', state.event.name, 'name'),
       field('Event date', state.event.date, 'date'),
       field('Price', state.event.price, 'price'),
+      onSale,
+      saleFields,
       field('Event info', state.event.copy, 'copy', true)
     );
 
@@ -296,6 +338,9 @@
         date: data.get('date'),
         price: data.get('price'),
         copy: data.get('copy'),
+        onSale: data.get('onSale') === 'on',
+        salePercent: data.get('salePercent'),
+        saleEnds: data.get('saleEnds'),
       });
     });
 

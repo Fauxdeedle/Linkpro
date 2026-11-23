@@ -121,6 +121,39 @@ img { display: block; max-width: 100%; height: auto; }
   font-weight: 600;
 }
 
+.event-hero__price {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 10px 14px;
+  margin-top: 28px;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--white);
+}
+
+.event-hero__off {
+  font-family: Inter, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.event-hero__was {
+  color: var(--muted);
+  font-size: 1.15rem;
+  text-decoration: line-through;
+}
+
+.event-hero__now {
+  font-size: 2rem;
+  color: var(--white);
+}
+
 .event-rule {
   width: min(160px, 30vw);
   height: 1px;
