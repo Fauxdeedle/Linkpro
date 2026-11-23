@@ -186,6 +186,102 @@ test('homepage feature row shows the first three live events', () => {
   assert.doesNotMatch(cards, /old-seminar/);
   assert.doesNotMatch(cards, /checkout\.html/);
   assert.doesNotMatch(cards, /\$1,500/);
+  assert.doesNotMatch(cards, /More events coming soon/);
+});
+
+test('homepage feature row fills open slots with a coming soon card', () => {
+  const cards = renderCatalog([event(), event({ slug: 'seminar-trunk-pelvis', sort: 30 })], 'events', 'feature', {
+    limit: 3,
+  });
+  const soon = cards.match(/live-event-card--soon/g) || [];
+  assert.equal(soon.length, 1);
+  assert.match(cards, /More events coming soon/);
+  assert.match(cards, /href="\/live-events"/);
+  assert.match(cards, /See all events/);
+
+  const one = renderCatalog([event()], 'events', 'feature', { limit: 3 });
+  assert.equal((one.match(/live-event-card--soon/g) || []).length, 2);
+
+  const none = renderCatalog([], 'events', 'feature', { limit: 3 });
+  assert.equal((none.match(/live-event-card--soon/g) || []).length, 3);
+  assert.doesNotMatch(none, /Learn more/);
+});
+
+test('an active sale shows the percent, struck price, and sale price', () => {
+  const html = renderEventPage(
+    event({
+      price: 1500,
+      sale: { percent: 20, endsOn: '2099-01-01' },
+    })
+  );
+  assert.match(html, /class="sale-banner"/);
+  assert.match(html, /Sale!/);
+  assert.match(html, /event-hero__off">20% off/);
+  assert.match(html, /event-hero__amounts"><s class="event-hero__was">\$1,500<\/s>/);
+  assert.match(html, /event-hero__now">\$1,200</);
+  assert.match(html, /data-sale-ends="2099-01-01"/);
+  assert.match(html, /Register — \$1,200/);
+  assert.match(html, /data-sale-list="Register — \$1,500"/);
+  assert.match(html, /src="\/js\/event-sale.js"/);
+  assert.match(html, /Hands-on lab\./);
+});
+
+test('a sale without an end date stays on and has no expiry attribute', () => {
+  const html = renderEventPage(event({ price: 1500, sale: { percent: 10 } }));
+  assert.match(html, /10% off/);
+  assert.match(html, /\$1,350/);
+  assert.doesNotMatch(html, /data-sale-ends/);
+});
+
+test('an expired sale renders the list price', () => {
+  const html = renderEventPage(
+    event({
+      price: 1500,
+      sale: { percent: 20, endsOn: '2000-01-01' },
+    })
+  );
+  assert.doesNotMatch(html, /20% off/);
+  assert.doesNotMatch(html, /sale-banner/);
+  assert.doesNotMatch(html, /event-hero__was/);
+  assert.match(html, /Register — \$1,500/);
+});
+
+test('catalog cards show a sale and a ranged price label is left alone', () => {
+  const onSale = event({ price: 1500, sale: { percent: 20, endsOn: '2099-01-01' } });
+  const cards = renderCatalog([onSale], 'events', 'courses');
+  assert.match(cards, /class="sale-banner"/);
+  assert.match(cards, /seminar-price__off">20% off/);
+  assert.match(cards, /seminar-price__was">\$1,500/);
+  assert.match(cards, /seminar-price__now">\$1,200/);
+
+  const feature = renderCatalog([onSale], 'events', 'feature', { limit: 3 });
+  assert.match(feature, /class="sale-banner"/);
+  assert.match(feature, /live-event-card__off">20% off/);
+  assert.match(feature, /live-event-card__amounts/);
+  assert.match(feature, /live-event-card__was">\$1,500/);
+  assert.match(feature, /live-event-card__now">\$1,200/);
+
+  const plain = renderCatalog([event()], 'events', 'feature', { limit: 3 });
+  assert.doesNotMatch(plain, /live-event-card__sale/);
+  assert.doesNotMatch(plain, /\$1,500/);
+
+  const ranged = event({
+    slug: 'nicolette-david-retreat',
+    price: undefined,
+    productId: undefined,
+    sale: { percent: 20 },
+    catalog: {
+      month: 'NOV',
+      days: '11–15',
+      title: 'Retreat',
+      priceLabel: 'From $1,350',
+      ctaLabel: 'View retreat — Register',
+    },
+  });
+  const rangedCards = renderCatalog([ranged], 'events', 'courses');
+  assert.match(rangedCards, /From \$1,350/);
+  assert.doesNotMatch(rangedCards, /% off/);
+  assert.doesNotMatch(rangedCards, /seminar-price__was/);
 });
 
 test('coming-soon catalog card links the title and does not sell a seat', () => {

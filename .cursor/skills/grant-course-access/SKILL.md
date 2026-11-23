@@ -5,7 +5,7 @@ description: "Grant LINK Pro online course access and log it on the Purchases sh
 
 # Grant course access
 
-Give one person one or more online courses in the entitlement store, and log each course on the Purchases sheet.
+Give one person one or more online courses in the entitlement store, and log each course on the Purchases sheet and the admin hub purchase log.
 
 ## When to use
 
@@ -33,6 +33,7 @@ Access is an Upstash Redis set, `entitlement:{email}`. The purchase sheet row us
 - Session ID is `manual:{email}:{courseId}` with the email already lowercased. A repeat grant updates that row.
 - Product and Product ID come from `server/config/products.js`.
 - Amount stays blank. Do not copy the catalog price onto a manual grant.
+- The same row is written to the admin hub purchase log.
 
 ## Workflow
 

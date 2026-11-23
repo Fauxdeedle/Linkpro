@@ -30,7 +30,7 @@ the Flute dashboard.
 
 Seminar catalog cards link to the training page. The full list is `/live-events`. The homepage shows the first three of those events. The Register button on a generated page carries `data-flute-product`. The Lower Limb Injury Prevention card on `courses.html` is not using `data-flute-product` right now. It opens `/llip-course.html` directly so the lessons can be reviewed. Pelvis 3.0 (`/pelvis-3-course.html`) is also open and is not in this catalog yet.
 
-Generated live events take their Flute name, whole-dollar amount, and success URL `/{slug}.html` from `content/events/{slug}.json`. The price shown in the page header is the charged price. A student rate typed into the page copy is not a second product. Courses, the three-seminar bundle, and the retreat rooms stay in `server/config/products.js`. The bundle still returns to `/live-events`. Clearing an event price removes checkout for that event, including Upper Limb, Lower Limb, and Trunk & Pelvis. Their names remain in `products.js`.
+Generated live events take their Flute name, whole-dollar amount, and success URL `/{slug}.html` from `content/events/{slug}.json`. The list price is the charged price. While a sale is active, checkout and the purchase sheet use the rounded sale price instead, and the page shows that price beside the struck list price. A student rate typed into the page copy is not a second product. Courses, the three-seminar bundle, and the retreat rooms stay in `server/config/products.js`. The bundle still returns to `/live-events`. Clearing an event price removes checkout for that event, including Upper Limb, Lower Limb, and Trunk & Pelvis. Their names remain in `products.js`.
 
 Create, edit, and archive those events at `/admin`. See **Admin hub** in `site-notes.md`. A local save writes the JSON and rebuilds the page, the `/live-events` cards, and the homepage feature row. On Vercel, Save commits that change to `admin/live-events` and opens a pull request into `main`. Merge the pull request when the preview looks right. A missing token fails the save. `ADMIN_HUB_PASSWORD` gates the page. Leave it unset until a password is chosen. Archiving an event does not remove Purchases-sheet rows or payments already taken in Flute.
 
@@ -105,13 +105,13 @@ Subscribe to `payment_session.completed`.
 
 ### Purchase sheet
 
-A completed payment appends one row to the Google Sheet named by `GOOGLE_SHEETS_SPREADSHEET_ID`. Courses, seminars, and retreats are all recorded. A repeated webhook for the same Flute session updates that row instead of adding another one. Online course access is unchanged, and older payments are not backfilled.
+A completed payment appends one row to the Google Sheet named by `GOOGLE_SHEETS_SPREADSHEET_ID`, and the same six fields to the admin hub purchase log. Courses, seminars, and retreats are all recorded. A repeated webhook for the same Flute session updates that row instead of adding another one. The sheet and the hub log are written independently. Online course access is unchanged, and older payments are not backfilled. The hub reads both and lists a signup when either one has it.
 
 Share the spreadsheet with `GOOGLE_SERVICE_ACCOUNT_EMAIL` as Editor. The tab (`Purchases`, unless `GOOGLE_SHEETS_TAB` is set) must use this header row:
 
 `Timestamp | Email | Product | Product ID | Amount | Session ID`
 
-The success page writes the same row when the buyer returns. A sheet error there does not block course access. A sheet error on the webhook returns 500 so Flute retries.
+The success page writes the same row when the buyer returns. A sheet or hub-log error there does not block course access. Either error on the webhook returns 500 so Flute retries.
 
 `scripts/grant-access.js` writes the same columns for a comped online course. The Session ID is `manual:{email}:{courseId}`, and Amount is blank. A repeat of that grant updates the row.
 
@@ -166,7 +166,7 @@ Online courses, the seminar bundle, and retreat rooms:
 3. Optionally add a dedicated amount override to `.env.example`.
 4. Add a link to `/checkout.html?product=your-product-id` for a retreat room. An online course card links to `/{slug}-course`. The `data-flute-product` attribute is supported for non-link controls.
 
-A new live event does not get a `products.js` entry. Save it in `/admin`, or add `content/events/{slug}.json` and run `npm run build:events`. The event file supplies the charged price.
+A new live event does not get a `products.js` entry. Save it in `/admin`, or add `content/events/{slug}.json` and run `npm run build:events`. The event file supplies the charged price. An active sale on that file is the amount charged and the amount written to the purchase sheet.
 
 Each item needs this trusted server-side catalog entry so a customer cannot
 choose their own price. It does **not** need a separate Flute dashboard setup,

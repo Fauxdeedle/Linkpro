@@ -2,6 +2,7 @@
 description: How LINK Pro logs completed purchases to the Google Sheet and how to change that sheet safely
 globs:
   - lib/purchase-sheet.js
+  - lib/purchase-log.js
   - lib/webhooks.js
   - lib/checkout.js
   - server/config/products.js
@@ -13,7 +14,7 @@ alwaysApply: false
 
 # Purchase sheet
 
-Completed Flute payments are upserted into a Google Sheet, one row per payment session. Human-facing notes live in `site-notes.md` under **Purchase sheet**. Keep that section in sync when this behavior changes.
+Completed Flute payments are upserted into a Google Sheet, one row per payment session, and into the admin hub purchase log with the same six fields. Human-facing notes live in `site-notes.md` under **Purchase sheet**. Keep that section in sync when this behavior changes.
 
 ## Contract
 
@@ -23,11 +24,13 @@ Tab `Purchases` (override with `GOOGLE_SHEETS_TAB`). Row 1 must equal `HEADERS` 
 
 `recordPurchase` reads `A:F`, finds the Flute session id in column F, and updates that row. Otherwise it appends. `recordManualGrant` uses that same upsert with Session ID `manual:{email}:{courseId}` and a blank Amount. Missing `GOOGLE_SHEETS_SPREADSHEET_ID`, service-account email, or private key returns `{ recorded: false }` and does not throw. A configured write that fails throws.
 
+The hub log is `lib/purchase-log.js`. Production uses the same Upstash Redis as course access: `purchase:{sessionId}` and the set `purchases:index`. With no Redis, a local run uses gitignored `data/purchases.json` (`PURCHASE_LOG_FILE` overrides the path). On Vercel without Redis the log write throws. The sheet write and the log write are independent.
+
 Writers:
 
-- `lib/webhooks.js` on `payment_session.completed`, after the online-course grant. A thrown sheet error returns HTTP 500 so Flute retries.
-- `grantPaidCheckout` in `lib/checkout.js` for every paid session, including seminars and retreats. A sheet error is logged and must not block the access cookie.
-- `scripts/grant-access.js` after each successful online-course grant (`pelvis-1`, `pelvis-3`, `llip`). A repeat grant updates that row. Seminars and retreats are skipped. When the store is Redis and the sheet is skipped or the write throws, the script exits non-zero after access has been saved. A file-store run with no sheet config still exits 0.
+- `lib/webhooks.js` on `payment_session.completed`, after the online-course grant. A thrown sheet error or log error returns HTTP 500 so Flute retries. The registration email still follows the sheet result.
+- `grantPaidCheckout` in `lib/checkout.js` for every paid session, including seminars and retreats. A sheet or log error is logged and must not block the access cookie.
+- `scripts/grant-access.js` after each successful online-course grant (`pelvis-1`, `pelvis-3`, `llip`). A repeat grant updates that row in both places. Seminars and retreats are skipped. When the store is Redis and the sheet is skipped or the write throws, the script exits non-zero after access has been saved. A log failure also exits non-zero. A file-store run with no sheet config still exits 0 when the log write succeeds.
 
 A new live-event row also emails `EVENT_NOTIFY_EMAIL`, or `SURVEY_NOTIFY_EMAIL` when that is empty. An update does not email. Online courses do not. When the sheet is not configured, only the webhook sends that email. A mail failure is logged and does not change the webhook status or the access cookie.
 

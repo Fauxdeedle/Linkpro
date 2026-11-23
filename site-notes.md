@@ -398,15 +398,15 @@ Sheet columns and the `manual:{email}:{courseId}` session id are under **Purchas
 
 Completed course, seminar, and retreat payments are logged in a Google Sheet. One row is one Flute payment session. The same person buying two things gets two rows. A webhook retry updates the existing row instead of adding a second one. A manual course grant from `scripts/grant-access.js` is also one row, keyed by `manual:{email}:{courseId}`.
 
-This sheet is the purchase log. Online course access still lives in the entitlement store. Payments from before this sheet was turned on are not backfilled.
+This sheet is one purchase log. The same six fields are also saved for the admin hub, in Upstash Redis when those variables are set, or in `data/purchases.json` on a local machine. Online course access still lives in the entitlement store. Payments from before this sheet was turned on are not backfilled. A payment already on the sheet still shows in the hub. A payment that reaches only the hub log shows there too.
 
 ### When a row appears
 
-1. Flute sends `payment_session.completed` to `/api/webhooks/flute`. The site grants online course access when the product is an online course, then writes the sheet.
-2. If the buyer lands on the success page, that check writes the same row. Seminars and retreats are included even though they do not unlock a course.
-3. `node scripts/grant-access.js` saves online course access, then writes one row per course. The Session ID is `manual:{email}:{courseId}`. Amount is left blank. Running the same grant again updates that row. Seminars and retreats in the CSV are skipped and are not written. The full steps are under **Grant course access** above.
+1. Flute sends `payment_session.completed` to `/api/webhooks/flute`. The site grants online course access when the product is an online course, then writes the sheet and the hub log.
+2. If the buyer lands on the success page, that check writes the same row to both places. Seminars and retreats are included even though they do not unlock a course.
+3. `node scripts/grant-access.js` saves online course access, then writes one row per course to the sheet and the hub log. The Session ID is `manual:{email}:{courseId}`. Amount is left blank. Running the same grant again updates that row. Seminars and retreats in the CSV are skipped and are not written. The full steps are under **Grant course access** above.
 
-A sheet failure on the success page does not block the buyer. A sheet failure on the webhook makes Flute retry. Both payment writes use the Flute session id, so they stay one row. A Redis grant whose sheet write does not happen exits with an error after access has been saved. Running the same CSV again updates the manual row.
+The sheet write and the hub log do not depend on each other. A failure on the success page does not block the buyer. A failure of either write on the webhook makes Flute retry. Both payment writes use the Flute session id, so they stay one row in each place. A Redis grant whose sheet write does not happen exits with an error after access has been saved. A hub-log failure exits with an error as well. Running the same CSV again updates the manual row.
 
 ### Inbox copy
 
@@ -428,7 +428,7 @@ The `Purchases` tab, row 1, must stay exactly:
 | Email | Buyer email, lowercased |
 | Product | Name from `server/config/products.js` |
 | Product ID | Catalog id, such as `pelvis-1` or `seminar-bundle` |
-| Amount | Whole dollars from that catalog entry for a payment. Blank for a manual grant |
+| Amount | Whole dollars from that catalog entry for a payment. A live event on sale records the sale price. Blank for a manual grant |
 | Session ID | Flute payment session id, or `manual:{email}:{courseId}` for a grant from `scripts/grant-access.js`. This is the key for updates |
 
 ### How to update the sheet
@@ -506,7 +506,7 @@ Generated pages:
 
 The Baja retreat stays at `/nicolette-david-retreat`. That page is written by hand. Its card on `/live-events` still comes from the event data.
 
-Catalog cards link to the event page. Register lives on that page. The header price on that page is what Flute charges. A student rate written in the page copy is text only. After payment, Upper Limb, Lower Limb, and Trunk & Pelvis return to their own page. The three-seminar bundle still checks out from the bundle row and returns to `/live-events`.
+Catalog cards link to the event page. Register lives on that page. The list price is what Flute charges. While a sale is on, the catalog and the page header show the percent off, the list price struck through, and the sale price, and Flute charges that sale price. The sale stays on through its end date in Pacific time, then the list price is charged again. A student rate written in the page copy is text only. After payment, Upper Limb, Lower Limb, and Trunk & Pelvis return to their own page. The three-seminar bundle still checks out from the bundle row and returns to `/live-events`.
 
 ### Admin hub
 
@@ -518,16 +518,18 @@ Set `ADMIN_HUB_PASSWORD` before anyone can sign in. If that variable is unset, `
 
 Screens, in order:
 
-1. **List.** Each generated event shows its name, date, and price, with **See more info** and **Archive**. **Add new event** is the gold button. The hand-built Nicolette David retreat is not in this list.
-2. **Detail.** Back, the event name, date, and price, an **Edit event** button, and a cream panel of the copy visitors see.
-3. **Edit.** **Edit event** turns the name, date, price, and cream-panel copy into fields. **Add new event** opens that same screen empty. **Save** writes. **Cancel** returns without writing.
-4. **Archive.** The button asks for confirmation, then takes the card off `/live-events` and off the homepage feature row. The event page, its price, and checkout stay. The record moves to **Archive Events**, where **Restore** puts it back on the live list. Rows already on the Purchases sheet stay. Payments already taken stay in Flute.
+1. **List.** Each generated event shows its name, date, and price, with **See more info** and **Archive**. Under the name is who has paid: email, amount, and paid date, newest first. A three-seminar bundle purchase is listed on Upper Limb, Lower Limb, and Trunk and Pelvis, marked Bundle. An event with no price says registration is not open. **Add new event** is the gold button. The hand-built Nicolette David retreat is not in this list.
+2. **Detail.** Back, the event name, date, and price, the same signup list, an **Edit event** button, and a cream panel of the copy visitors see.
+3. **Edit.** **Edit event** turns the name, date, price, and cream-panel copy into fields, and adds **On sale**, a whole percent off, and an optional end date. **Add new event** opens that same screen empty. **Save** writes. **Cancel** returns without writing. A sale needs a list price. The list price stays in the file. The sale price is that amount times the remaining percent, rounded to the nearest dollar. An expired sale is shown as off, so the next save clears it.
+4. **Archive.** The button asks for confirmation, then takes the card off `/live-events` and off the homepage feature row. The event page, its price, and checkout stay. The record moves to **Archive Events**, where **Restore** puts it back on the live list. Signup rows stay. Payments already taken stay in Flute.
 
-A new event is listed on the live events page and the homepage (`listOn` is `["events", "home"]`). The URL and `productId` stay fixed when the name later changes. Once a price is set, `productId` is the slug and Flute charges that whole-dollar amount. No price means no checkout, the same as Cranial Diaphragm. One product per event.
+The signup list is the hub log and the Purchases sheet, merged by Session ID. If one of those cannot be read, the other is still shown and the page says so. If both cannot be read, the events still load. A refund is not removed from either copy. The paid date is shown in Pacific time.
+
+A new event is listed on the live events page and the homepage (`listOn` is `["events", "home"]`). The URL and `productId` stay fixed when the name later changes. Once a price is set, `productId` is the slug and Flute charges that whole-dollar amount, or the rounded sale price while a sale is active. No price means no checkout, the same as Cranial Diaphragm. One product per event.
 
 Instructor, gallery, and schedule already stored on an event stay in the file. A new event uses the instructor from `content/events/_template.json`. Saving a different event does not rewrite the December Trunk & Pelvis page. A record with `pageMode` `static` cannot be edited or archived. An archived event keeps `archived: true` in its JSON file and is left out of both catalogs.
 
-On a local server, Save writes `content/events/{slug}.json` and rebuilds that page plus the two catalogs. On Vercel, Save commits those files to the `admin/live-events` branch and opens a pull request into `main`. The live site changes when that pull request is merged. Further saves are added to the same branch, and the hub reads that branch so the next edit includes the earlier ones. The token needs contents access and permission to open pull requests. `ADMIN_GITHUB_BRANCH` can name a different review branch. `ADMIN_GITHUB_BASE` can name a different base, and defaults to `main`. A review branch set to the base branch is treated as `admin/live-events`, so a save does not commit to `main`. If the token is missing on Vercel, Save fails and does not pretend the change was published. Leave the password and token unset until they are provided.
+On a local server, Save writes `content/events/{slug}.json` and rebuilds that page plus the two catalogs. On Vercel, Save commits those files to the `admin/live-events` branch and opens a pull request into `main`. The live site changes when that pull request is merged. Further saves are added to the same branch, and the hub reads that branch so the next edit includes the earlier ones. The token needs contents access. Permission to open pull requests adds the review link. A save still lands on the review branch when that permission is missing. `ADMIN_GITHUB_BRANCH` can name a different review branch. `ADMIN_GITHUB_BASE` can name a different base, and defaults to `main`. A review branch set to the base branch is treated as `admin/live-events`, so a save does not commit to `main`. If the token is missing on Vercel, Save fails and does not pretend the change was published. Leave the password and token unset until they are provided.
 
 ### Make a new event
 

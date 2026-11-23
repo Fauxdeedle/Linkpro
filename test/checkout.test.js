@@ -17,7 +17,7 @@ const expectedProducts = {
   llip: 199,
   'seminar-upper-limb': 1500,
   'seminar-lower-limb': 1500,
-  'seminar-trunk-pelvis': 1500,
+  'seminar-trunk-pelvis': 1425,
   'seminar-bundle': 3750,
   'retreat-shared-bunk': 1350,
   'retreat-king-single': 2350,
