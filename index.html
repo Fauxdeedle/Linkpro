@@ -562,12 +562,37 @@ ul { list-style: none; }
   gap: 24px;
 }
 .live-event-card {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   padding: 36px 32px 32px;
   background: var(--charcoal-light);
   border: 1px solid rgba(255,255,255,0.05);
   transition: transform 0.5s var(--transition), border-color 0.5s var(--transition), box-shadow 0.5s var(--transition);
+}
+.sale-banner {
+  position: absolute;
+  top: 18px;
+  right: -36px;
+  z-index: 1;
+  width: 128px;
+  margin: 0;
+  padding: 7px 0;
+  background: var(--gold);
+  color: var(--charcoal);
+  font-family: Inter, sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+.live-event-card:has(.sale-banner) .live-event-card__intro {
+  padding-right: 28px;
 }
 .live-event-card:hover {
   transform: translateY(-6px);
@@ -635,27 +660,33 @@ ul { list-style: none; }
 }
 .live-event-card__sale {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
   margin: 0 0 20px;
 }
 .live-event-card__off {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--gold);
 }
+.live-event-card__amounts {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
 .live-event-card__was {
-  color: var(--muted);
-  font-size: 1rem;
+  color: rgba(255,255,255,0.42);
+  font-size: 1.25rem;
   text-decoration: line-through;
 }
 .live-event-card__now {
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: 500;
+  line-height: 1;
   color: var(--white);
 }
 .live-event-card__cta {
@@ -1116,6 +1147,8 @@ ul { list-style: none; }
 /* Seminar cards */
 .courses__seminars { display: flex; flex-direction: column; gap: 16px; }
 .seminar-card {
+  position: relative;
+  overflow: hidden;
   display: flex; align-items: center; gap: 32px;
   padding: 32px 36px;
   background: var(--white);
@@ -1162,11 +1195,11 @@ ul { list-style: none; }
   font-size: 1.5rem; color: var(--charcoal);
 }
 .seminar-card__price--sale {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
 }
 .seminar-card__off {
-  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--gold-dark);
+  font-size: 0.95rem; font-weight: 600; letter-spacing: 0;
+  text-transform: none; color: var(--gold-dark);
 }
 .seminar-card__price__amounts { display: flex; align-items: baseline; gap: 10px; }
 .seminar-card__was {
@@ -2420,7 +2453,7 @@ ul { list-style: none; }
             </div>
           </div>
           <p class="live-event-card__text">Most trunk and pelvic treatment starts with the lumbar spine, the hip flexors, or the abdominal wall. This course treats the trunk and pelvis as one integrated fascial system.</p>
-          <p class="live-event-card__sale"><span class="live-event-card__off">5% off</span> <s class="live-event-card__was">$1,500</s> <span class="live-event-card__now">$1,425</span></p>
+          <p class="live-event-card__sale"><span class="sale-banner" aria-hidden="true">Sale!</span><span class="live-event-card__off">5% off</span><span class="live-event-card__amounts"><s class="live-event-card__was">$1,500</s> <span class="live-event-card__now">$1,425</span></span></p>
           <a href="/seminar-trunk-pelvis" class="live-event-card__cta">Learn more</a>
         </article>
 <article class="live-event-card live-event-card--soon reveal reveal-delay-2">
