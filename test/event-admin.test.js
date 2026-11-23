@@ -17,6 +17,7 @@ const {
 } = require('../lib/event-admin');
 const { applyEventFields, publicEvent } = require('../lib/event-fields');
 const { publishSiteFiles } = require('../lib/github-publish');
+const { activeSalePrice, readSale, saleActive } = require('../lib/event-sale');
 const { eventProduct, loadEvents } = require('../lib/event-store');
 const { checkoutProduct, getProduct, products } = require('../server/config/products');
 
@@ -523,4 +524,160 @@ test('publishSiteFiles deletes a removed event in the same commit', async () => 
     tree.tree.filter((entry) => entry.sha === null).map((entry) => entry.path),
     ['content/events/harbor-lab.json', 'harbor-lab.html']
   );
+});
+
+test('a sale keeps the list price and charges the rounded sale price', async () => {
+  const root = fixture();
+  const created = await createLiveEvent(
+    {
+      name: 'Harbor Lab',
+      date: 'June 7–9',
+      price: 1500,
+      copy: 'Hands-on lab. Student rate $900 for review.',
+      onSale: true,
+      salePercent: 20,
+      saleEnds: '2099-06-01',
+    },
+    { root, env: {} }
+  );
+
+  assert.equal(created.status, 201, created.error);
+  assert.equal(created.body.event.price, 1500);
+  assert.equal(created.body.event.priceLabel, '$1,500');
+  assert.equal(created.body.event.onSale, true);
+  assert.equal(created.body.event.salePercent, 20);
+  assert.equal(created.body.event.saleEnds, '2099-06-01');
+  assert.equal(created.body.event.salePrice, 1200);
+  assert.equal(created.body.event.salePriceLabel, '$1,200');
+
+  const saved = JSON.parse(
+    fs.readFileSync(path.join(root, 'content', 'events', 'harbor-lab.json'), 'utf8')
+  );
+  assert.equal(saved.price, 1500);
+  assert.deepEqual(saved.sale, { percent: 20, endsOn: '2099-06-01' });
+  assert.equal(saved.catalog.priceLabel, '$1,500');
+  assert.equal(saved.cta.buttonText, 'Register — $1,500');
+  assert.equal(eventProduct('harbor-lab', loadEvents(root)).amount, 1200);
+
+  const html = fs.readFileSync(path.join(root, 'harbor-lab.html'), 'utf8');
+  assert.match(html, /20% off/);
+  assert.match(html, /<s class="event-hero__was">\$1,500<\/s>/);
+  assert.match(html, /event-hero__now">\$1,200</);
+  assert.match(html, /Register — \$1,200/);
+  assert.match(html, /data-sale-list="Register — \$1,500"/);
+  assert.match(html, /Student rate \$900/);
+
+  const liveEvents = fs.readFileSync(path.join(root, 'live-events.html'), 'utf8');
+  const homepage = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.match(liveEvents, /seminar-price__was">\$1,500/);
+  assert.match(liveEvents, /seminar-price__now">\$1,200/);
+  assert.match(homepage, /live-event-card__off">20% off/);
+  assert.match(homepage, /live-event-card__now">\$1,200/);
+
+  const cleared = await updateLiveEvent(
+    'harbor-lab',
+    {
+      name: 'Harbor Lab',
+      date: 'June 7–9',
+      price: 1500,
+      copy: 'Hands-on lab. Student rate $900 for review.',
+    },
+    { root, env: {} }
+  );
+  assert.equal(cleared.status, 200, cleared.error);
+  assert.equal(cleared.body.event.onSale, false);
+  assert.equal(cleared.body.event.salePrice, null);
+  const after = JSON.parse(
+    fs.readFileSync(path.join(root, 'content', 'events', 'harbor-lab.json'), 'utf8')
+  );
+  assert.equal(after.sale, undefined);
+  assert.equal(eventProduct('harbor-lab', loadEvents(root)).amount, 1500);
+});
+
+test('an expired sale is off in the hub and charges the list price', async () => {
+  const root = fixture();
+  const created = await createLiveEvent(
+    {
+      name: 'Harbor Lab',
+      date: 'June 7–9',
+      price: 1500,
+      copy: 'Hands-on lab.',
+      onSale: true,
+      salePercent: 15,
+      saleEnds: '2000-01-01',
+    },
+    { root, env: {} }
+  );
+
+  assert.equal(created.status, 201, created.error);
+  assert.equal(created.body.event.onSale, false);
+  assert.equal(created.body.event.salePercent, '');
+  assert.equal(created.body.event.saleEnds, '');
+  assert.equal(created.body.event.price, 1500);
+  const saved = JSON.parse(
+    fs.readFileSync(path.join(root, 'content', 'events', 'harbor-lab.json'), 'utf8')
+  );
+  assert.deepEqual(saved.sale, { percent: 15, endsOn: '2000-01-01' });
+  assert.equal(eventProduct('harbor-lab', loadEvents(root)).amount, 1500);
+  const html = fs.readFileSync(path.join(root, 'harbor-lab.html'), 'utf8');
+  assert.doesNotMatch(html, /15% off/);
+  assert.match(html, /Register — \$1,500/);
+});
+
+test('sale percent and end date are validated before a price change is stored', async () => {
+  const root = fixture();
+  const percent = await createLiveEvent(
+    {
+      name: 'Harbor Lab',
+      date: 'June 7–9',
+      price: 1500,
+      copy: 'Hands-on lab.',
+      onSale: true,
+      salePercent: 0,
+    },
+    { root, env: {} }
+  );
+  assert.equal(percent.status, 400);
+  assert.equal(percent.error, 'Enter a whole percent from 1 to 99.');
+  assert.equal(fs.existsSync(path.join(root, 'content', 'events', 'harbor-lab.json')), false);
+
+  const dated = await createLiveEvent(
+    {
+      name: 'Harbor Lab',
+      date: 'June 7–9',
+      price: 1500,
+      copy: 'Hands-on lab.',
+      onSale: true,
+      salePercent: 20,
+      saleEnds: 'June 1',
+    },
+    { root, env: {} }
+  );
+  assert.equal(dated.status, 400);
+  assert.equal(dated.error, 'Enter a sale end date.');
+
+  const missingPrice = await createLiveEvent(
+    {
+      name: 'Harbor Lab',
+      date: 'June 7–9',
+      price: '',
+      copy: 'Hands-on lab.',
+      onSale: true,
+      salePercent: 20,
+    },
+    { root, env: {} }
+  );
+  assert.equal(missingPrice.status, 400);
+  assert.equal(missingPrice.error, 'Enter a price before marking the event on sale.');
+  assert.equal(readSale({ onSale: true, salePercent: 50 }, 1).error, 'That discount does not leave a price.');
+  assert.equal(activeSalePrice(1500, { percent: 15 }), 1275);
+});
+
+test('a sale stays on through the Pacific end date', () => {
+  const sale = { percent: 20, endsOn: '2026-12-15' };
+  assert.equal(saleActive(sale, new Date('2026-12-16T07:59:00Z')), true);
+  assert.equal(saleActive(sale, new Date('2026-12-16T08:00:00Z')), false);
+  assert.equal(activeSalePrice(1500, sale, new Date('2026-12-16T07:59:00Z')), 1200);
+  assert.equal(activeSalePrice(1500, sale, new Date('2026-12-16T08:00:00Z')), null);
+  assert.equal(activeSalePrice(1500, { percent: 20 }, new Date('2026-12-16T08:00:00Z')), 1200);
 });

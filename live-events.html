@@ -25,6 +25,11 @@
 .seminar-text{font-size:.85rem;color:rgba(255,255,255,0.45);line-height:1.65}
 .seminar-price-block{display:flex;flex-direction:column;align-items:center;gap:12px;min-width:180px}
 .seminar-price{font-family:var(--serif);font-weight:500;font-size:1.5rem;color:#fff}
+.seminar-price--sale{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:1rem}
+.seminar-price__off{font-family:var(--sans);font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.seminar-price__amounts{display:flex;align-items:baseline;gap:10px}
+.seminar-price__was{font-size:1rem;font-weight:500;color:var(--muted);text-decoration:line-through}
+.seminar-price__now{font-size:1.5rem;font-weight:500;color:#fff}
 .seminar-cta{display:inline-block;padding:10px 24px;background:var(--gold);color:var(--charcoal);font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;transition:all .3s;border:0;cursor:pointer;font-family:inherit;text-align:center}
 .seminar-cta:hover{background:#fff}
 .seminar-cta.is-loading{opacity:.7;cursor:wait}
@@ -138,6 +143,7 @@
 
 <footer class="footer"><div class="container"><div class="footer-inner"><a href="/" class="footer-logo">LINK <span>PRO</span></a><p>&copy; 2026 LINK Pro. All rights reserved.</p><div class="footer-links"><a href="/courses">Courses</a><a href="blog.html">Blog</a><a href="rams.html">Rams</a><a href="/media-kit">Media Kit</a><a href="index.html#contact">Contact</a><a href="https://www.instagram.com/linkprosport/" target="_blank">Instagram</a></div></div></div></footer>
 <script src="js/flute-checkout.js"></script>
+<script src="/js/event-sale.js" defer></script>
 <script>document.querySelectorAll('.reveal').forEach(function(el){new IntersectionObserver(function(e){e.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('visible')}})},{threshold:.1}).observe(el)});</script>
 <script src="/js/site-nav.js" defer></script>
 <!-- LINKPRO_ANALYTICS_START -->
