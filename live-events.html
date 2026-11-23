@@ -12,7 +12,9 @@
 .label{font-size:.65rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px}.label::before{content:'';width:40px;height:1px;background:var(--gold)}
 .seminar-section{background:var(--charcoal);padding:160px 0 80px}
 .seminars{display:flex;flex-direction:column;gap:16px;margin-top:36px}
-.seminar{display:flex;align-items:center;gap:32px;padding:32px 36px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);transition:all .4s var(--transition)}
+.seminar{position:relative;overflow:hidden;display:flex;align-items:center;gap:32px;padding:32px 36px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);transition:all .4s var(--transition)}
+.seminar:has(.sale-banner){padding-top:48px}
+.sale-banner{position:absolute;top:16px;right:-36px;z-index:1;width:128px;margin:0;padding:7px 0;background:var(--gold);color:var(--charcoal);font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.16em;line-height:1;text-align:center;text-transform:uppercase;transform:rotate(45deg);pointer-events:none}
 .seminar:hover{border-color:rgba(196,162,101,0.3)}
 .seminar-date{display:flex;flex-direction:column;align-items:center;min-width:72px;padding:12px 8px;border:1px solid rgba(196,162,101,0.3)}
 .seminar-month{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
@@ -25,11 +27,11 @@
 .seminar-text{font-size:.85rem;color:rgba(255,255,255,0.45);line-height:1.65}
 .seminar-price-block{display:flex;flex-direction:column;align-items:center;gap:12px;min-width:180px}
 .seminar-price{font-family:var(--serif);font-weight:500;font-size:1.5rem;color:#fff}
-.seminar-price--sale{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:1rem}
-.seminar-price__off{font-family:var(--sans);font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-.seminar-price__amounts{display:flex;align-items:baseline;gap:10px}
-.seminar-price__was{font-size:1rem;font-weight:500;color:var(--muted);text-decoration:line-through}
-.seminar-price__now{font-size:1.5rem;font-weight:500;color:#fff}
+.seminar-price--sale{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:1rem}
+.seminar-price__off{font-family:var(--sans);font-size:.95rem;font-weight:600;letter-spacing:0;text-transform:none;color:var(--gold)}
+.seminar-price__amounts{display:flex;align-items:baseline;gap:12px}
+.seminar-price__was{font-size:1.15rem;font-weight:500;color:rgba(255,255,255,0.42);text-decoration:line-through}
+.seminar-price__now{font-size:1.7rem;font-weight:500;color:#fff}
 .seminar-cta{display:inline-block;padding:10px 24px;background:var(--gold);color:var(--charcoal);font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;transition:all .3s;border:0;cursor:pointer;font-family:inherit;text-align:center}
 .seminar-cta:hover{background:#fff}
 .seminar-cta.is-loading{opacity:.7;cursor:wait}
@@ -120,7 +122,7 @@
           <p class="seminar-text">Most trunk and pelvic treatment starts with the lumbar spine, the hip flexors, or the abdominal wall. This course treats the trunk and pelvis as one integrated fascial system.</p>
         </div>
         <div class="seminar-price-block">
-          <span class="seminar-price seminar-price--sale"><span class="seminar-price__off">5% off</span><span class="seminar-price__amounts"><s class="seminar-price__was">$1,500</s> <span class="seminar-price__now">$1,425</span></span></span>
+          <span class="seminar-price seminar-price--sale"><span class="sale-banner" aria-hidden="true">Sale!</span><span class="seminar-price__off">5% off</span><span class="seminar-price__amounts"><s class="seminar-price__was">$1,500</s> <span class="seminar-price__now">$1,425</span></span></span>
 <a href="/seminar-trunk-pelvis" class="seminar-cta">View training — Register</a>
         </div>
       </div>

@@ -247,7 +247,7 @@ test('generated event checkout comes from the event file and leaves the bundle a
     getProduct('seminar-trunk-pelvis').name,
     'Fascia Normalization and 2TLS: Trunk and Pelvis'
   );
-  assert.equal(getProduct('seminar-trunk-pelvis').amount, 1500);
+  assert.equal(getProduct('seminar-trunk-pelvis').amount, 1425);
   assert.equal(getProduct('seminar-trunk-pelvis').successUrl, '/seminar-trunk-pelvis.html');
   assert.equal(
     products['seminar-trunk-pelvis'].name,

@@ -214,8 +214,10 @@ test('an active sale shows the percent, struck price, and sale price', () => {
       sale: { percent: 20, endsOn: '2099-01-01' },
     })
   );
+  assert.match(html, /class="sale-banner"/);
+  assert.match(html, /Sale!/);
   assert.match(html, /event-hero__off">20% off/);
-  assert.match(html, /<s class="event-hero__was">\$1,500<\/s>/);
+  assert.match(html, /event-hero__amounts"><s class="event-hero__was">\$1,500<\/s>/);
   assert.match(html, /event-hero__now">\$1,200</);
   assert.match(html, /data-sale-ends="2099-01-01"/);
   assert.match(html, /Register — \$1,200/);
@@ -239,6 +241,7 @@ test('an expired sale renders the list price', () => {
     })
   );
   assert.doesNotMatch(html, /20% off/);
+  assert.doesNotMatch(html, /sale-banner/);
   assert.doesNotMatch(html, /event-hero__was/);
   assert.match(html, /Register — \$1,500/);
 });
@@ -246,12 +249,15 @@ test('an expired sale renders the list price', () => {
 test('catalog cards show a sale and a ranged price label is left alone', () => {
   const onSale = event({ price: 1500, sale: { percent: 20, endsOn: '2099-01-01' } });
   const cards = renderCatalog([onSale], 'events', 'courses');
+  assert.match(cards, /class="sale-banner"/);
   assert.match(cards, /seminar-price__off">20% off/);
   assert.match(cards, /seminar-price__was">\$1,500/);
   assert.match(cards, /seminar-price__now">\$1,200/);
 
   const feature = renderCatalog([onSale], 'events', 'feature', { limit: 3 });
+  assert.match(feature, /class="sale-banner"/);
   assert.match(feature, /live-event-card__off">20% off/);
+  assert.match(feature, /live-event-card__amounts/);
   assert.match(feature, /live-event-card__was">\$1,500/);
   assert.match(feature, /live-event-card__now">\$1,200/);
 
