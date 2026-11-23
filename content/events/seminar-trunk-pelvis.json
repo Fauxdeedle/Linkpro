@@ -2,7 +2,10 @@
   "slug": "seminar-trunk-pelvis",
   "status": "upcoming",
   "pageMode": "generated",
-  "listOn": ["events", "home"],
+  "listOn": [
+    "events",
+    "home"
+  ],
   "sort": 50,
   "productId": "seminar-trunk-pelvis",
   "catalog": {
@@ -77,7 +80,9 @@
       },
       {
         "heading": "Who this course is for",
-        "paragraphs": ["This course is designed for practitioners who:"],
+        "paragraphs": [
+          "This course is designed for practitioners who:"
+        ],
         "bullets": [
           "Want one cohesive system for trunk and pelvic treatment, not a collection of techniques",
           "Work with athletes or active populations, where pelvic mechanics determine performance and durability",
@@ -90,12 +95,30 @@
       {
         "heading": "Details",
         "facts": [
-          { "label": "Dates", "text": "December 4, 5, and 6" },
-          { "label": "Time", "text": "9:00 AM to 5:00 PM" },
-          { "label": "Location", "text": "3134 Airway Ave, Costa Mesa, CA 92626" },
-          { "label": "Tuition", "text": "$1,500" },
-          { "label": "First-time SomaTherapy students", "text": "Day One only, $417" },
-          { "label": "Prerequisites", "text": "Familiarity with osteopathic principles, fascial anatomy, and manual therapy is recommended but not required." }
+          {
+            "label": "Dates",
+            "text": "December 4, 5, and 6"
+          },
+          {
+            "label": "Time",
+            "text": "9:00 AM to 5:00 PM"
+          },
+          {
+            "label": "Location",
+            "text": "3134 Airway Ave, Costa Mesa, CA 92626"
+          },
+          {
+            "label": "Tuition",
+            "text": "$1,500"
+          },
+          {
+            "label": "First-time SomaTherapy students",
+            "text": "Day One only, $417"
+          },
+          {
+            "label": "Prerequisites",
+            "text": "Familiarity with osteopathic principles, fascial anatomy, and manual therapy is recommended but not required."
+          }
         ]
       }
     ]
@@ -112,5 +135,9 @@
     "title": "Register for this training",
     "body": "December 4, 5, and 6 in Costa Mesa. Tuition is $1,500. First-time SomaTherapy students may attend Day One only for $417.",
     "buttonText": "Register — $1,500"
+  },
+  "price": 1500,
+  "sale": {
+    "percent": 5
   }
 }
