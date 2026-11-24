@@ -504,7 +504,7 @@ Generated pages:
 - `/seminar-lower-limb` — September 25–27, Costa Mesa, $1,500
 - `/seminar-trunk-pelvis` — December 4, 5, and 6, Costa Mesa, $1,500
 
-The Baja retreat stays at `/nicolette-david-retreat`. That page is written by hand. Its card on `/live-events` still comes from the event data.
+The Baja retreat stays at `/nicolette-david-retreat`. That page is written by hand. The record is archived, so its card is off `/live-events` and off the homepage. The page itself stays up.
 
 Catalog cards link to the event page. Register lives on that page. The list price is what Flute charges. While a sale is on, the catalog and the page header show the percent off, the list price struck through, and the sale price, and Flute charges that sale price. The sale stays on through its end date in Pacific time, then the list price is charged again. A student rate written in the page copy is text only. After payment, Upper Limb, Lower Limb, and Trunk & Pelvis return to their own page. The three-seminar bundle still checks out from the bundle row and returns to `/live-events`.
 
@@ -554,7 +554,7 @@ Edit `content/events/{slug}.json`, then run `npm run build:events` again. Do not
 - Set `status` to `ended` and rebuild. The card leaves the live events page and the homepage. The URL stays up and says “This training has ended.” Checkout is removed.
 - Delete `content/events/{slug}.json` and rebuild to remove a generated page and its card.
 
-The retreat record uses `pageMode: "static"` and `listOn: ["events"]`. Rebuilding updates its live events card and does not overwrite `nicolette-david-retreat.html`. Deleting that JSON removes the card only.
+The retreat record uses `pageMode: "static"`, `listOn: ["events"]`, and `archived: true`. Rebuilding leaves `nicolette-david-retreat.html` alone. Clearing `archived` puts the card back on `/live-events`. Deleting that JSON removes the card only.
 
 ### Fields
 
