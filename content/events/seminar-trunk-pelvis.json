@@ -136,8 +136,5 @@
     "body": "December 4, 5, and 6 in Costa Mesa. Tuition is $1,500. First-time SomaTherapy students may attend Day One only for $417.",
     "buttonText": "Register — $1,600"
   },
-  "price": 1600,
-  "sale": {
-    "percent": 5
-  }
+  "price": 1600
 }
