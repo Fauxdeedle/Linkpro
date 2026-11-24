@@ -6,8 +6,8 @@ const assert = require('node:assert/strict');
 const { renderEventPage } = require('../lib/event-pages');
 
 const root = path.join(__dirname, '..');
-const pngLink = '<link rel="icon" href="/favicon.png" type="image/png" sizes="468x406">';
-const svgLink = '<link rel="icon" href="/favicon.svg" type="image/svg+xml">';
+const pngLink = '<link rel="icon" href="/favicon.png?v=2" type="image/png" sizes="468x468">';
+const svgLink = '<link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">';
 
 function listHtmlFiles(dir, acc = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -19,17 +19,21 @@ function listHtmlFiles(dir, acc = []) {
   return acc;
 }
 
-test('favicon assets are the triangle mark', () => {
+function pngSize(buffer) {
+  assert.equal(buffer.subarray(12, 16).toString(), 'IHDR');
+  return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
+}
+
+test('favicon assets are the triangle mark on a square canvas', () => {
   const svg = fs.readFileSync(path.join(root, 'favicon.svg'), 'utf8');
+  const brand = fs.readFileSync(path.join(root, 'assets/brand/link-pro-logo.svg'), 'utf8');
   const png = fs.readFileSync(path.join(root, 'favicon.png'));
-  assert.match(svg, /<svg[\s>]/);
-  assert.match(svg, /viewBox="0 0 338 294"/);
+  assert.match(svg, /viewBox="0 0 338 338"/);
   assert.match(svg, /#D09750/);
-  assert.equal(svg, fs.readFileSync(path.join(root, 'assets/brand/link-pro-logo.svg'), 'utf8'));
-  assert.equal(png[0], 0x89);
-  assert.equal(png[1], 0x50);
-  assert.equal(png[2], 0x4e);
-  assert.equal(png[3], 0x47);
+  const mark = [...brand.matchAll(/d="([^"]+)"/g)].map((match) => match[1]);
+  assert.equal(mark.length, 3);
+  for (const pathData of mark) assert.ok(svg.includes(pathData));
+  assert.deepEqual(pngSize(png), { width: 468, height: 468 });
 });
 
 test('every page uses the SVG favicon with a PNG fallback', () => {
