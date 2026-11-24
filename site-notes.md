@@ -45,6 +45,10 @@ The site is static HTML. Nav markup is maintained in one template and **copied i
 
 Nav links use **root-relative** paths (`/about`, `/courses`, `/#contact`) so they work from any folder (e.g. blog posts under `/blog/…`). URLs omit `.html` in the browser (Vercel `cleanUrls`; local dev via `npm start` uses the same rules in `server/index.js`).
 
+### Link previews
+
+Sharing any page uses the same image, `https://www.linkprosport.com/og-image.jpg` (the gold mark and LINK PRO wordmark on black). The page title and description still come from that page. After adding a static HTML page, run `npm run build:social`. Event pages generated from JSON already include the tags.
+
 ### Diagrams and detail
 
 - **Page link map (flowchart):** `docs/site-navigation.md`

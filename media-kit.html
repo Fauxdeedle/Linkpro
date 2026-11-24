@@ -7,6 +7,20 @@
 <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
 <title>Media Kit — LINK Pro</title>
 <meta name="description" content="Press resources for LINK Pro: brand assets, company overview, leadership bios, and media contact for Costa Mesa sports medicine and performance care.">
+<!-- LINKPRO_SOCIAL_START -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LINK Pro">
+<meta property="og:url" content="https://www.linkprosport.com/media-kit">
+<meta property="og:title" content="Media Kit — LINK Pro">
+<meta property="og:description" content="Press resources for LINK Pro: brand assets, company overview, leadership bios, and media contact for Costa Mesa sports medicine and performance care.">
+<meta property="og:image" content="https://www.linkprosport.com/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LINK Pro">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.linkprosport.com/og-image.jpg">
+<!-- LINKPRO_SOCIAL_END -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/css/site-fonts.css">
@@ -60,12 +74,14 @@ a{text-decoration:none;color:inherit}
 .meta-list li:last-child{border-bottom:none}
 .meta-list strong{display:block;font-size:.65rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:6px}
 
-.brand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.brand-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-top:40px}
 .brand-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:32px 28px;display:flex;flex-direction:column;gap:20px}
 .brand-card__preview{min-height:100px;display:flex;align-items:center;justify-content:center;border-radius:2px}
 .brand-card__preview--light{background:var(--cream)}
 .brand-card__preview--dark{background:var(--black)}
 .brand-card__preview img,.brand-card__preview svg{max-height:48px;width:auto}
+.brand-card__preview--social{background:#0d0d0d;padding:0;overflow:hidden}
+.brand-card__preview--social img{max-height:none;width:100%;height:auto}
 .brand-card h3{font-family:var(--serif);font-weight:500;font-size:1.15rem;color:#fff;margin-bottom:4px}
 .brand-card p{font-size:.85rem;line-height:1.65;color:rgba(255,255,255,0.5);flex:1}
 .brand-card a{align-self:flex-start;font-size:.65rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(196,162,101,0.4);padding-bottom:2px}
@@ -260,6 +276,16 @@ a{text-decoration:none;color:inherit}
           <h3>Lockup — light text</h3>
           <p>Full wordmark for video lower thirds, dark photography, and charcoal backgrounds.</p>
           <a href="/assets/brand/link-site-logo-light.svg" download="link-site-logo-light.svg">Download SVG</a>
+        </div>
+      </article>
+      <article class="brand-card">
+        <div class="brand-card__preview brand-card__preview--social">
+          <img src="/og-image.jpg" width="1200" height="630" alt="LINK Pro link preview">
+        </div>
+        <div>
+          <h3>Link preview</h3>
+          <p>Image shown when a linkprosport.com page is shared. The same file is used on every page.</p>
+          <a href="/og-image.jpg" download="link-pro-og-image.jpg">Download JPG</a>
         </div>
       </article>
     </div>

@@ -48,7 +48,10 @@ Collect from the user (or infer from context):
 
 ```bash
 cp courses/course-template.html {slug}-course.html
+npm run build:social
 ```
+
+`build:social` rewrites the link-preview URL so it matches the new filename. The shared image stays `/og-image.jpg`.
 
 Replace every `{{PLACEHOLDER}}` in the new file:
 
