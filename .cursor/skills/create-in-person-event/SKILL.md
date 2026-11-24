@@ -33,7 +33,7 @@ The generated layout follows the Nicolette David retreat (hero, rule, optional g
 4. Set `price` to the whole-dollar amount Flute should charge when registration is open. `productId` becomes the slug. Leave the price out for coming soon. Do not add a generated event to `server/config/products.js`. Courses, the seminar bundle, and retreat rooms stay there.
 5. Run `npm run build:events`. Saving the event in `/admin` writes the same JSON and rebuilds the page and catalogs.
 
-That writes `{slug}.html`, refreshes the cards between `LINKPRO_EVENTS_START` / `LINKPRO_EVENTS_END` on `live-events.html`, refreshes the first three upcoming events between `LINKPRO_FEATURED_EVENTS_START` / `LINKPRO_FEATURED_EVENTS_END` on the homepage, and registers the page so Live Events is the active nav item. The homepage courses seminar list is commented out and is not refreshed.
+That writes `{slug}.html`, refreshes the cards between `LINKPRO_EVENTS_START` / `LINKPRO_EVENTS_END` on `live-events.html`, refreshes the first three upcoming events between `LINKPRO_FEATURED_EVENTS_START` / `LINKPRO_FEATURED_EVENTS_END` on the homepage, and registers the page so Live Events is the active nav item. The homepage courses seminar list is commented out and is not refreshed. The generated head includes the shared link preview image (`/og-image.jpg`). Do not remove those tags.
 
 Do not hand-edit `{slug}.html`. The next build replaces it.
 

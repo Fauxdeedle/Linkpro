@@ -80,6 +80,7 @@ Replace all `{{PLACEHOLDER}}` tokens (`SLUG`, `PAGE_TITLE`, `META_DESCRIPTION`, 
 - Nav markers + `/css/site-nav.css` + `/js/site-nav.js`
 - `<script src="/js/sales-page.js" defer></script>`
 - Vercel Web Analytics markers (`npm run build:analytics` after copying the shell)
+- Link preview tags (`npm run build:social` after copying the shell, so the preview URL matches the new filename). The image stays `/og-image.jpg`.
 
 **Program:** copy `peak-athleticism.html`, set `data-sales-content`, `data-sales-mount="peak-content"`, `data-sales-css-prefix="peak"`, update static hero/logo paths.
 

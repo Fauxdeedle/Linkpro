@@ -31,6 +31,8 @@ To register a new page, add it to `activeByFile` in `scripts/build-nav.js`, add 
 
 New HTML pages also need Vercel Web Analytics. Run `npm run build:analytics` so `components/site-analytics.html` is inlined before `</body>` between `<!-- LINKPRO_ANALYTICS_START -->` and `<!-- LINKPRO_ANALYTICS_END -->`.
 
+New HTML pages also need link-preview tags. Run `npm run build:social` so each page points at `https://www.linkprosport.com/og-image.jpg` between `<!-- LINKPRO_SOCIAL_START -->` and `<!-- LINKPRO_SOCIAL_END -->`. Generated event pages get those tags from `lib/event-pages.js`.
+
 ## New pages
 
 - Use the homepage nav pattern only (flat links, no dropdowns).
